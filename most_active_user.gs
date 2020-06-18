@@ -1,0 +1,123 @@
+/**
+* Get the users with their number of executions in a cloud project
+* @param {string} projectId of the cloud project
+* @param {Date} fromTime is the date and time from which the executions has to be seen
+* @return {Object} having key as user_key mapped to number of executions
+*/
+function getUsersWithProcessId(projectId, fromTime) { 
+  var pageToken = null, resultData = null;
+  var limit = false;
+  var processIdsMap = {}, userExecutions={};
+  
+  // loop to get the first page which has enteries in it
+  do {
+    var header = {
+      "Authorization": "Bearer "+ScriptApp.getOAuthToken()
+    };
+    var body = {
+      "projectIds": [
+        projectId
+      ],
+      "resourceNames": [
+        "projects/"+projectId
+      ],
+      "pageToken":pageToken,
+      "orderBy": "timestamp desc"
+    };
+    var options = {
+      'method' : 'post',
+      'contentType': 'application/json',
+      'headers': header,
+      'payload' : JSON.stringify(body),
+      'muteHttpExceptions': false
+    };
+    var response = UrlFetchApp.fetch('https://logging.googleapis.com/v2/entries:list', options);
+    var json = response.getContentText();
+    resultData = JSON.parse(json);
+    pageToken = resultData.nextPageToken;
+  } while(!resultData.entries);
+  
+  // loop to go over all the enteries and map the processId with the userId
+  while(resultData.entries) {
+    for(var i in resultData.entries) {
+      if(resultData.entries[i].timestamp < fromTime) {
+        limit = true;
+        break;
+      }
+      if(resultData.entries[i].labels) {
+        processIdsMap[resultData.entries[i].labels["script.googleapis.com/process_id"]]=resultData.entries[i].labels["script.googleapis.com/user_key"]; 
+      }
+    }
+    if(limit) break;
+    var header = {
+      "Authorization": "Bearer "+ScriptApp.getOAuthToken()
+    };
+    var body = {
+      "projectIds": [
+        projectId
+      ],
+      "resourceNames": [
+        "projects/"+projectId
+      ],
+      "pageToken":pageToken,
+      "orderBy": "timestamp desc"
+    };
+    var options = {
+      'method' : 'post',
+      'contentType': 'application/json',
+      'headers': header,
+      'payload' : JSON.stringify(body),
+      'muteHttpExceptions': false
+    };
+    var response = UrlFetchApp.fetch('https://logging.googleapis.com/v2/entries:list', options);
+    var json = response.getContentText();
+    resultData = JSON.parse(json);
+    pageToken = resultData.nextPageToken;
+  }
+  
+  // go through all the processIds and count the user executions
+  for(var i in processIdsMap) {
+    if(processIdsMap[i] != null) { 
+      if(userExecutions[processIdsMap[i]]) userExecutions[processIdsMap[i]] += 1;
+      else userExecutions[processIdsMap[i]] = 1;
+    }
+  }
+  return userExecutions;
+}
+
+/**
+* Get the most active users i.e., who runs maximum executions from all the cloud projects
+* @param {Date} fromTime is the date and time from which executions has to be seen
+* @param {string} projectType is the types of cloud projects to be checked i.e., CUSTOM_PROJECTs which are user created and SYSTEM_PROJECTs which are system generate
+* @return {Object} Array of user_keys mapped to number of executions of all the users
+*/
+function getMostActiveUser(fromTime, projectType) {  
+  var ALL_PROJECTs = listAllCloudProjects();
+  var i, max = 0, j;
+  var users={};
+  for(i=0; i<ALL_PROJECTs.length; i++) {
+    if (ALL_PROJECTs[i].lifecycleState != 'ACTIVE') {
+      continue;
+    }
+    var projectId = JSON.stringify(ALL_PROJECTs[i].projectId,null,2);
+    if(projectId.indexOf("sys") == 1.0) {
+      if(projectType == "CUSTOM_PROJECT") continue;
+    } else {
+      if(projectType == "SYSTEM_PROJECT") continue;
+    }
+    var userExecutions = getUsersWithProcessId(ALL_PROJECTs[i].projectId , fromTime);
+    for(j in userExecutions) {
+      if(users[j]) {
+        users[j] += userExecutions[j];
+      } else {
+        users[j] = userExecutions[j];
+      }
+    }
+  }
+  
+  
+  var mostActiveUsers = convertObjectToSortedArray(users);
+  return (mostActiveUsers);
+}
+
+
