@@ -6,7 +6,7 @@
 * email is the email id of the owner of cloud project
 * projectId is the cloud project
 */
-function getOriginalNameAndOwnerOfScript(projectId) {
+function getOriginalNameAndOwnerOfScript(projectId, projectName) {
   var pageToken = null;
   var resultData = null;
   do {  
@@ -21,46 +21,6 @@ function getOriginalNameAndOwnerOfScript(projectId) {
         "projects/"+projectId
       ],
       "filter": "protoPayload.methodName=CreateBrand",
-      "pageToken":pageToken
-    };
-    var options = {
-      'method' : 'post',
-      'contentType': 'application/json',
-      'headers': header,
-      'payload' : JSON.stringify(body),
-      'muteHttpExceptions': false
-    };
-    var response = UrlFetchApp.fetch('https://logging.googleapis.com/v2/entries:list', options);
-    var json = response.getContentText();
-    resultData = JSON.parse(json);
-    pageToken = resultData.nextPageToken;
-  } while(!resultData.entries);
-  return {"email" : resultData.entries[0].protoPayload.request.brand.supportEmail, "name" : resultData.entries[0].protoPayload.request.brand.displayName, "projectId" : projectId};
-}
-
-/**
-* Get the updated name and email of App Script
-* @param {string} projectId of the cloud project
-* @return {Object} having two values name and email
-* name is the name of the cloud project
-* email is the email id of the owner of cloud project
-*/
-function getUpdatedNameAndOwnerOfScript(projectId) {
-  var pageToken = null;
-  var resultData = null;
-  var limit = false;
-  do {  
-    var header = {
-      "Authorization": "Bearer "+ScriptApp.getOAuthToken()
-    }; 
-    var body = {
-      "projectIds": [
-        projectId
-      ],
-      "resourceNames": [
-        "projects/"+projectId
-      ],
-      "filter": "protoPayload.methodName=UpdateBrandWithMask",
       "orderBy": "timestamp desc",
       "pageToken":pageToken
     };
@@ -74,19 +34,11 @@ function getUpdatedNameAndOwnerOfScript(projectId) {
     var response = UrlFetchApp.fetch('https://logging.googleapis.com/v2/entries:list', options);
     var json = response.getContentText();
     resultData = JSON.parse(json);
-    if(!resultData.entries && !resultData.nextPageToken) {
-      limit = true;
-      break;
-    }
     pageToken = resultData.nextPageToken;
-  
   } while(!resultData.entries);
-  if(limit) {
-    return getOriginalNameAndOwnerOfScript(projectId);
-  } else {
-    return {"email" : resultData.entries[0].protoPayload.response.supportEmail, "name" : resultData.entries[0].protoPayload.response.displayName, "projectId" : projectId};
-  }
+  return {"email" : resultData.entries[0].protoPayload.request.brand.supportEmail, "name" : projectName, "projectId" : projectId};
 }
+
 
 /**
 * Get the owners of all the cloud projects
@@ -107,7 +59,11 @@ function getOwnersOfAllScripts(projectType) {
     } else {
       if(projectType == "SYSTEM_PROJECT") continue;
     }
-    var owner = getUpdatedNameAndOwnerOfScript(ALL_PROJECTs[i].projectId);
+    var apiEnabled = enableLogginApisPvt(ALL_PROJECTs[i].projectNumber);
+    if(!apiEnabled) continue;
+    Logger.log(ALL_PROJECTs[i]);
+    var owner = getOriginalNameAndOwnerOfScript(ALL_PROJECTs[i].projectId, ALL_PROJECTs[i].name);
+    Logger.log(owner);
     emailOfOwnerOfScripts.push(owner);
   } 
   return emailOfOwnerOfScripts; 
