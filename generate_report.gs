@@ -48,7 +48,7 @@ function generateReportForMostActiveUsers(mostActiveUser, title, limitResponse) 
   rowContent = ["User id","Execution Count"];
   active.appendRow(rowContent);
   var lastRow = active.getLastRow();
-  active.getRange(lastRow, 1, 1, 1).setFontSize(12).setFontWeight("Bold");
+  active.getRange(lastRow, 1, 1, 2).setFontSize(12).setFontWeight("Bold");
   for(var i = 0; i<mostActiveUser.length && i<limitResponse; i++) {
     rowContent = [mostActiveUser[i].key, mostActiveUser[i].value];
     active.appendRow(rowContent);
