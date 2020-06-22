@@ -108,7 +108,11 @@ function getMostExecutedScriptFromAllCloudProjects(fromTime , projectType) {
     } else {
       if(projectType == "SYSTEM_PROJECT") continue;
     }
+    var apiEnabled = enableLogginApisPvt(ALL_PROJECTs[i].projectNumber);
+    if(!apiEnabled) continue;
     var result = getNumberOfExecutionOfScript(ALL_PROJECTs[i].projectId , fromTime);
+    Logger.log(ALL_PROJECTs[i].name);
+    Logger.log(result);
     for(var j in result) {
       if(processIdWithExecutions[j]) {
         processIdWithExecutions[j] += result[j];
