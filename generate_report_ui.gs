@@ -194,22 +194,28 @@ function generateReport(e) {
   
   // if the selected option is specific project
   if(projectFilter == "SPECIFIC_PROJECT") {
-    if(reportType == "mostExecutedScript") {
-      var processes = getNumberOfExecutionOfScript(input.projectId, fromTime);
-      var mostExecutedScript = convertObjectToSortedArrayForSpecificProject(processes, input.projectId);
-      var reportUrl = generateReportForMostExecutedScript(mostExecutedScript, "Report for Most Executed Script of "+ projTitle + " for " + title, limitResponse);
+    var projDetails = getProjectNumber(input.projectId);
+    Logger.log(projDetails);
+    var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
+    if(apiEnabled) {
+      if(reportType == "mostExecutedScript") {
+        var processes = getNumberOfExecutionOfScript(input.projectId, fromTime);
+        var mostExecutedScript = convertObjectToSortedArrayForSpecificProject(processes, input.projectId);
+        var reportUrl = generateReportForMostExecutedScript(mostExecutedScript, "Report for Most Executed Script of "+ projTitle + " for " + title, limitResponse);
+      }
+      else if(reportType == "mostActiveUsers") {
+        var users = getUsersWithProcessId(input.projectId, fromTime);
+        var mostActiveUsers = convertObjectToSortedArrayForSPECIFIC_PROJECT(users, input.projectId);
+        var reportUrl = generateReportForMostActiveUsers(mostActiveUsers, "Report for Most Active Users of "+ projTitle + " for " + title, limitResponse);
+      }
+      else {
+        var emailOfOwnerOfScript = getOriginalNameAndOwnerOfScript(input.projectId, projDetails.name);
+        var emailOfOwnerOfScripts=[emailOfOwnerOfScript];
+        var reportUrl = generateReportForOwnerOfScripts(emailOfOwnerOfScripts, "Report for Owners of Apps Script of "+ projTitle);
+      }
     }
-    else if(reportType == "mostActiveUsers") {
-      var users = getUsersWithProcessId(input.projectId, fromTime);
-      var mostActiveUsers = convertObjectToSortedArrayForSPECIFIC_PROJECT(users, input.projectId);
-      var reportUrl = generateReportForMostActiveUsers(mostActiveUsers, "Report for Most Active Users of "+ projTitle + " for " + title, limitResponse);
-    }
-    else {
-      var emailOfOwnerOfScript = getUpdatedNameAndOwnerOfScript(input.projectId);
-      var emailOfOwnerOfScripts=[emailOfOwnerOfScript];
-      var reportUrl = generateReportForOwnerOfScripts(emailOfOwnerOfScripts, "Report for Owners of Apps Script of "+ projTitle);
-    } 
-  } else {
+  } 
+  else {
     if(reportType == "mostExecutedScript") {
       var mostExecutedScript = getMostExecutedScriptFromAllCloudProjects(fromTime , projectFilter);
       var reportUrl = generateReportForMostExecutedScript(mostExecutedScript, "Report for Most Executed Script of "+ projTitle + " for " + title, limitResponse);
@@ -222,6 +228,7 @@ function generateReport(e) {
     {
       var emailOfOwnerOfScript = getOwnersOfAllScripts(projectFilter);
       var reportUrl = generateReportForOwnerOfScripts(emailOfOwnerOfScript, "Report for Owners of Apps Script of "+ projTitle);
+      Logger.log(reportUrl);
     }
   }
   
