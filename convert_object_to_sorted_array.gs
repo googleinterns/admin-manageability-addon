@@ -5,8 +5,10 @@
 * @return {Object} Sorted Array of the JSON object in descending order
 */
 function convertObjectToSortedArray(object, processIdWithGCPId) {
+  Logger.log(object);
   var array = new Array();
   for(var i in object) {
+    Logger.log(i);
     array.push({"key" : i, "value" : object[i], "GCPId" : processIdWithGCPId[i]});
   }
   
@@ -15,6 +17,22 @@ function convertObjectToSortedArray(object, processIdWithGCPId) {
   return sortedArray;
 }
 
+/**
+* Convert JSON object to array sorted in descending order of their values
+* @param {Object} object will have key value pair
+* @return {Object} Sorted Array of the JSON object in descending order
+*/
+function convertObjectToSortedArrayForMostActiveUsers(object) {
+  Logger.log(object);
+  var array = new Array();
+  for(var i in object) {
+    array.push({"key" : i, "value" : object[i]});
+  }
+  
+  // get the sorted array
+  var sortedArray = sortByKey(array,"value");
+  return sortedArray;
+}
 
 /**
 * Convert JSON object to array sorted in descending order of their values
