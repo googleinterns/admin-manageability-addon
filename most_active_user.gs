@@ -105,6 +105,8 @@ function getMostActiveUser(fromTime, projectType) {
     } else {
       if(projectType == "SYSTEM_PROJECT") continue;
     }
+    var apiEnabled = enableLogginApisPvt(ALL_PROJECTs[i].projectNumber);
+    if(!apiEnabled) continue;
     var userExecutions = getUsersWithProcessId(ALL_PROJECTs[i].projectId , fromTime);
     for(j in userExecutions) {
       if(users[j]) {
@@ -115,9 +117,6 @@ function getMostActiveUser(fromTime, projectType) {
     }
   }
   
-  
-  var mostActiveUsers = convertObjectToSortedArray(users);
+  var mostActiveUsers = convertObjectToSortedArrayForMostActiveUsers(users);
   return (mostActiveUsers);
 }
-
-
