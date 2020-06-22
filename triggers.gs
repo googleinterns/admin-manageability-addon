@@ -18,7 +18,7 @@ function mostExecutedTrigger() {
       title = "Every hour";
     } else if(values[1] == "EVERY_6_HOUR") {
       millisInBetween = 6*60*60*1000;
-      title = "Every 6 hourw";
+      title = "Every 6 hours";
     } else if(values[1] == "EVERY_24_HOUR") {
       millisInBetween = 24*60*60*1000;
       title = "Every 24 hours";
