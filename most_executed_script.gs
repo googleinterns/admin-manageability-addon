@@ -90,6 +90,7 @@ function getNumberOfExecutionOfScript(projectId, fromTime) {
 * Get the maximum executed Script from all the cloud projects
 * @param {Date} fromTime is the date and time from which executions has to be seen
 * @param {string} projectType is the types of cloud projects to be checked i.e., CUSTOM_PROJECTs which are user created and SYSTEM_PROJECTs which are system generated
+* @param {string} specificProjectId is cloud project id of specific project otherwise null
 * @return {Object} Array of projectIds along with the number of executions of the executed scripts and the cloud project id
 */
 function getMostExecutedScriptFromAllCloudProjects(fromTime , projectType, specificProjectId) {
