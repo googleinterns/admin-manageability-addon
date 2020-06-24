@@ -43,28 +43,37 @@ function getOriginalNameAndOwnerOfScript(projectId, projectName) {
 /**
 * Get the owners of all the cloud projects
 * @param {string} projectType is the types of cloud projects to be checked i.e., CUSTOM_PROJECTs which are user created and SYSTEM_PROJECTs which are system generate
+* @param {string} specificProjectId is cloud project id of specific project otherwise null
 * @return {Object} Array of objects having name, email of owner and projectId of Apps Script
 */
-function getOwnersOfAllScripts(projectType) {  
-  var ALL_PROJECTs = listAllCloudProjects();
-  var emailOfOwnerOfScripts = [];
-  var i;
-  for(i=0; i<ALL_PROJECTs.length; i++) {
-    if (ALL_PROJECTs[i].lifecycleState != 'ACTIVE') {
-      continue;
+function getOwnersOfAllScripts(projectType, specificProjectId) {  
+  if(projectType == "SPECIFIC_PROJECT") {
+    var projDetails = getProjectNumber(specificProjectId);
+    var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
+    if(apiEnabled) {
+      var owner = getOriginalNameAndOwnerOfScript(specificProjectId, projDetails.name);
+      emailOfOwnerOfScripts.push(owner);
     }
-    var projectId = JSON.stringify(ALL_PROJECTs[i].projectId,null,2);
-    if(projectId.indexOf("sys") == 1.0) {
-      if(projectType == "CUSTOM_PROJECT") continue;
-    } else {
-      if(projectType == "SYSTEM_PROJECT") continue;
-    }
-    var apiEnabled = enableLogginApisPvt(ALL_PROJECTs[i].projectNumber);
-    if(!apiEnabled) continue;
-    Logger.log(ALL_PROJECTs[i]);
-    var owner = getOriginalNameAndOwnerOfScript(ALL_PROJECTs[i].projectId, ALL_PROJECTs[i].name);
-    Logger.log(owner);
-    emailOfOwnerOfScripts.push(owner);
-  } 
+  }
+  else {
+    var ALL_PROJECTs = listAllCloudProjects();
+    var emailOfOwnerOfScripts = [];
+    var i;
+    for(i=0; i<ALL_PROJECTs.length; i++) {
+      if (ALL_PROJECTs[i].lifecycleState != 'ACTIVE') {
+        continue;
+      }
+      var projectId = JSON.stringify(ALL_PROJECTs[i].projectId,null,2);
+      if(projectId.indexOf("sys") == 1.0) {
+        if(projectType == "CUSTOM_PROJECT") continue;
+      } else {
+        if(projectType == "SYSTEM_PROJECT") continue;
+      }
+      var apiEnabled = enableLogginApisPvt(ALL_PROJECTs[i].projectNumber);
+      if(!apiEnabled) continue;
+      var owner = getOriginalNameAndOwnerOfScript(ALL_PROJECTs[i].projectId, ALL_PROJECTs[i].name);
+      emailOfOwnerOfScripts.push(owner);
+    } 
+  }
   return emailOfOwnerOfScripts; 
 }
