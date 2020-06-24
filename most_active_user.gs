@@ -91,32 +91,49 @@ function getUsersWithProcessId(projectId, fromTime) {
 * @param {string} projectType is the types of cloud projects to be checked i.e., CUSTOM_PROJECTs which are user created and SYSTEM_PROJECTs which are system generate
 * @return {Object} Array of user_keys mapped to number of executions of all the users
 */
-function getMostActiveUser(fromTime, projectType) {  
-  var ALL_PROJECTs = listAllCloudProjects();
-  var i, max = 0, j;
+function getMostActiveUser(fromTime, projectType, specificProjectId) {  
   var users={};
-  for(i=0; i<ALL_PROJECTs.length; i++) {
-    if (ALL_PROJECTs[i].lifecycleState != 'ACTIVE') {
-      continue;
-    }
-    var projectId = JSON.stringify(ALL_PROJECTs[i].projectId,null,2);
-    if(projectId.indexOf("sys") == 1.0) {
-      if(projectType == "CUSTOM_PROJECT") continue;
-    } else {
-      if(projectType == "SYSTEM_PROJECT") continue;
-    }
-    var apiEnabled = enableLogginApisPvt(ALL_PROJECTs[i].projectNumber);
-    if(!apiEnabled) continue;
-    var userExecutions = getUsersWithProcessId(ALL_PROJECTs[i].projectId , fromTime);
-    for(j in userExecutions) {
-      if(users[j]) {
-        users[j] += userExecutions[j];
-      } else {
-        users[j] = userExecutions[j];
+  if(projectType == "SPECIFIC_PROJECT") {
+    var projDetails = getProjectNumber(specificProjectId);
+    var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
+    if(apiEnabled) {
+      var userExecutions = getUsersWithProcessId(specificProjectId , fromTime);
+      for(j in userExecutions) {
+        if(users[j]) {
+          users[j] += userExecutions[j];
+        } else {
+          users[j] = userExecutions[j];
+        }
       }
     }
   }
-  
+  else {
+    var ALL_PROJECTs = listAllCloudProjects();
+    var i, j;
+    for(i=0; i<ALL_PROJECTs.length; i++) {
+      if (ALL_PROJECTs[i].lifecycleState != 'ACTIVE') {
+        continue;
+      }
+      var projectId = JSON.stringify(ALL_PROJECTs[i].projectId,null,2);
+      if(projectId.indexOf("sys") == 1.0) {
+        if(projectType == "CUSTOM_PROJECT") continue;
+      } else {
+        if(projectType == "SYSTEM_PROJECT") continue;
+      }
+      var apiEnabled = enableLogginApisPvt(ALL_PROJECTs[i].projectNumber);
+      if(!apiEnabled) continue;
+      var userExecutions = getUsersWithProcessId(ALL_PROJECTs[i].projectId , fromTime);
+      for(j in userExecutions) {
+        if(users[j]) {
+          users[j] += userExecutions[j];
+        } else {
+          users[j] = userExecutions[j];
+        }
+      }
+    }
+  }
   var mostActiveUsers = convertObjectToSortedArrayForMostActiveUsers(users);
   return (mostActiveUsers);
 }
+
+
