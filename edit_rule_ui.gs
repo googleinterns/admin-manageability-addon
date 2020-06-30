@@ -107,7 +107,7 @@ function editRuleUI(e){
     .setType(CardService.SelectionInputType.RADIO_BUTTON)
     .setFieldName("ruleProjectFilter")
     .setOnChangeAction(CardService.newAction()
-          .setFunctionName("editruleProjectFilterCallback")
+          .setFunctionName("editRuleProjectFilterCallback")
           .setParameters({"Number" : ruleNumber.toString()}));
 
   if(e.formInput) {
@@ -160,9 +160,10 @@ function editRuleUI(e){
 
 /**
 * Callback for the project Filter
+* @param {Object} e is the Event Object which contains information about the context
 * @return {CardService.Card} The card to show to the user
 */
-function editruleProjectFilterCallback(e){
+function editRuleProjectFilterCallback(e){
   var card = editRuleUI(e);
   var navigation = CardService.newNavigation()
     .updateCard(card);
@@ -173,6 +174,7 @@ function editruleProjectFilterCallback(e){
 
 /**
 * Callback function on clicking the update rule button
+* @param {Object} e is the Event Object which contains information about the context
 * @return {CardService.Card} The card to show to the rules to the user
 */
 function updateRule(e) {
