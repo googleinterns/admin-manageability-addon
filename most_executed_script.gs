@@ -1,15 +1,14 @@
 /**
 * Get the maximum number of executions of a cloud project
-* @param {string} projectId of the cloud project
+* @param {string} cloudProjectId of the cloud project
 * @param {Date} fromTime is the date and time from which the executions has to be seen
 * @return {Object} having key as projectId and value as number of executions
 */
-function getNumberOfExecutionOfScript(projectId, fromTime) {
+function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
   var pageToken = null,resultData = null;
   var max = 0 , i ;
   var limit = false;
   var processIdsMap = {} , projectIdsMap = {};
-  
   // loop to get the first page which has enteries in it
   do {  
     var header = {
@@ -17,10 +16,10 @@ function getNumberOfExecutionOfScript(projectId, fromTime) {
     };
     var body = {
       "projectIds": [
-        projectId
+        cloudProjectId
       ],
       "resourceNames": [
-        "projects/"+projectId
+        "projects/"+cloudProjectId
       ],
       "pageToken":pageToken,
       "orderBy": "timestamp desc"
@@ -45,7 +44,6 @@ function getNumberOfExecutionOfScript(projectId, fromTime) {
         limit = true;
         break;
       }
-      Logger.log(resultData.entries[i]);
       if(resultData.entries[i].labels) {
         processIdsMap[resultData.entries[i].labels["script.googleapis.com/process_id"]] = resultData.entries[i].labels["script.googleapis.com/project_key"]; 
       }
@@ -56,10 +54,10 @@ function getNumberOfExecutionOfScript(projectId, fromTime) {
     };
     var body = {
       "projectIds": [
-        projectId
+        cloudProjectId
       ],
       "resourceNames": [
-        "projects/"+projectId
+        "projects/"+cloudProjectId
       ],
       "pageToken":pageToken,
       "orderBy": "timestamp desc"
@@ -79,10 +77,12 @@ function getNumberOfExecutionOfScript(projectId, fromTime) {
   
   // go through all the processIds and count the different projectIds
   for(i in processIdsMap) {
-    if(projectIdsMap[processIdsMap[i]]) projectIdsMap[processIdsMap[i]] += 1;
-    else projectIdsMap[processIdsMap[i]] = 1;
+    if(projectIdsMap[processIdsMap[i]]) {
+      projectIdsMap[processIdsMap[i]] += 1;
+    } else {
+      projectIdsMap[processIdsMap[i]] = 1;
+    }
   }
-  
   return projectIdsMap;
 }
 
@@ -90,56 +90,55 @@ function getNumberOfExecutionOfScript(projectId, fromTime) {
 * Get the maximum executed Script from all the cloud projects
 * @param {Date} fromTime is the date and time from which executions has to be seen
 * @param {string} projectType is the types of cloud projects to be checked i.e., CUSTOM_PROJECTs which are user created and SYSTEM_PROJECTs which are system generated
-* @param {string} specificProjectId is cloud project id of specific project otherwise null
+* @param {string} cloudProjectId is cloud project id of specific project otherwise null
 * @return {Object} Array of projectIds along with the number of executions of the executed scripts and the cloud project id
 */
-function getMostExecutedScriptFromAllCloudProjects(fromTime , projectType, specificProjectId) {
+function getMostExecutedScriptFromAllCloudProjects(fromTime , projectType, cloudProjectId) {
   var processIdWithExecutions = {}, processIdWithGCPId = {};
   if(projectType == "SPECIFIC_PROJECT") {
     Logger.log("here");
-    var projDetails = getProjectNumber(specificProjectId);
+    var projDetails = getProjectDetails(cloudProjectId);
     var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
     if(apiEnabled) {
-      var result = getNumberOfExecutionOfScript(specificProjectId , fromTime);
+      var result = getNumberOfExecutionOfScript(cloudProjectId , fromTime);
       for(var j in result) {
         if(processIdWithExecutions[j]) {
           processIdWithExecutions[j] += result[j];
         } else {
           processIdWithExecutions[j] = result[j];
         }
-        processIdWithGCPId[j] = specificProjectId;
+        processIdWithGCPId[j] = cloudProjectId;
       }
     }
   }
   else {
-    var ALL_PROJECTs = listAllCloudProjects();
+    var allProjects = listAllCloudProjects();
     var i,max = 0;
     
     // loop for all thr projects and get most executed scripts of each project
-    for(i=0; i<ALL_PROJECTs.length; i++) {
-      if(ALL_PROJECTs[i].lifecycleState != 'ACTIVE') {
+    for(i=0; i<allProjects.length; i++) {
+      if(allProjects[i].lifecycleState != 'ACTIVE') {
         continue;
       }
-      if(JSON.stringify( ALL_PROJECTs[i].projectId , null , 2).indexOf("sys") == 1.0) {
+      if(JSON.stringify( allProjects[i].projectId , null , 2).indexOf("sys") == 1.0) {
         if(projectType == "CUSTOM_PROJECT") continue;
       } else {
         if(projectType == "SYSTEM_PROJECT") continue;
       }
-      var apiEnabled = enableLogginApisPvt(ALL_PROJECTs[i].projectNumber);
+      var apiEnabled = enableLogginApisPvt(allProjects[i].projectNumber);
       if(!apiEnabled) continue;
-      var result = getNumberOfExecutionOfScript(ALL_PROJECTs[i].projectId , fromTime);
+      var result = getNumberOfExecutionOfScript(allProjects[i].projectId , fromTime);
       for(var j in result) {
         if(processIdWithExecutions[j]) {
           processIdWithExecutions[j] += result[j];
         } else {
           processIdWithExecutions[j] = result[j];
         }
-        processIdWithGCPId[j] = ALL_PROJECTs[i].projectId;
+        processIdWithGCPId[j] = allProjects[i].projectId;
       }
     }
   }
   var mostExecutedScript = convertObjectToSortedArray(processIdWithExecutions, processIdWithGCPId);
-  Logger.log(mostExecutedScript);
   return mostExecutedScript;
   
 }
