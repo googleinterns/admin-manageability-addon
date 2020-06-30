@@ -1,13 +1,16 @@
 /**
- * Callback for rendering the view.
- * @return {CardService.Card} The card to show to the user.
- */
+* Callback for rendering the view.
+* @param {Object} e is the Event Object which contains information about the context
+* @return {CardService.Card} The card to show to the user.
+*/
 function onHomePage(e) {
   return createUI(e);
 }
 
 /**
 * Creates a UI and return the card
+* @param {Object} e is the Event Object which contains information about the context
+* @param {string} reportUrlVal is the generated Report URL
 * @return {CardService.Card} The card to show to the user
 */
 function createUI(e, reportUrlVal) {
@@ -147,6 +150,7 @@ function createUI(e, reportUrlVal) {
 
 /**
 * Callback function on clicking the GET REPORT button and create a card with most executed script and most active users
+* @param {Object} e is the Event Object which contains information about the context
 * @return {CardService.Card} The card to show to the user
 */
 function generateReport(e) {
@@ -213,6 +217,7 @@ function generateReport(e) {
 
 /**
 * Callback for the project Filter
+* @param {Object} e is the Event Object which contains information about the context
 * @return {CardService.Card} The card to show to the user
 */
 function projectFilterCallback(e) {
@@ -226,6 +231,7 @@ function projectFilterCallback(e) {
 
 /**
 * Callback for the report type Filter
+* @param {Object} e is the Event Object which contains information about the context
 * @return {CardService.Card} The card to show to the user
 */
 function reportTypeCallback(e) {
