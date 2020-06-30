@@ -76,7 +76,7 @@ function generateReportForOwnerOfScripts(emailOfOwnerOfScript, title) {
   active.appendRow(rowContent);
   var lastRow = active.getLastRow();
   active.getRange(lastRow, 1, 1, 3).setFontSize(12).setFontWeight("Bold");
-  for(var i = 0;i<emailOfOwnerOfScript.length;i++) {
+  for(var i = 0; i<emailOfOwnerOfScript.length; i++) {
     rowContent = [emailOfOwnerOfScript[i].name, emailOfOwnerOfScript[i].email, emailOfOwnerOfScript[i].projectId];
     active.appendRow(rowContent);
   }
