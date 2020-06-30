@@ -3,8 +3,8 @@
 * @param {string} projectId of the cloud project
 * @return {Object} having two values name, email and projectId
 * name is the name of the cloud project
-* email is the email id of the owner of cloud project
-* projectId is the cloud project
+* email is the email id of the owner of apps script
+* projectId is the cloud project Id
 */
 function getOriginalNameAndOwnerOfScript(projectId, projectName) {
   var pageToken = null;
@@ -36,9 +36,12 @@ function getOriginalNameAndOwnerOfScript(projectId, projectName) {
     resultData = JSON.parse(json);
     pageToken = resultData.nextPageToken;
   } while(!resultData.entries);
-  return {"email" : resultData.entries[0].protoPayload.request.brand.supportEmail, "name" : projectName, "projectId" : projectId};
+  return {
+    "email" : resultData.entries[0].protoPayload.request.brand.supportEmail,
+    "name" : projectName,
+    "projectId" : projectId
+  };
 }
-
 
 /**
 * Get the owners of all the cloud projects
@@ -48,7 +51,7 @@ function getOriginalNameAndOwnerOfScript(projectId, projectName) {
 */
 function getOwnersOfAllScripts(projectType, specificProjectId) {  
   if(projectType == "SPECIFIC_PROJECT") {
-    var projDetails = getProjectNumber(specificProjectId);
+    var projDetails = getProjectDetails(specificProjectId);
     var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
     if(apiEnabled) {
       var owner = getOriginalNameAndOwnerOfScript(specificProjectId, projDetails.name);
@@ -56,22 +59,22 @@ function getOwnersOfAllScripts(projectType, specificProjectId) {
     }
   }
   else {
-    var ALL_PROJECTs = listAllCloudProjects();
+    var allProjects = listAllCloudProjects();
     var emailOfOwnerOfScripts = [];
     var i;
-    for(i=0; i<ALL_PROJECTs.length; i++) {
-      if (ALL_PROJECTs[i].lifecycleState != 'ACTIVE') {
+    for(i=0; i<allProjects.length; i++) {
+      if (allProjects[i].lifecycleState != 'ACTIVE') {
         continue;
       }
-      var projectId = JSON.stringify(ALL_PROJECTs[i].projectId,null,2);
+      var projectId = JSON.stringify(allProjects[i].projectId,null,2);
       if(projectId.indexOf("sys") == 1.0) {
         if(projectType == "CUSTOM_PROJECT") continue;
       } else {
         if(projectType == "SYSTEM_PROJECT") continue;
       }
-      var apiEnabled = enableLogginApisPvt(ALL_PROJECTs[i].projectNumber);
+      var apiEnabled = enableLogginApisPvt(allProjects[i].projectNumber);
       if(!apiEnabled) continue;
-      var owner = getOriginalNameAndOwnerOfScript(ALL_PROJECTs[i].projectId, ALL_PROJECTs[i].name);
+      var owner = getOriginalNameAndOwnerOfScript(allProjects[i].projectId, allProjects[i].name);
       emailOfOwnerOfScripts.push(owner);
     } 
   }
