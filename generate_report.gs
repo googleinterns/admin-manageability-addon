@@ -6,22 +6,22 @@
 * @return {String} URL of generated report
 */
 function generateReportForMostExecutedScript(mostExecutedScript, title, limitResponse) {  
-  var timeStamp, dateTimeAsString, rowContent;
-  
+
   //Create a new date
-  timeStamp = new Date();
-  dateTimeAsString = timeStamp.toString().slice(0,15);
+  var timeStamp = new Date();
+  var dateTimeAsString = timeStamp.toString().slice(0,15);
   var newSheet = SpreadsheetApp.create(title + " at "+ dateTimeAsString);
   var active  = newSheet.getActiveSheet();
   active.setName("Most Executed Script");
   
   // add the most executed script report
-  rowContent = ["ProjectId", "Execution Count", "Cloud Project Id"];
+  var rowContent = ["ProjectId", "Execution Count", "Cloud Project Id"];
   active.appendRow(rowContent);
   var lastRow = active.getLastRow();
   active.getRange(lastRow, 1, 1, 3).setFontSize(12).setFontWeight("BOLD");
   for(var i = 0; i<mostExecutedScript.length && i<limitResponse; i++) {
-    rowContent = [mostExecutedScript[i].key, mostExecutedScript[i].value, mostExecutedScript[i].GCPId];
+    Logger.log(mostExecutedScript[i]);
+    rowContent = [mostExecutedScript[i]["key"], mostExecutedScript[i]["value"], mostExecutedScript[i]["GCPId"]];
     active.appendRow(rowContent);
   }
   return newSheet.getUrl();
@@ -36,19 +36,18 @@ function generateReportForMostExecutedScript(mostExecutedScript, title, limitRes
 * @return {String} URL of generated report
 */
 function generateReportForMostActiveUsers(mostActiveUser, title, limitResponse) {  
-  var timeStamp, dateTimeAsString, rowContent;
-  
+ 
   //Create a new date
-  timeStamp = new Date();
-  dateTimeAsString = timeStamp.toString().slice(0,15);
+  var timeStamp = new Date();
+  var dateTimeAsString = timeStamp.toString().slice(0,15);
   var newSheet = SpreadsheetApp.create(title + " at "+ dateTimeAsString);
   var active  = newSheet.getActiveSheet();
   active.setName("Most Active Users");
  
-  rowContent = ["User id","Execution Count"];
+  var rowContent = ["User id","Execution Count"];
   active.appendRow(rowContent);
   var lastRow = active.getLastRow();
-  active.getRange(lastRow, 1, 1, 2).setFontSize(12).setFontWeight("Bold");
+  active.getRange(lastRow, 1, 1, active.getLastColumn()).setFontSize(12).setFontWeight("Bold");
   for(var i = 0; i<mostActiveUser.length && i<limitResponse; i++) {
     rowContent = [mostActiveUser[i].key, mostActiveUser[i].value];
     active.appendRow(rowContent);
@@ -64,17 +63,16 @@ function generateReportForMostActiveUsers(mostActiveUser, title, limitResponse) 
 * @return {String} URL of generated report
 */
 function generateReportForOwnerOfScripts(emailOfOwnerOfScript, title) {  
-  var timeStamp, dateTimeAsString, rowContent ;
   
   //Create a new date
-  timeStamp = new Date();
-  dateTimeAsString = timeStamp.toString().slice(0,15);
+  var timeStamp = new Date();
+  var dateTimeAsString = timeStamp.toString().slice(0,15);
   var newSheet = SpreadsheetApp.create(title + " at "+ dateTimeAsString);
   var active  = newSheet.getActiveSheet();
   active.setName("Email of Owner of Scripts");
   
   // add the projects with owners
-  rowContent = ["Project Name", "Owner Email", "GCP Project Id"];
+  var rowContent = ["Project Name", "Owner Email", "GCP Project Id"];
   active.appendRow(rowContent);
   var lastRow = active.getLastRow();
   active.getRange(lastRow, 1, 1, 3).setFontSize(12).setFontWeight("Bold");
