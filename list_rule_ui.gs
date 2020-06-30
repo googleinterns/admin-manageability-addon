@@ -1,5 +1,6 @@
 /**
 * Creates a UI and return the card
+* @param {Object} e is the Event Object which contains information about the context
 * @return {CardService.Card} The card to show to the user
 */
 function listRuleUI(e) {
