@@ -128,6 +128,11 @@ function createRuleUI(e) {
   return card.build();
 }
 
+/**
+* Callback for the Rule project Filter
+* @param {Object} e is the Event Object which contains information about the context
+* @return {CardService.Card} The card to show to the user
+*/
 function ruleProjectFilterCallback(e){
   var card = createRuleUI(e);
   var navigation = CardService.newNavigation()
@@ -137,6 +142,11 @@ function ruleProjectFilterCallback(e){
   return actionResponse.build();
 }
 
+/**
+* Callback function on clicking the create Rule Button and create a trigger for the rule too
+* @param {Object} e is the Event Object which contains information about the context
+* @return {CardService.Card} The card to show to the user
+*/
 function createRule(e) {
   var input = e.formInput;
   var projectId = input.projectId;
@@ -164,8 +174,7 @@ function createRule(e) {
     } else if(input.triggerFrequency == "EVERY_30_DAYS") {
       trigger.timeBased().everyDays(30).create();
     }
-  }
-  else {
+  } else {
     var newSheet = SpreadsheetApp.create("Admin Rules For Apps Scripts");
     var active  = newSheet.getActiveSheet();
     active.setName("Admin Rules");
