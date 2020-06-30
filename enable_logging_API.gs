@@ -1,6 +1,6 @@
 /**
 * Enable the logging API for cloud project
-* @param {Number} projectNumber of the GCP project
+* @param {int} projectNumber of the GCP project
 * @return {Boolean} API is enabled or not
 */
 function enableLogginApisPvt(projectNumber) {
@@ -16,9 +16,7 @@ function enableLogginApisPvt(projectNumber) {
   };
   try {
     var response = UrlFetchApp.fetch(url, options);
-    var json = JSON.parse(response.getContentText());
   } catch (ex) {
-    Logger.log(ex);
     return false;
   }
   return true;
