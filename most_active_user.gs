@@ -1,10 +1,10 @@
 /**
 * Get the users with their number of executions in a cloud project
-* @param {string} projectId of the cloud project
+* @param {string} cloudProjectId of the cloud project
 * @param {Date} fromTime is the date and time from which the executions has to be seen
 * @return {Object} having key as user_key mapped to number of executions
 */
-function getUsersWithProcessId(projectId, fromTime) { 
+function getUsersWithProcessId(cloudProjectId, fromTime) { 
   var pageToken = null, resultData = null;
   var limit = false;
   var processIdsMap = {}, userExecutions={};
@@ -16,10 +16,10 @@ function getUsersWithProcessId(projectId, fromTime) {
     };
     var body = {
       "projectIds": [
-        projectId
+        cloudProjectId
       ],
       "resourceNames": [
-        "projects/"+projectId
+        "projects/"+cloudProjectId
       ],
       "pageToken":pageToken,
       "orderBy": "timestamp desc"
@@ -54,10 +54,10 @@ function getUsersWithProcessId(projectId, fromTime) {
     };
     var body = {
       "projectIds": [
-        projectId
+        cloudProjectId
       ],
       "resourceNames": [
-        "projects/"+projectId
+        "projects/"+cloudProjectId
       ],
       "pageToken":pageToken,
       "orderBy": "timestamp desc"
@@ -92,13 +92,13 @@ function getUsersWithProcessId(projectId, fromTime) {
 * @param {string} specificProjectId is cloud project id of specific project otherwise null
 * @return {Object} Array of user_keys mapped to number of executions of all the users
 */
-function getMostActiveUser(fromTime, projectType, specificProjectId) {  
+function getMostActiveUser(fromTime, projectType, cloudProjectId) {  
   var users={};
   if(projectType == "SPECIFIC_PROJECT") {
-    var projDetails = getProjectNumber(specificProjectId);
+    var projDetails = getProjectDetails(cloudProjectId);
     var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
     if(apiEnabled) {
-      var userExecutions = getUsersWithProcessId(specificProjectId , fromTime);
+      var userExecutions = getUsersWithProcessId(cloudProjectId , fromTime);
       for(j in userExecutions) {
         if(users[j]) {
           users[j] += userExecutions[j];
@@ -107,23 +107,22 @@ function getMostActiveUser(fromTime, projectType, specificProjectId) {
         }
       }
     }
-  }
-  else {
-    var ALL_PROJECTs = listAllCloudProjects();
+  } else {
+    var allProjects = listAllCloudProjects();
     var i, j;
-    for(i=0; i<ALL_PROJECTs.length; i++) {
-      if (ALL_PROJECTs[i].lifecycleState != 'ACTIVE') {
+    for(i=0; i<allProjects.length; i++) {
+      if (allProjects[i].lifecycleState != 'ACTIVE') {
         continue;
       }
-      var projectId = JSON.stringify(ALL_PROJECTs[i].projectId,null,2);
+      var projectId = JSON.stringify(allProjects[i].projectId,null,2);
       if(projectId.indexOf("sys") == 1.0) {
         if(projectType == "CUSTOM_PROJECT") continue;
       } else {
         if(projectType == "SYSTEM_PROJECT") continue;
       }
-      var apiEnabled = enableLogginApisPvt(ALL_PROJECTs[i].projectNumber);
+      var apiEnabled = enableLogginApisPvt(allProjects[i].projectNumber);
       if(!apiEnabled) continue;
-      var userExecutions = getUsersWithProcessId(ALL_PROJECTs[i].projectId , fromTime);
+      var userExecutions = getUsersWithProcessId(allProjects[i].projectId , fromTime);
       for(j in userExecutions) {
         if(users[j]) {
           users[j] += userExecutions[j];
@@ -134,7 +133,7 @@ function getMostActiveUser(fromTime, projectType, specificProjectId) {
     }
   }
   var mostActiveUsers = convertObjectToSortedArrayForMostActiveUsers(users);
-  return (mostActiveUsers);
+  return mostActiveUsers;
 }
 
 
