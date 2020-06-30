@@ -150,30 +150,30 @@ function createUI(e, reportUrlVal) {
 * @return {CardService.Card} The card to show to the user
 */
 function generateReport(e) {
-  var title, projTitle;
+  var timestamp_header, projTitle;
   var toTime = new Date();
-  var fromTime;
   var millisInBetween;
   var input  = e.formInput;
   var projectFilter = input.projectFilter;
   var reportType = input.reportType;
   var limitResponse = input.limitResponse;
-  if(!limitResponse) limitResponse = 1;
-    
+  if(!limitResponse) {
+    limitResponse = 1;
+  }
   if(input.timeFilter == "LAST_HOUR") { 
-    title = "Last Hour";
+    timestamp_header = "Last Hour";
     millisInBetween = 60*60*1000;
   } else if(input.timeFilter == "LAST_6_HOUR") {
-    title = "Last 6 Hours";
+    timestamp_header = "Last 6 Hours";
     millisInBetween = 6*60*60*1000;
   } else if(input.timeFilter == "LAST_24_HOUR") {
-    title = "Last 24 Hours";
+    timestamp_header = "Last 24 Hours";
     millisInBetween = 24*60*60*1000;
   } else if(input.timeFilter == "LAST_7_DAYS") {
-    title = "Last 7 Days";
+    timestamp_header = "Last 7 Days";
     millisInBetween = 7*24*60*60*1000;
   } else {
-    title = "Last 30 Days";
+    timestamp_header = "Last 30 Days";
     millisInBetween = 30*24*60*60*1000;
   }
   
@@ -187,57 +187,52 @@ function generateReport(e) {
     projTitle = "All Projects";
   }
   
-  // variables to get the start time and end time
+  //to get the start time in Etc/GMT format
   var fromTime = new Date(toTime.getTime() - millisInBetween);
-  var toTime = Utilities.formatDate(toTime, 'Etc/GMT', 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
-  var fromTime = Utilities.formatDate(fromTime, 'Etc/GMT', 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
+  var fromTimeFormatGMT = Utilities.formatDate(fromTime, 'Etc/GMT', 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
   
   if(reportType == "mostExecutedScript") {
-    var mostExecutedScript = getMostExecutedScriptFromAllCloudProjects(fromTime , projectFilter, input.projectId);
-    var reportUrl = generateReportForMostExecutedScript(mostExecutedScript, "Report for Most Executed Script of "+ projTitle + " for " + title, limitResponse); 
-  }
-  else if(reportType == "mostActiveUsers") {
-    var mostActiveUser = getMostActiveUser(fromTime , projectFilter, input.projectId);
-    var reportUrl = generateReportForMostActiveUsers(mostActiveUser, "Report for Most Active Users of "+ projTitle + " for " + title, limitResponse);
-  }
-  else {
+    var mostExecutedScript = getMostExecutedScriptFromAllCloudProjects(fromTimeFormatGMT , projectFilter, input.projectId);
+    var reportUrl = generateReportForMostExecutedScript(mostExecutedScript, "Report for Most Executed Script of "+ projTitle + " for " + timestamp_header, limitResponse); 
+  } else if(reportType == "mostActiveUsers") {
+    var mostActiveUser = getMostActiveUser(fromTimeFormatGMT , projectFilter, input.projectId);
+    var reportUrl = generateReportForMostActiveUsers(mostActiveUser, "Report for Most Active Users of "+ projTitle + " for " + timestamp_header, limitResponse);
+  } else {
     var emailOfOwnerOfScript = getOwnersOfAllScripts(projectFilter, input.projectId);
     var reportUrl = generateReportForOwnerOfScripts(emailOfOwnerOfScript, "Report for Owners of Apps Script of "+ projTitle);
   }
   
   // update the card and return it
-    var card = createUI(e, reportUrl);
-    var navigation = CardService.newNavigation()
-      .updateCard(card);
-    var actionResponse = CardService.newActionResponseBuilder()
-      .setNavigation(navigation);
-    return actionResponse.build();
+  var card = createUI(e, reportUrl);
+  var navigation = CardService.newNavigation()
+    .updateCard(card);
+  var actionResponse = CardService.newActionResponseBuilder()
+    .setNavigation(navigation);
+  return actionResponse.build();
 }
 
 /**
 * Callback for the project Filter
 * @return {CardService.Card} The card to show to the user
 */
-function projectFilterCallback(e){
-
+function projectFilterCallback(e) {
   var card = createUI(e);
-    var navigation = CardService.newNavigation()
-      .updateCard(card);
-    var actionResponse = CardService.newActionResponseBuilder()
-      .setNavigation(navigation);
-    return actionResponse.build();
+  var navigation = CardService.newNavigation()
+    .updateCard(card);
+  var actionResponse = CardService.newActionResponseBuilder()
+    .setNavigation(navigation);
+  return actionResponse.build();
 }
 
 /**
 * Callback for the report type Filter
 * @return {CardService.Card} The card to show to the user
 */
-function reportTypeCallback(e){
-
+function reportTypeCallback(e) {
   var card = createUI(e);
-    var navigation = CardService.newNavigation()
-      .updateCard(card);
-    var actionResponse = CardService.newActionResponseBuilder()
-      .setNavigation(navigation);
-    return actionResponse.build();
+  var navigation = CardService.newNavigation()
+    .updateCard(card);
+  var actionResponse = CardService.newActionResponseBuilder()
+    .setNavigation(navigation);
+  return actionResponse.build();
 }
