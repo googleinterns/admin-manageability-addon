@@ -16,8 +16,14 @@ function enableLogginApisPvt(projectNumber) {
   };
   try {
     var response = UrlFetchApp.fetch(url, options);
+    var json = JSON.parse(response.getContentText());
+    var apiEnabled = json.response.service;
+    if(apiEnabled.state == "ENABLED") {
+      return true;
+    } else {
+      return false;
+    }
   } catch (ex) {
     return false;
   }
-  return true;
 }
