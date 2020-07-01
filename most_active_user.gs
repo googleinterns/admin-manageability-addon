@@ -96,14 +96,16 @@ function getMostActiveUser(fromTime, projectType, cloudProjectId) {
   var userIdWithExecutions={};
   if(projectType == "SPECIFIC_PROJECT") {
     var projDetails = getProjectDetails(cloudProjectId);
-    var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
-    if(apiEnabled) {
-      var userExecutions = getUsersWithProcessId(cloudProjectId , fromTime);
-      for(var j in userExecutions) {
-        if(userIdWithExecutions[j]) {
-          userIdWithExecutions[j] += userExecutions[j];
-        } else {
-          userIdWithExecutions[j] = userExecutions[j];
+    if(projDetails != null) {
+      var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
+      if(apiEnabled) {
+        var userExecutions = getUsersWithProcessId(cloudProjectId , fromTime);
+        for(var j in userExecutions) {
+          if(userIdWithExecutions[j]) {
+            userIdWithExecutions[j] += userExecutions[j];
+          } else {
+            userIdWithExecutions[j] = userExecutions[j];
+          }
         }
       }
     }
