@@ -110,14 +110,15 @@ def get_most_active_user(from_time, project_type, token, cloud_project_id):
     most_active_users = []
     if project_type == "SPECIFIC_PROJECT":
         proj_details = get_project_details(cloud_project_id, token)
-        api_enabled = enable_loggin_apis_pvt(proj_details["projectNumber"], token)
-        if api_enabled:
-            user_executions = get_users_with_process_id(cloud_project_id, from_time, token)
-            for j in user_executions:
-                if users.get(j):
-                    users[j] += user_executions[j]
-                else:
-                    users[j] = user_executions[j]
+        if proj_details != None:
+            api_enabled = enable_loggin_apis_pvt(proj_details["projectNumber"], token)
+            if api_enabled:
+                user_executions = get_users_with_process_id(cloud_project_id, from_time, token)
+                for j in user_executions:
+                    if users.get(j):
+                        users[j] += user_executions[j]
+                    else:
+                        users[j] = user_executions[j]
     else:
         all_project = cloud_project(token)
         for project in all_project:
