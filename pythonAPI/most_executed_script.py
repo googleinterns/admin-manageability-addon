@@ -107,17 +107,18 @@ def get_most_executed_script_from_cloud_projects(from_time, project_type, token,
     most_executed_script = []
     if project_type == "SPECIFIC_PROJECT":
         project_details = get_project_details(cloud_project_id, token)
-        api_enabled = enable_loggin_apis_pvt(project_details["projectNumber"], token)
-        if api_enabled:
-            result = get_number_of_execution_of_script(cloud_project_id, from_time, token)
-            for j in result:
-                most_executed_script.append(
-                    {
-                        'key': j,
-                        'value': result[j],
-                        'GCPId': cloud_project_id
-                    }
-                )
+        if project_details != None:
+            api_enabled = enable_loggin_apis_pvt(project_details["projectNumber"], token)
+            if api_enabled:
+                result = get_number_of_execution_of_script(cloud_project_id, from_time, token)
+                for j in result:
+                    most_executed_script.append(
+                        {
+                            'key': j,
+                            'value': result[j],
+                            'GCPId': cloud_project_id
+                        }
+                    )
     else:
         all_project = cloud_project(token)
 
