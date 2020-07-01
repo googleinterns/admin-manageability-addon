@@ -19,17 +19,11 @@ function createUI(e, reportUrlVal) {
   
   // Add the tabs
   var tabSection = CardService.newCardSection();
-  var generateReportAction = CardService.newAction().setFunctionName('createUI');
-  var btn1 = CardService.newTextButton().setText('Insights').setOnClickAction(generateReportAction);
-  var createRuleAction = CardService.newAction().setFunctionName('listRuleUI');
-  var btn2 = CardService.newTextButton().setText('Actions').setOnClickAction(createRuleAction);
-  var buttonSet = CardService.newButtonSet()
-    .addButton(btn1)
-    .addButton(btn2);
+  var buttonSet = buttonSetSection(e);
   tabSection.addWidget(buttonSet);
   
   var getReportAction = CardService.newAction()
-      .setFunctionName('generateReport'); 
+     .setFunctionName('generateReport'); 
   var getReport = CardService.newImageButton()
     .setAltText("Generate Report")
     .setIconUrl("https://www.gstatic.com/images/icons/material/system/1x/check_circle_black_48dp.png")
@@ -44,56 +38,24 @@ function createUI(e, reportUrlVal) {
  
   // Add the time Filter
   var timeFilterSection = CardService.newCardSection().setCollapsible(true).setHeader("<b>TIME FILTER</b>"); 
-  var timeFilter = CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.RADIO_BUTTON)
-    .setFieldName("timeFilter");
-  
-  // add the items according to input
-  if(e.formInput) {
-    timeFilter.addItem("Last Hour", "LAST_HOUR", e.formInput.timeFilter == "LAST_HOUR");
-    timeFilter.addItem("Last 6 Hours", "LAST_6_HOUR", e.formInput.timeFilter == "LAST_6_HOUR");
-    timeFilter.addItem("Last 24 Hours", "LAST_24_HOUR", e.formInput.timeFilter == "LAST_24_HOUR");
-    timeFilter.addItem("Last 7 Days", "LAST_7_DAYS", e.formInput.timeFilter == "LAST_7_DAYS");
-    timeFilter.addItem("Last 30 Days", "LAST_30_DAYS", e.formInput.timeFilter == "LAST_30_DAYS");
-  }
-  else {
-    timeFilter.addItem("Last Hour", "LAST_HOUR", true);
-    timeFilter.addItem("Last 6 Hours", "LAST_6_HOUR", false);
-    timeFilter.addItem("Last 24 Hours", "LAST_24_HOUR", false);
-    timeFilter.addItem("Last 7 Days", "LAST_7_DAYS", false);
-    timeFilter.addItem("Last 30 Days", "LAST_30_DAYS", false);
-  }
+  var timeFilter = getTimeFilter(e);
   timeFilterSection.addWidget(timeFilter);
   card.addSection(timeFilterSection);
   
   // Add the project Filter
   var projectFiltersection = CardService.newCardSection().setHeader("<b>PROJECT FILTER</b>").setCollapsible(true);
-  var projectFilter = CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.RADIO_BUTTON)
-    .setFieldName("projectFilter");
-  
-  // add the items according to input
-  if(e.formInput) {
-    projectFilter.addItem("System Projects", "SYSTEM_PROJECT", e.formInput.projectFilter == "SYSTEM_PROJECT");
-    projectFilter.addItem("Custom Projects", "CUSTOM_PROJECT", e.formInput.projectFilter == "CUSTOM_PROJECT");
-    projectFilter.addItem("Specific Project", "SPECIFIC_PROJECT", e.formInput.projectFilter == "SPECIFIC_PROJECT");
-    projectFilter.addItem("All Projects", "ALL_PROJECT", e.formInput.projectFilter == "ALL_PROJECT");
-  }
-  else {
-    projectFilter.addItem("System Projects", "SYSTEM_PROJECT", true);
-    projectFilter.addItem("Custom Projects", "CUSTOM_PROJECT", false);
-    projectFilter.addItem("Specific Project", "SPECIFIC_PROJECT", false);
-    projectFilter.addItem("All Projects", "ALL_PROJECT", false);
-  }
-  projectFilter.setOnChangeAction(CardService.newAction()
-        .setFunctionName("projectFilterCallback"));
+  var projectFilter = getProjectFilter(e);
+  projectFilter.setOnChangeAction(CardService.newAction().setFunctionName("projectFilterCallback"));
   projectFiltersection.addWidget(projectFilter);
   
-  // Create a new Text field for entering projectId
   if(e.formInput && e.formInput.projectFilter == "SPECIFIC_PROJECT") {
     var projectId = CardService.newTextInput()
     .setFieldName("projectId")
     .setTitle("Enter the Cloud Project Id");
+    
+    if(e.formInput && e.formInput.projectId) {
+      projectId.setValue(e.formInput.projectId);
+    }
     projectFiltersection.addWidget(projectId);
   }
   card.addSection(projectFiltersection);
@@ -145,7 +107,7 @@ function createUI(e, reportUrlVal) {
   section2.addWidget(getReport);
   card.addSection(section2);
   
-   return card.build();
+  return card.build();
 }
 
 /**
