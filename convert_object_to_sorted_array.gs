@@ -7,7 +7,13 @@
 function convertObjectToSortedArray(object, processIdWithGCPId) {
   var array = new Array();
   for(var i in object) {
-    array.push({"key" : i, "value" : object[i], "GCPId" : processIdWithGCPId[i]});
+    array.push(
+      {
+        "key" : i, 
+        "value" : object[i], 
+        "GCPId" : processIdWithGCPId[i]
+      }
+    );
   }
   
   // get the sorted array
@@ -23,7 +29,12 @@ function convertObjectToSortedArray(object, processIdWithGCPId) {
 function convertObjectToSortedArrayForMostActiveUsers(object) {
   var array = new Array();
   for(var i in object) {
-    array.push({"key" : i, "value" : object[i]});
+    array.push(
+      {
+        "key" : i,
+        "value" : object[i]
+      }
+    );
   }
   
   // get the sorted array
