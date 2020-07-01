@@ -21,7 +21,7 @@ function getTitleandTime(timeFilter) {
   }
   var fromTime = new Date(toTime.getTime() - millisInBetween);
   fromTime = Utilities.formatDate(fromTime, 'Etc/GMT', 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');  
-  return {"FromTime" : fromTime, "title" : title};
+  return {"FromTime" : fromTime, "timestampHeader" : title};
 }
 
 // get the time Filter Card Section
