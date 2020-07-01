@@ -1,6 +1,7 @@
 """
 This module enables the logging API for a cloud project
 """
+import json
 import requests
 def enable_loggin_apis_pvt(project_number, token):
     """
@@ -19,8 +20,13 @@ def enable_loggin_apis_pvt(project_number, token):
         "Authorization" : token
     }
     try:
-        requests.post(url, headers=header)
+        response = requests.post(url, headers=header)
+        context_text = response.text
+        context_text = json.loads(context_text)
+        if context_text.get('response') != None:
+            if context_text['response']['service']['state'] == 'ENABLED':
+                return True
+        return False
     except requests.exceptions.RequestException as ex:
         print(ex)
         return False
-    return True
