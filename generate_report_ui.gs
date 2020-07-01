@@ -126,22 +126,10 @@ function generateReport(e) {
   if(!limitResponse) {
     limitResponse = 1;
   }
-  if(input.timeFilter == "LAST_HOUR") { 
-    timestamp_header = "Last Hour";
-    millisInBetween = 60*60*1000;
-  } else if(input.timeFilter == "LAST_6_HOUR") {
-    timestamp_header = "Last 6 Hours";
-    millisInBetween = 6*60*60*1000;
-  } else if(input.timeFilter == "LAST_24_HOUR") {
-    timestamp_header = "Last 24 Hours";
-    millisInBetween = 24*60*60*1000;
-  } else if(input.timeFilter == "LAST_7_DAYS") {
-    timestamp_header = "Last 7 Days";
-    millisInBetween = 7*24*60*60*1000;
-  } else {
-    timestamp_header = "Last 30 Days";
-    millisInBetween = 30*24*60*60*1000;
-  }
+  
+  var titleFromTime = getTitleandTime(input['timeFilter']); 
+  var fromTime = titleFromTime['fromTime'];
+  var timestampHeader = "Last" + titleFromTime['title'];  
   
   if(projectFilter == "SPECIFIC_PROJECT") {
     projTitle = "Specific Project";
