@@ -5,12 +5,12 @@
 * @param {Number} limitResponse is the maximum number of responses in the sheet
 * @return {String} URL of generated report
 */
-function generateReportForMostExecutedScript(mostExecutedScript, timestamp_header, limitResponse) {  
+function generateReportForMostExecutedScript(mostExecutedScript, timestampHeader, limitResponse) {  
 
   //Create a new date
   var timeStamp = new Date();
   var dateTimeAsString = timeStamp.toString().slice(0,15);
-  var newSheet = SpreadsheetApp.create(timestamp_header + " at "+ dateTimeAsString);
+  var newSheet = SpreadsheetApp.create(timestampHeader + " at "+ dateTimeAsString);
   var active  = newSheet.getActiveSheet();
   active.setName("Most Executed Script");
   
@@ -35,12 +35,12 @@ function generateReportForMostExecutedScript(mostExecutedScript, timestamp_heade
 * @param {Number} limitResponse is the maximum number of responses in the sheet
 * @return {String} URL of generated report
 */
-function generateReportForMostActiveUsers(mostActiveUser, timestamp_header, limitResponse) {  
+function generateReportForMostActiveUsers(mostActiveUser, timestampHeader, limitResponse) {  
  
   //Create a new date
   var timeStamp = new Date();
   var dateTimeAsString = timeStamp.toString().slice(0,15);
-  var newSheet = SpreadsheetApp.create(timestamp_header + " at "+ dateTimeAsString);
+  var newSheet = SpreadsheetApp.create(timestampHeader + " at "+ dateTimeAsString);
   var active  = newSheet.getActiveSheet();
   active.setName("Most Active Users");
  
@@ -62,12 +62,12 @@ function generateReportForMostActiveUsers(mostActiveUser, timestamp_header, limi
 * @param {String} title is the heading for the report sheet
 * @return {String} URL of generated report
 */
-function generateReportForOwnerOfScripts(emailOfOwnerOfScript, timestamp_header) {  
+function generateReportForOwnerOfScripts(emailOfOwnerOfScript, timestampHeader) {  
   
   //Create a new date
   var timeStamp = new Date();
   var dateTimeAsString = timeStamp.toString().slice(0,15);
-  var newSheet = SpreadsheetApp.create(timestamp_header + " at "+ dateTimeAsString);
+  var newSheet = SpreadsheetApp.create(timestampHeader + " at "+ dateTimeAsString);
   var active  = newSheet.getActiveSheet();
   active.setName("Email of Owner of Scripts");
   
