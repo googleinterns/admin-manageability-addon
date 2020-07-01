@@ -54,10 +54,12 @@ function getOwnersOfAllScripts(projectType, cloudProjectId) {
   var emailOfOwnerOfScripts = [];
   if(projectType == "SPECIFIC_PROJECT") {
     var projDetails = getProjectDetails(cloudProjectId);
-    var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
-    if(apiEnabled) {
-      var owner = getOriginalNameAndOwnerOfScript(cloudProjectId, projDetails.name);
-      emailOfOwnerOfScripts.push(owner);
+    if(projDetails != null) {
+      var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
+      if(apiEnabled) {
+        var owner = getOriginalNameAndOwnerOfScript(cloudProjectId, projDetails.name);
+        emailOfOwnerOfScripts.push(owner);
+      }
     }
   }
   else {
