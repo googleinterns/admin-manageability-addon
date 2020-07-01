@@ -1,12 +1,13 @@
 /**
 * Get the original name and email of App Script
-* @param {string} projectId of the cloud project
+* @param {string} cloudProjectId of the cloud project
+* @param {string} cloudProjectName display name of the cloud project
 * @return {Object} having two values name, email and projectId
 * name is the name of the cloud project
 * email is the email id of the owner of apps script
 * projectId is the cloud project Id
 */
-function getOriginalNameAndOwnerOfScript(projectId, projectName) {
+function getOriginalNameAndOwnerOfScript(cloudProjectId, cloudProjectName) {
   var pageToken = null;
   var resultData = null;
   do {  
@@ -15,10 +16,10 @@ function getOriginalNameAndOwnerOfScript(projectId, projectName) {
     }; 
     var body = {
       "projectIds": [
-        projectId
+        cloudProjectId
       ],
       "resourceNames": [
-        "projects/"+projectId
+        "projects/"+cloudProjectId
       ],
       "filter": "protoPayload.methodName=CreateBrand",
       "orderBy": "timestamp desc",
@@ -39,28 +40,28 @@ function getOriginalNameAndOwnerOfScript(projectId, projectName) {
   return {
     "email" : resultData.entries[0].protoPayload.request.brand.supportEmail,
     "name" : projectName,
-    "projectId" : projectId
+    "projectId" : cloudProjectId
   };
 }
 
 /**
 * Get the owners of all the cloud projects
 * @param {string} projectType is the types of cloud projects to be checked i.e., CUSTOM_PROJECTs which are user created and SYSTEM_PROJECTs which are system generate
-* @param {string} specificProjectId is cloud project id of specific project otherwise null
+* @param {string} cloudProjectId is cloud project id of specific project otherwise null
 * @return {Object} Array of objects having name, email of owner and projectId of Apps Script
 */
-function getOwnersOfAllScripts(projectType, specificProjectId) {  
+function getOwnersOfAllScripts(projectType, cloudProjectId) {  
+  var emailOfOwnerOfScripts = [];
   if(projectType == "SPECIFIC_PROJECT") {
-    var projDetails = getProjectDetails(specificProjectId);
+    var projDetails = getProjectDetails(cloudProjectId);
     var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
     if(apiEnabled) {
-      var owner = getOriginalNameAndOwnerOfScript(specificProjectId, projDetails.name);
+      var owner = getOriginalNameAndOwnerOfScript(cloudProjectId, projDetails.name);
       emailOfOwnerOfScripts.push(owner);
     }
   }
   else {
     var allProjects = listAllCloudProjects();
-    var emailOfOwnerOfScripts = [];
     var i;
     for(i=0; i<allProjects.length; i++) {
       if (allProjects[i].lifecycleState != 'ACTIVE') {
