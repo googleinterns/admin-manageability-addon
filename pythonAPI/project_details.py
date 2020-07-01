@@ -18,7 +18,11 @@ def get_project_details(cloud_project_id, token):
     header = {
         "Authorization" : token
     }
-    response = requests.get(url, headers=header)
-    context_text = response.text
-    project_details = json.loads(context_text)
-    return project_details
+    try:
+        response = requests.get(url, headers=header)
+        context_text = response.text
+        project_details = json.loads(context_text)
+        return project_details
+    except requests.exceptions.RequestException as ex:
+        print(ex)
+        return None
