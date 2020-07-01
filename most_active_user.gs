@@ -93,23 +93,23 @@ function getUsersWithProcessId(cloudProjectId, fromTime) {
 * @return {Object} Array of user_keys mapped to number of executions of all the users
 */
 function getMostActiveUser(fromTime, projectType, cloudProjectId) {  
-  var users={};
+  var userIdWithExecutions={};
   if(projectType == "SPECIFIC_PROJECT") {
     var projDetails = getProjectDetails(cloudProjectId);
     var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
     if(apiEnabled) {
       var userExecutions = getUsersWithProcessId(cloudProjectId , fromTime);
-      for(j in userExecutions) {
-        if(users[j]) {
-          users[j] += userExecutions[j];
+      for(var j in userExecutions) {
+        if(userIdWithExecutions[j]) {
+          userIdWithExecutions[j] += userExecutions[j];
         } else {
-          users[j] = userExecutions[j];
+          userIdWithExecutions[j] = userExecutions[j];
         }
       }
     }
   } else {
     var allProjects = listAllCloudProjects();
-    var i, j;
+    var i;
     for(i=0; i<allProjects.length; i++) {
       if (allProjects[i].lifecycleState != 'ACTIVE') {
         continue;
@@ -123,16 +123,16 @@ function getMostActiveUser(fromTime, projectType, cloudProjectId) {
       var apiEnabled = enableLogginApisPvt(allProjects[i].projectNumber);
       if(!apiEnabled) continue;
       var userExecutions = getUsersWithProcessId(allProjects[i].projectId , fromTime);
-      for(j in userExecutions) {
-        if(users[j]) {
-          users[j] += userExecutions[j];
+      for(var j in userExecutions) {
+        if(userIdWithExecutions[j]) {
+          userIdWithExecutions[j] += userExecutions[j];
         } else {
-          users[j] = userExecutions[j];
+          userIdWithExecutions[j] = userExecutions[j];
         }
       }
     }
   }
-  var mostActiveUsers = convertObjectToSortedArrayForMostActiveUsers(users);
+  var mostActiveUsers = convertObjectToSortedArrayForMostActiveUsers(userIdWithExecutions);
   return mostActiveUsers;
 }
 
