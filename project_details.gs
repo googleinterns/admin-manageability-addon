@@ -13,7 +13,10 @@ function getProjectDetails(cloudProjectId) {
     'headers': header,
     'muteHttpExceptions': false
   };
-  var response = UrlFetchApp.fetch(url, options);
-  var projectDetails = JSON.parse(response.getContentText());
-  return projectDetails;
-}
+  try {
+    var response = UrlFetchApp.fetch(url, options);
+    var projectDetails = JSON.parse(response.getContentText());
+    return projectDetails;
+  } catch (ex) {
+    return null;
+  }
