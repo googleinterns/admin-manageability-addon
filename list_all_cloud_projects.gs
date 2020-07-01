@@ -14,6 +14,7 @@ function listAllCloudProjects() {
     'muteHttpExceptions': false
   };
   var response = UrlFetchApp.fetch(url, options);
-  var json = response.getContentText();
-  return (JSON.parse(json).projects);
+  var contentText = response.getContentText();
+  var cloudProjects = JSON.parse(contentText).projects;
+  return cloudProjects;
 }
