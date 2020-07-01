@@ -66,10 +66,11 @@ def get_owners_of_all_scripts(project_type, token, cloud_project_id):
     email_of_owner_of_scripts = []
     if project_type == "SPECIFIC_PROEJCT":
         proj_details = get_project_details(cloud_project_id, token)
-        api_enabled = enable_loggin_apis_pvt(proj_details["projectNumber"], token)
-        if api_enabled:
-            owner = get_name_and_owner_of_script(cloud_project_id, proj_details["name"], token)
-            email_of_owner_of_scripts.append(owner)
+        if proj_details != None:
+            api_enabled = enable_loggin_apis_pvt(proj_details["projectNumber"], token)
+            if api_enabled:
+                owner = get_name_and_owner_of_script(cloud_project_id, proj_details["name"], token)
+                email_of_owner_of_scripts.append(owner)
     else:
         all_project = cloud_project(token)
         for project in all_project:
