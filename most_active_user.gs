@@ -89,7 +89,7 @@ function getUsersWithProcessId(cloudProjectId, fromTime) {
 * Get the most active users i.e., who runs maximum executions from all the cloud projects
 * @param {Date} fromTime is the date and time from which executions has to be seen
 * @param {string} projectType is the types of cloud projects to be checked i.e., CUSTOM_PROJECTs which are user created and SYSTEM_PROJECTs which are system generate
-* @param {string} specificProjectId is cloud project id of specific project otherwise null
+* @param {string} cloudProjectId is cloud project id of specific project otherwise null
 * @return {Object} Array of user_keys mapped to number of executions of all the users
 */
 function getMostActiveUser(fromTime, projectType, cloudProjectId) {  
