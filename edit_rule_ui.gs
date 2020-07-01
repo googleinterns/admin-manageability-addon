@@ -36,17 +36,10 @@ function editRule(e){
 function editRuleUI(e){
   var ruleNumber = parseInt(e.parameters.Number);
   var card = CardService.newCardBuilder();
-  var tabSection = CardService.newCardSection();
   
-  var generateReportAction = CardService.newAction().setFunctionName('createUI');
-  var btn1 = CardService.newTextButton()
-    .setText('Insights')
-    .setOnClickAction(generateReportAction);
-  var createRuleAction = CardService.newAction().setFunctionName('listRuleUI');
-  var btn2 = CardService.newTextButton()
-    .setText('Actions')
-    .setOnClickAction(createRuleAction);
-  var buttonSet = CardService.newButtonSet().addButton(btn1).addButton(btn2);
+  // Add the tabs
+  var tabSection = CardService.newCardSection();
+  var buttonSet = buttonSetSection(e);
   tabSection.addWidget(buttonSet);
   
   var updateRuleAction = CardService.newAction()
@@ -67,71 +60,34 @@ function editRuleUI(e){
      .setHeader("<b>RULE TYPE</b>")
      .setCollapsible(true);
   var ruleType = CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.RADIO_BUTTON)
-    .setFieldName("ruleType");
+     .setType(CardService.SelectionInputType.RADIO_BUTTON)
+     .setFieldName("ruleType");
   ruleType.addItem("Maximum Number of Executions", "MAX_NO_OF_EXECS", true);
   ruleTypeSection.addWidget(ruleType);
   card.addSection(ruleTypeSection);
   
-  // Add Trigger Frequency to the Card
   var triggerFrequencySection = CardService.newCardSection()
      .setHeader("<b>TRIGGER FREQUENCY</b>")
      .setCollapsible(true);
-  var triggerFrequency = CardService.newSelectionInput()
-     .setType(CardService.SelectionInputType.RADIO_BUTTON)
-     .setFieldName("triggerFrequency");
-  
-  // add the items according to input
-  if(e.formInput) {
-    triggerFrequency.addItem("Every Hour", "EVERY_HOUR", e.formInput.triggerFrequency == "EVERY_HOUR");
-    triggerFrequency.addItem("Every 6 Hours", "EVERY_6_HOUR", e.formInput.triggerFrequency == "EVERY_6_HOUR");
-    triggerFrequency.addItem("Every 24 Hours", "EVERY_24_HOUR", e.formInput.triggerFrequency == "EVERY_24_HOUR");
-    triggerFrequency.addItem("Every 7 Days", "EVERY_7_DAYS", e.formInput.triggerFrequency == "EVERY_7_DAYS");
-    triggerFrequency.addItem("Every 30 Days", "EVERY_30_DAYS", e.formInput.triggerFrequency == "EVERY_30_DAYS");
-  }
-  else {
-    triggerFrequency.addItem("Every Hour", "EVERY_HOUR", true);
-    triggerFrequency.addItem("Every 6 Hours", "EVERY_6_HOUR", false);
-    triggerFrequency.addItem("Every 24 Hours", "EVERY_24_HOUR", false);
-    triggerFrequency.addItem("Every 7 Days", "EVERY_7_DAYS", false);
-    triggerFrequency.addItem("Every 30 Days", "EVERY_30_DAYS", false);
-  }
+  var triggerFrequency = getTimeFilter(e);
   triggerFrequencySection.addWidget(triggerFrequency);
   card.addSection(triggerFrequencySection);
   
   // Create a dropdown of Project Filters
-  var ruleProjectFilterSection = CardService.newCardSection()
-    .setHeader("<b>PROJECT FILTER</b>")
-    .setCollapsible(true);
-  var ruleProjectFilter = CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.RADIO_BUTTON)
-    .setFieldName("ruleProjectFilter")
-    .setOnChangeAction(CardService.newAction()
-          .setFunctionName("editRuleProjectFilterCallback")
-          .setParameters({"Number" : ruleNumber.toString()}));
-
-  if(e.formInput) {
-    ruleProjectFilter.addItem("System Projects", "SYSTEM_PROJECT", e.formInput.ruleProjectFilter == "SYSTEM_PROJECT");
-    ruleProjectFilter.addItem("Custom Projects", "CUSTOM_PROJECT", e.formInput.ruleProjectFilter == "CUSTOM_PROJECT");
-    ruleProjectFilter.addItem("Specific Project", "SPECIFIC_PROJECT", e.formInput.ruleProjectFilter == "SPECIFIC_PROJECT");
-    ruleProjectFilter.addItem("All Projects", "ALL_PROJECT", e.formInput.ruleProjectFilter == "ALL_PROJECT");
-  }
-  else {
-    ruleProjectFilter.addItem("System Projects", "SYSTEM_PROJECT", true);
-    ruleProjectFilter.addItem("Custom Projects", "CUSTOM_PROJECT", false);
-    ruleProjectFilter.addItem("Specific Project", "SPECIFIC_PROJECT", false);
-    ruleProjectFilter.addItem("All Projects", "ALL_PROJECT", false);
-  }
+  var ruleProjectFilterSection = CardService.newCardSection().setHeader("<b>PROJECT FILTER</b>").setCollapsible(true);
+  var ruleProjectFilter = getProjectFilter(e);
+  ruleProjectFilter.setOnChangeAction(CardService.newAction()
+      .setFunctionName("editruleProjectFilterCallback")
+      .setParameters({"Number" : ruleNumber.toString()}));
   ruleProjectFilterSection.addWidget(ruleProjectFilter);
   
   // Create a new Text field for entering projectId
-  if(e.formInput && e.formInput.ruleProjectFilter == "SPECIFIC_PROJECT") {
+  if(e.formInput && e.formInput.projectFilter == "SPECIFIC_PROJECT") {
     var projectId = CardService.newTextInput()
-      .setFieldName("projectId")
-      .setTitle("Enter the Cloud Project Id");
-    if(e.formInput.projectId) {
-      projectId.setValue(e.formInput.projectId);
-    }
+    .setFieldName("projectId")
+    .setTitle("Enter the Cloud Project Id");
+    
+    if(e.formInput.projectId) projectId.setValue(e.formInput.projectId);
     ruleProjectFilterSection.addWidget(projectId);
   }
   card.addSection(ruleProjectFilterSection);
@@ -155,7 +111,6 @@ function editRuleUI(e){
   createRuleSection.addWidget(createRule);
   card.addSection(createRuleSection);    
   return card.build();
-
 }
 
 /**
@@ -192,8 +147,8 @@ function updateRule(e) {
     var rowContent = [
       [
         input.ruleType, 
-        input.triggerFrequency, 
-        input.ruleProjectFilter, 
+        input.timeFilter, 
+        input.projectFilter, 
         projectId, 
         input.maxLimit, 
         Session.getActiveUser().getEmail()
