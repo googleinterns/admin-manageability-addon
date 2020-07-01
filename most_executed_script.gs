@@ -96,18 +96,19 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
 function getMostExecutedScriptFromAllCloudProjects(fromTime , projectType, cloudProjectId) {
   var processIdWithExecutions = {}, processIdWithGCPId = {};
   if(projectType == "SPECIFIC_PROJECT") {
-    Logger.log("here");
     var projDetails = getProjectDetails(cloudProjectId);
-    var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
-    if(apiEnabled) {
-      var result = getNumberOfExecutionOfScript(cloudProjectId , fromTime);
-      for(var j in result) {
-        if(processIdWithExecutions[j]) {
-          processIdWithExecutions[j] += result[j];
-        } else {
-          processIdWithExecutions[j] = result[j];
+    if(projDetails != null) {
+      var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
+      if(apiEnabled) {
+        var result = getNumberOfExecutionOfScript(cloudProjectId , fromTime);
+        for(var j in result) {
+          if(processIdWithExecutions[j]) {
+            processIdWithExecutions[j] += result[j];
+          } else {
+            processIdWithExecutions[j] = result[j];
+          }
+          processIdWithGCPId[j] = cloudProjectId;
         }
-        processIdWithGCPId[j] = cloudProjectId;
       }
     }
   }
