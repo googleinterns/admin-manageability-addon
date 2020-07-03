@@ -76,7 +76,9 @@ function getOwnersOfAllScripts(projectType, cloudProjectId) {
         if(projectType == "SYSTEM_PROJECT") continue;
       }
       var apiEnabled = enableLogginApisPvt(allProjects[i].projectNumber);
-      if(!apiEnabled) continue;
+      if(!apiEnabled){
+        continue;
+      }
       var owner = getOriginalNameAndOwnerOfScript(allProjects[i].projectId, allProjects[i].name);
       emailOfOwnerOfScripts.push(owner);
     } 
