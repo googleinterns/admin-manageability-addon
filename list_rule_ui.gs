@@ -13,7 +13,7 @@ function listRuleUI(e) {
   tabSection.addWidget(buttonSet);
   
   var createRuleAction = CardService.newAction()
-     .setFunctionName('createRuleUI'); 
+    .setFunctionName('createRuleUI'); 
   var createRule = CardService.newImageButton()
     .setAltText("Update Rule")
     .setIconUrl("https://www.gstatic.com/images/icons/material/system/1x/library_add_black_48dp.png")
@@ -38,21 +38,21 @@ function listRuleUI(e) {
       var ruleData = active.getRange(i, 1, 1, lastCol).getValues()[0];
      
       var editRuleAction = CardService.newAction()
-          .setFunctionName('editRule')
-          .setParameters({"Number" : i.toString()});
+        .setFunctionName('editRule')
+        .setParameters({"Number" : i.toString()});
       
       var editRule = CardService.newImageButton()
-          .setAltText("Edit Rule")
-          .setIconUrl("https://www.gstatic.com/images/icons/material/system/1x/edit_black_48dp.png")
-          .setOnClickAction(editRuleAction);
+        .setAltText("Edit Rule")
+        .setIconUrl("https://www.gstatic.com/images/icons/material/system/1x/edit_black_48dp.png")
+        .setOnClickAction(editRuleAction);
       
       var imageKeyValueRuleHeader = CardService.newKeyValue()
-          .setContent("Rule " + (i-1))
-          .setButton(editRule);
+        .setContent("Rule " + (i-1))
+        .setButton(editRule);
       ruleSection.addWidget(imageKeyValueRuleHeader);
       
       var imageKeyValueRuleData = CardService.newKeyValue()
-          .setTopLabel("Rule Type");
+        .setTopLabel("Rule Type");
       if(ruleData[0] == "MAX_NO_OF_EXECS") {
         imageKeyValueRuleData.setContent("Maximum Number Of Executions");
       }
@@ -74,7 +74,7 @@ function listRuleUI(e) {
       ruleSection.addWidget(imageKeyValueTriggerData);
       
       var imageKeyValueProjectData = CardService.newKeyValue()
-          .setTopLabel("Project Type");
+        .setTopLabel("Project Type");
       if(ruleData[2] == "SYSTEM_PROJECT") {
         imageKeyValueProjectData.setContent("System Projects");
       } else if(ruleData[2] == "CUSTOM_PROJECT") {
@@ -87,12 +87,12 @@ function listRuleUI(e) {
       ruleSection.addWidget(imageKeyValueProjectData);
       
       var imageKeyValueLimitData = CardService.newKeyValue()
-          .setTopLabel("Maximum Limit");
+        .setTopLabel("Maximum Limit");
       imageKeyValueLimitData.setContent(ruleData[4]);
       ruleSection.addWidget(imageKeyValueLimitData);
       
       var imageKeyValueAdminData = CardService.newKeyValue()
-          .setTopLabel("Admin Email");
+        .setTopLabel("Admin Email");
       imageKeyValueAdminData.setContent(ruleData[5]);
       ruleSection.addWidget(imageKeyValueAdminData);
       
