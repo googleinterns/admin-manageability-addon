@@ -48,7 +48,9 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
         processIdsMap[resultData.entries[i].labels["script.googleapis.com/process_id"]] = resultData.entries[i].labels["script.googleapis.com/project_key"]; 
       }
     }  
-    if(limit) break;
+    if(limit) {
+      break;
+    }
     var header = {
       "Authorization": "Bearer "+ ScriptApp.getOAuthToken()
     };
@@ -140,6 +142,5 @@ function getMostExecutedScriptFromAllCloudProjects(fromTime , projectType, cloud
     }
   }
   var mostExecutedScript = convertObjectToSortedArray(processIdWithExecutions, processIdWithGCPId);
-  return mostExecutedScript;
-  
+  return mostExecutedScript; 
 }
