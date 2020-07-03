@@ -154,7 +154,7 @@ function generateReport(e) {
       urlEnd = 'emailOfOwnerOfScript';
       reportTitle = "Report for Owners of Apps Script of "+ projTitle;
     }
-    var token = getTokenFromAPI(fromTime , projectFilter, input["projectId"], urlEnd);
+    var token = getTokenFromAPI(fromTime, projectFilter, input["projectId"], urlEnd);
     var card = refreshScreenUI(e, token, limitResponse, reportTitle, urlEnd);
     var navigation = CardService.newNavigation()
       .updateCard(card);
@@ -163,11 +163,11 @@ function generateReport(e) {
     return actionResponse.build();
   }
   if(reportType == "mostExecutedScript") {
-    var mostExecutedScript = getMostExecutedScriptFromAllCloudProjects(fromTime , projectFilter, input["projectId"]);
+    var mostExecutedScript = getMostExecutedScriptFromAllCloudProjects(fromTime, projectFilter, input["projectId"]);
     var reportUrl = generateReportForMostExecutedScript(mostExecutedScript, "Report for Most Executed Script of "+ projTitle + " for " + timestampHeader, limitResponse); 
   }
   else if(reportType == "mostActiveUsers") {
-    var mostActiveUser = getMostActiveUser(fromTime , projectFilter, input["projectId"]);
+    var mostActiveUser = getMostActiveUser(fromTime, projectFilter, input["projectId"]);
     var reportUrl = generateReportForMostActiveUsers(mostActiveUser, "Report for Most Active Users of "+ projTitle + " for " + timestampHeader, limitResponse);
   }
   else {
