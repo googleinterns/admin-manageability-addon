@@ -19,7 +19,6 @@ def get_users_with_process_id(cloud_project_id, from_time, token):
     Returns:
         Dict: having user_key with the number of executions
     """
-
     page_token = None
     result_data = None
     limit = False
@@ -45,6 +44,8 @@ def get_users_with_process_id(cloud_project_id, from_time, token):
         response = requests.post(url, headers=header, params=body)
         result_data = response.text
         result_data = json.loads(result_data)
+        if result_data.get('nextPageToken') is None:
+            break
         page_token = result_data["nextPageToken"]
         if result_data.get("entries"):
             break
@@ -59,8 +60,8 @@ def get_users_with_process_id(cloud_project_id, from_time, token):
                 if i['labels'].get("script.googleapis.com/process_id"):
                     process_id = i["labels"]["script.googleapis.com/process_id"]
                     user_key = i["labels"]["script.googleapis.com/user_key"]
+                    # print (process_id, user_key)
                     process_ids_map[process_id] = user_key
-
         if limit:
             break
         url = 'https://logging.googleapis.com/v2/entries:list'
@@ -80,20 +81,18 @@ def get_users_with_process_id(cloud_project_id, from_time, token):
         response = requests.post(url, headers=header, params=body)
         result_data = response.text
         result_data = json.loads(result_data)
-        if result_data.get('nextPageToken') == None:
+        if result_data.get('nextPageToken') is None:
             break
         page_token = result_data["nextPageToken"]
-
-        for i in process_ids_map:
-            if process_ids_map[i]:
-                if user_executions.get(process_ids_map[i]):
-                    user_executions[process_ids_map[i]] += 1
-                else:
-                    user_executions[process_ids_map[i]] = 1
-
+    for i in process_ids_map:
+        if process_ids_map[i]:
+            if user_executions.get(process_ids_map[i]):
+                user_executions[process_ids_map[i]] += 1
+            else:
+                user_executions[process_ids_map[i]] = 1
     return user_executions
 
-def get_most_active_user(from_time, project_type, token, cloud_project_id):
+def get_most_active_user(from_time, project_type, token, cloud_project_id, que):
     """
     Function for returning the user_key with number of executions in desceding order
 
@@ -102,9 +101,8 @@ def get_most_active_user(from_time, project_type, token, cloud_project_id):
         project_type (string):Enum project type {SPECIFIC_PROJECT, CUSTOM_PROJECT, SYSTEM_PROJECT, ALL_PROJECT}
         token (str):The authorization token for cloud Project
         cloud_project_id (string):Project Id of the cloud project
+        que (Queue):queue to store the most active users based on number of executions
 
-    Returns:
-        Dict:Array having user_key with the number of executions
     """
     users = {}
     most_active_users = []
@@ -132,7 +130,7 @@ def get_most_active_user(from_time, project_type, token, cloud_project_id):
                 if project_type == "SYSTEM_PROJECT":
                     continue
             api_enabled = enable_loggin_apis_pvt(project["projectNumber"], token)
-            if api_enabled == False:
+            if not api_enabled:
                 continue
             user_executions = get_users_with_process_id(project_id, from_time, token)
             for j in user_executions:
@@ -140,8 +138,7 @@ def get_most_active_user(from_time, project_type, token, cloud_project_id):
                     users[j] += user_executions[j]
                 else:
                     users[j] = user_executions[j]
-
     for i in users:
         most_active_users.append({'key': i, 'value': users[i]})
     most_active_users.sort(key=lambda x: x["value"], reverse=True)
-    return most_active_users
+    que.put(most_active_users)
