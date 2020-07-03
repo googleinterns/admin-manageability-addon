@@ -43,7 +43,7 @@ def get_number_of_execution_of_script(cloud_project_id, from_time, token):
         response = requests.post(url, headers=header, params=body)
         result_data = response.text
         result_data = json.loads(result_data)
-        if result_data.get('nextPageToken') == None:
+        if result_data.get('nextPageToken') is None:
             break
         page_token = result_data["nextPageToken"]
         if result_data.get("entries"):
@@ -79,7 +79,7 @@ def get_number_of_execution_of_script(cloud_project_id, from_time, token):
         response = requests.post(url, headers=header, params=body)
         result_data = response.text
         result_data = json.loads(result_data)
-        if result_data.get('nextPageToken') == None:
+        if result_data.get('nextPageToken') is None:
             break
         page_token = result_data["nextPageToken"]
 
@@ -91,7 +91,7 @@ def get_number_of_execution_of_script(cloud_project_id, from_time, token):
             project_ids_map[process_ids_map[i]] = 1
     return project_ids_map
 
-def get_most_executed_script_from_cloud_projects(from_time, project_type, token, cloud_project_id):
+def get_most_executed_script_from_cloud_projects(from_time, project_type, token, cloud_project_id, que):
     """
     Function for returning the project Id with number of executions in desceding order
 
@@ -100,25 +100,24 @@ def get_most_executed_script_from_cloud_projects(from_time, project_type, token,
         project_type (string):Enum project type {SPECIFIC_PROJECT, CUSTOM_PROJECT, SYSTEM_PROJECT, ALL_PROJECT}
         token (str):The authorization token for cloud Project
         cloud_project_id (string):Project Id of the cloud project
-
-    Returns:
-        Dict:Array having project Id with the number of executions
+        que (Queue):queue to store the most executed script
+    
     """
+
     most_executed_script = []
     if project_type == "SPECIFIC_PROJECT":
         project_details = get_project_details(cloud_project_id, token)
-        if project_details != None:
-            api_enabled = enable_loggin_apis_pvt(project_details["projectNumber"], token)
-            if api_enabled:
-                result = get_number_of_execution_of_script(cloud_project_id, from_time, token)
-                for j in result:
-                    most_executed_script.append(
-                        {
-                            'key': j,
-                            'value': result[j],
-                            'GCPId': cloud_project_id
-                        }
-                    )
+        api_enabled = enable_loggin_apis_pvt(project_details["projectNumber"], token)
+        if api_enabled:
+            result = get_number_of_execution_of_script(cloud_project_id, from_time, token)
+            for j in result:
+                most_executed_script.append(
+                    {
+                        'key': j,
+                        'value': result[j],
+                        'GCPId': cloud_project_id
+                    }
+                )
     else:
         all_project = cloud_project(token)
 
@@ -134,10 +133,10 @@ def get_most_executed_script_from_cloud_projects(from_time, project_type, token,
                 if project_type == "SYSTEM_PROJECT":
                     continue
             api_enabled = enable_loggin_apis_pvt(project["projectNumber"], token)
-            if api_enabled == False:
+            if not api_enabled:
                 continue
             result = get_number_of_execution_of_script(project_id, from_time, token)
             for j in result:
                 most_executed_script.append({'key' : j, 'value' : result[j], 'GCPId' : project_id})
     most_executed_script.sort(key=lambda x: x["value"], reverse=True)
-    return most_executed_script
+    que.put(most_executed_script)
