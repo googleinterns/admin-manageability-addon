@@ -1,4 +1,10 @@
-// get the title and from Time from the timeFilter value
+/**
+* Get the title and timestamp header for the reports
+* @param {string} timeFilter is the ENUM value {LAST_HOUR, LAST_6_HOUR, LAST_24_HOUR, LAST_7_DAYS, LAST_30_DAYS}
+* @return {Object} having two values fromTime and timestampHeader
+* fromTime is the start time for the reports
+* timestampHeader is the title part of time
+*/
 function getTitleandTime(timeFilter) {
   var toTime = new Date();
   var millisInBetween;
@@ -21,10 +27,14 @@ function getTitleandTime(timeFilter) {
   }
   var fromTime = new Date(toTime.getTime() - millisInBetween);
   fromTime = Utilities.formatDate(fromTime, 'Etc/GMT', 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');  
-  return {"FromTime" : fromTime, "timestampHeader" : title};
+  return {"fromTime" : fromTime, "timestampHeader" : title};
 }
 
-// get the time Filter Card Section
+/**
+* Get the time Filter Card Section
+* @param {Object} e is the Event Object which contains information about the context
+* @return {CardService.SelectionInput} time filter card widget
+*/
 function getTimeFilter(e) {
   var timeFilter = CardService.newSelectionInput()
     .setType(CardService.SelectionInputType.RADIO_BUTTON)
@@ -49,7 +59,12 @@ function getTimeFilter(e) {
   return timeFilter;
 }
 
-// get the Project Filter Card Section
+
+/**
+* Get the project Filter Card Section
+* @param {Object} e is the Event Object which contains information about the context
+* @return {CardService.SelectionInput} project filter card widget
+*/
 function getProjectFilter(e) {
   var projectFilter = CardService.newSelectionInput()
     .setType(CardService.SelectionInputType.RADIO_BUTTON)
@@ -72,14 +87,18 @@ function getProjectFilter(e) {
 }
 
 
-// get the header Section Card Buttons
+/**
+* get the header Section Card Buttons
+* @param {Object} e is the Event Object which contains information about the context
+* @return {CardService.ButtomSet} Button Set of the header section of each Card
+*/
 function buttonSetSection(e) {
   var generateReportAction = CardService.newAction().setFunctionName('createUI');
   var btn1 = CardService.newTextButton().setText('Insights').setOnClickAction(generateReportAction);
   var createRuleAction = CardService.newAction().setFunctionName('listRuleUI');
   var btn2 = CardService.newTextButton().setText('Actions').setOnClickAction(createRuleAction);
-  var buttonSet = CardService.newButtonSet()
+  var headerButtonSet = CardService.newButtonSet()
     .addButton(btn1)
     .addButton(btn2);
-  return buttonSet;
+  return headerButtonSet;
 }
