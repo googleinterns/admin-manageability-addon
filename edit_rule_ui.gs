@@ -4,7 +4,6 @@
 * @return {CardService.Card} The card to show to the user
 */
 function editRule(e){
-  
   var ruleNumber = parseInt(e.parameters.Number);
   var files = DriveApp.getFilesByName("Admin Rules For Apps Scripts");
   if (files.hasNext()) {
@@ -57,18 +56,18 @@ function editRuleUI(e){
   
   // Add Rule Type to the Card
   var ruleTypeSection = CardService.newCardSection()
-     .setHeader("<b>RULE TYPE</b>")
-     .setCollapsible(true);
+    .setHeader("<b>RULE TYPE</b>")
+    .setCollapsible(true);
   var ruleType = CardService.newSelectionInput()
-     .setType(CardService.SelectionInputType.RADIO_BUTTON)
-     .setFieldName("ruleType");
+    .setType(CardService.SelectionInputType.RADIO_BUTTON)
+    .setFieldName("ruleType");
   ruleType.addItem("Maximum Number of Executions", "MAX_NO_OF_EXECS", true);
   ruleTypeSection.addWidget(ruleType);
   card.addSection(ruleTypeSection);
   
   var triggerFrequencySection = CardService.newCardSection()
-     .setHeader("<b>TRIGGER FREQUENCY</b>")
-     .setCollapsible(true);
+    .setHeader("<b>TRIGGER FREQUENCY</b>")
+    .setCollapsible(true);
   var triggerFrequency = getTimeFilter(e);
   triggerFrequencySection.addWidget(triggerFrequency);
   card.addSection(triggerFrequencySection);
@@ -77,17 +76,19 @@ function editRuleUI(e){
   var ruleProjectFilterSection = CardService.newCardSection().setHeader("<b>PROJECT FILTER</b>").setCollapsible(true);
   var ruleProjectFilter = getProjectFilter(e);
   ruleProjectFilter.setOnChangeAction(CardService.newAction()
-      .setFunctionName("editruleProjectFilterCallback")
-      .setParameters({"Number" : ruleNumber.toString()}));
+    .setFunctionName("editruleProjectFilterCallback")
+    .setParameters({"Number" : ruleNumber.toString()}));
   ruleProjectFilterSection.addWidget(ruleProjectFilter);
   
   // Create a new Text field for entering projectId
   if(e.formInput && e.formInput.projectFilter == "SPECIFIC_PROJECT") {
     var projectId = CardService.newTextInput()
-    .setFieldName("projectId")
-    .setTitle("Enter the Cloud Project Id");
+      .setFieldName("projectId")
+      .setTitle("Enter the Cloud Project Id");
     
-    if(e.formInput.projectId) projectId.setValue(e.formInput.projectId);
+    if(e.formInput.projectId) {
+      projectId.setValue(e.formInput.projectId);
+    }
     ruleProjectFilterSection.addWidget(projectId);
   }
   card.addSection(ruleProjectFilterSection);
