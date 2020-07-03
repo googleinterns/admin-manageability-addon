@@ -28,8 +28,8 @@ function createRuleUI(e) {
   // Add Rule Type to the Card
   var ruleTypeSection = CardService.newCardSection().setHeader("<b>RULE TYPE</b>").setCollapsible(true);
   var ruleType = CardService.newSelectionInput()
-      .setType(CardService.SelectionInputType.RADIO_BUTTON)
-      .setFieldName("ruleType");
+    .setType(CardService.SelectionInputType.RADIO_BUTTON)
+    .setFieldName("ruleType");
   
   ruleType.addItem("Maximum Number of Executions", "MAX_NO_OF_EXECS", true);
   ruleTypeSection.addWidget(ruleType);
@@ -45,7 +45,7 @@ function createRuleUI(e) {
   var ruleProjectFilterSection = CardService.newCardSection().setHeader("<b>PROJECT FILTER</b>").setCollapsible(true);
   var ruleProjectFilter = getProjectFilter(e);
   ruleProjectFilter.setOnChangeAction(CardService.newAction()
-      .setFunctionName("ruleProjectFilterCallback"));
+    .setFunctionName("ruleProjectFilterCallback"));
   ruleProjectFilterSection.addWidget(ruleProjectFilter);
   
   // Create a new Text field for entering projectId
@@ -59,19 +59,19 @@ function createRuleUI(e) {
   
   var maxLimitSection = CardService.newCardSection().setHeader("<b>PARAMS</b>").setCollapsible(true);
   var maxLimit = CardService.newTextInput()
-      .setFieldName("maxLimit")
-      .setTitle("Enter the Maximum Limit ");
+    .setFieldName("maxLimit")
+    .setTitle("Enter the Maximum Limit ");
     maxLimitSection.addWidget(maxLimit);
   card.addSection(maxLimitSection);
     
   // Create a button for generating report
   var createRuleSection = CardService.newCardSection();
   var createRuleAction = CardService.newAction()
-      .setFunctionName('createRule'); 
+    .setFunctionName('createRule'); 
   var createRule = CardService.newTextButton()
-      .setText('Create Rule')
-      .setOnClickAction(createRuleAction)
-      .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
+    .setText('Create Rule')
+    .setOnClickAction(createRuleAction)
+    .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
    createRuleSection.addWidget(createRule);
    card.addSection(createRuleSection);
    
@@ -86,9 +86,9 @@ function createRuleUI(e) {
 function ruleProjectFilterCallback(e){
   var card = createRuleUI(e);
   var navigation = CardService.newNavigation()
-      .updateCard(card);
+    .updateCard(card);
   var actionResponse = CardService.newActionResponseBuilder()
-      .setNavigation(navigation);
+    .setNavigation(navigation);
   return actionResponse.build();
 }
 
