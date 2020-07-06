@@ -1,7 +1,12 @@
 /**
- * Callback function on clicking the GET REPORT button and create a card for the Consent Screen
- * @return {CardService.Card} The Consent Screen Card to show to the user 
- */
+* Create a card for refresh screen
+* @param {Object} e is the Event Object which contains information about the context
+* @param {string} token is the token generated be API to gey result
+* @param {int} limitResponse is the maximum number of responses
+* @param {string} reportTitle is the title of the report
+* @param {string} url is the ending of the API call
+* @return {CardService.Card} The card to show to the user
+*/
 function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
   var card = CardService.newCardBuilder();
   
