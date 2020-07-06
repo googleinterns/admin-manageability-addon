@@ -25,11 +25,11 @@ function consentScreenUI(e) {
                       .setIconUrl(iconUrl)
                       .setOnClickAction(proceedAction);
 
-  var headerSection = CardService.newKeyValue()
+  var headerKeyValue = CardService.newKeyValue()
                           .setContent('<b>Consent Screen</b>')
                           .setButton(proceedImageButton);
 
-  tabSection.addWidget(imageKeyValue);
+  tabSection.addWidget(headerKeyValue);
   card.addSection(tabSection);
   var section2 = CardService.newCardSection();
 
