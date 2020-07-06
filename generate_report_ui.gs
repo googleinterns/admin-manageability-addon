@@ -19,9 +19,9 @@ function createUI(e, reportUrlVal) {
   tabSection.addWidget(buttonSet);
   
   var iconUrl =
-    'https://www.gstatic.com/images/icons/material/system/1x/check_circle_black_48dp.png';
-  var getReportAction = CardService.newAction()
-  .setFunctionName('consentScreenUI');
+      'https://www.gstatic.com/images/icons/material/system/1x/check_circle_black_48dp.png';
+  var getReportAction = 
+    CardService.newAction().setFunctionName('consentScreenUI');
   var getReport = CardService.newImageButton()
                       .setAltText('Generate Report')
                       .setIconUrl(iconUrl)
@@ -35,17 +35,17 @@ function createUI(e, reportUrlVal) {
   card.addSection(tabSection);
   
   // Add the time Filter
-  var timeFilterSection = CardService.newCardSection()
-                              .setCollapsible(true)
-                              .setHeader('<b>TIME FILTER</b>');
+  var timeFilterSection = 
+    CardService.newCardSection().setCollapsible(true).setHeader(
+      '<b>TIME FILTER</b>');
   var timeFilter = getTimeFilter(e);
   timeFilterSection.addWidget(timeFilter);
   card.addSection(timeFilterSection);
   
   // Add the project Filter
-  var projectFiltersection = CardService.newCardSection()
-                                .setHeader('<b>PROJECT FILTER</b>')
-                                .setCollapsible(true);
+  var projectFiltersection = 
+    CardService.newCardSection().setCollapsible(true).setHeader(
+      '<b>PROJECT FILTER</b>');
   var projectFilter = getProjectFilter(e);
   var projectFilterCallbackAction = 
     CardService.newAction().setFunctionName('projectFilterCallback');
