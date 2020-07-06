@@ -1,6 +1,7 @@
 /**
 * Creates a UI and return the card
-* @param {Object} e is the Event Object which contains information about the context
+* @param {Object} e is the Event Object 
+  which contains information about the context
 * @return {CardService.Card} The card to show to the user
 */
 function createRuleUI(e) {
@@ -92,7 +93,8 @@ function createRuleUI(e) {
 
 /**
 * Callback for the Rule project Filter
-* @param {Object} e is the Event Object which contains information about the context
+* @param {Object} e is the Event Object 
+  which contains information about the context
 * @return {CardService.Card} The card to show to the user
 */
 function ruleProjectFilterCallback(e) {
@@ -104,8 +106,10 @@ function ruleProjectFilterCallback(e) {
 }
 
 /**
-* Callback function on clicking the create Rule Button and create a trigger for the rule too
-* @param {Object} e is the Event Object which contains information about the context
+* Callback function on clicking the create Rule Button and 
+  create a trigger for the rule too
+* @param {Object} e is the Event Object 
+  which contains information about the context
 * @return {CardService.Card} The card to show to the user
 */
 function createRule(e) {
