@@ -1,6 +1,7 @@
 /**
 * Creates a UI and return the card
-* @param {Object} e is the Event Object which contains information about the context
+* @param {Object} e is the Event Object 
+* which contains information about the context
 * @return {CardService.Card} The card to show to the user
 */
 function listRuleUI(e) {
@@ -14,7 +15,8 @@ function listRuleUI(e) {
   
   var createIconUrl = 
       "https://www.gstatic.com/images/icons/material/system/1x/library_add_black_48dp.png";
-  var createRuleAction = CardService.newAction().setFunctionName('createRuleUI'); 
+  var createRuleAction = 
+      CardService.newAction().setFunctionName('createRuleUI'); 
   var createRule = CardService.newImageButton()
                        .setAltText("Update Rule")
                        .setIconUrl(createIconUrl)
@@ -27,10 +29,10 @@ function listRuleUI(e) {
   tabSection.addWidget(imageKeyValue);
   card.addSection(tabSection);
  
-  var files = DriveApp.getFilesByName("Admin Rules For Apps Scripts");
+  var files = DriveApp.getFilesByName(adminRuleFileName);
   if (files.hasNext()) {
     var file = SpreadsheetApp.open(files.next());
-    var active  = file.getSheetByName("Admin Rules"); 
+    var active  = file.getSheetByName(adminRuleSheetName); 
     var lastRow = active.getLastRow();
     var lastCol = active.getLastColumn();
     
