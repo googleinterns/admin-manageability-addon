@@ -19,10 +19,9 @@ function editRule(e) {
       'maxLimit': ruleData[4]
     };
     var card = editRuleUI(e);
-    var navigation =
-      CardService.newNavigation().updateCard(card);
+    var navigation = CardService.newNavigation().updateCard(card);
     var actionResponse =
-      CardService.newActionResponseBuilder().setNavigation(navigation);
+        CardService.newActionResponseBuilder().setNavigation(navigation);
     return actionResponse.build();
   }
 }
@@ -52,10 +51,10 @@ function editRuleUI(e) {
                         .setAltText('Update Rule')
                         .setIconUrl()
                         .setOnClickAction(updateRuleAction);
-  var imageKeyValue =
-    CardService.newKeyValue()
-        .setButton(updateRule)
-        .setContent('<b>Edit Rule ' + (ruleNumber - 1) + '</b>');
+  var imageKeyValue = 
+      CardService.newKeyValue()
+          .setButton(updateRule)
+          .setContent('<b>Edit Rule ' + (ruleNumber - 1) + '</b>');
   tabSection.addWidget(imageKeyValue);
   card.addSection(tabSection);
 
@@ -64,8 +63,8 @@ function editRuleUI(e) {
                             .setHeader('<b>RULE TYPE</b>')
                             .setCollapsible(true);
   var ruleType = CardService.newSelectionInput()
-                      .setType(CardService.SelectionInputType.RADIO_BUTTON)
-                      .setFieldName('ruleType');
+                     .setType(CardService.SelectionInputType.RADIO_BUTTON)
+                     .setFieldName('ruleType');
   ruleType.addItem('Maximum Number of Executions', 'MAX_NO_OF_EXECS', true);
   ruleTypeSection.addWidget(ruleType);
   card.addSection(ruleTypeSection);
@@ -79,11 +78,12 @@ function editRuleUI(e) {
 
   // Create a dropdown of Project Filters
   var ruleProjectFilterSection = CardService.newCardSection()
-                                      .setHeader('<b>PROJECT FILTER</b>')
-                                      .setCollapsible(true);
+                                     .setHeader('<b>PROJECT FILTER</b>')
+                                     .setCollapsible(true);
   var ruleProjectFilter = getProjectFilter(e);
   ruleProjectFilter.setOnChangeAction(
-    CardService.newAction().setFunctionName('editruleProjectFilterCallback')
+    CardService.newAction()
+        .setFunctionName('editruleProjectFilterCallback')
         .setParameters({
           'Number': ruleNumber.toString()
         }));
@@ -130,10 +130,9 @@ function editRuleUI(e) {
  */
 function editRuleProjectFilterCallback(e) {
   var card = editRuleUI(e);
-  var navigation =
-    CardService.newNavigation().updateCard(card);
+  var navigation = CardService.newNavigation().updateCard(card);
   var actionResponse =
-    CardService.newActionResponseBuilder().setNavigation(navigation);
+      CardService.newActionResponseBuilder().setNavigation(navigation);
   return actionResponse.build();
 }
 
@@ -167,9 +166,8 @@ function updateRule(e) {
     active.getRange(lastRow, 1, 1, lastCol).setValues(rowContent);
   }
   var card = listRuleUI(e);
-  var navigation =
-    CardService.newNavigation().updateCard(card);
+  var navigation = CardService.newNavigation().updateCard(card);
   var actionResponse =
-    CardService.newActionResponseBuilder().setNavigation(navigation);
+      CardService.newActionResponseBuilder().setNavigation(navigation);
   return actionResponse.build();
 }
