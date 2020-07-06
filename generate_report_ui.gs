@@ -34,7 +34,7 @@ function createUI(e, reportUrlVal) {
   tabSection.addWidget(imageKeyValue);
   card.addSection(tabSection);
 
-  // Add the time Filter
+  // Add the time Filter.
   var timeFilterSection =
       CardService.newCardSection().setCollapsible(true).setHeader(
           '<b>TIME FILTER</b>');
@@ -42,7 +42,7 @@ function createUI(e, reportUrlVal) {
   timeFilterSection.addWidget(timeFilter);
   card.addSection(timeFilterSection);
 
-  // Add the project Filter
+  // Add the project Filter.
   var projectFiltersection = CardService.newCardSection()
                                  .setHeader('<b>PROJECT FILTER</b>')
                                  .setCollapsible(true);
@@ -72,7 +72,7 @@ function createUI(e, reportUrlVal) {
                        .setType(CardService.SelectionInputType.RADIO_BUTTON)
                        .setFieldName('reportType');
 
-  // add items in the radio button
+  // add items in the radio button.
   if (e.formInput) {
     reportType.addItem(
         'Most Executed Script', 'mostExecutedScript',
@@ -135,8 +135,8 @@ function createUI(e, reportUrlVal) {
 
 /**
  * Callback function on clicking the GET REPORT button and
- * create a card with most executed script and most active users
- * @return {CardService.Card} The card to show to the user
+ * create a card with most executed script and most active users.
+ * @return {CardService.Card} The card to show to the user.
  */
 function generateReport(e) {
   var projTitle;
@@ -218,8 +218,8 @@ function generateReport(e) {
 }
 
 /**
- * Callback for the project Filter
- * @return {CardService.Card} The card to show to the user
+ * Callback for the project Filter.
+ * @return {CardService.Card} The card to show to the user.
  */
 function projectFilterCallback(e) {
   var card = createUI(e);
@@ -230,8 +230,8 @@ function projectFilterCallback(e) {
 }
 
 /**
- * Callback for the report type Filter
- * @return {CardService.Card} The card to show to the user
+ * Callback for the report type Filter.
+ * @return {CardService.Card} The card to show to the user.
  */
 function reportTypeCallback(e) {
   var card = createUI(e);
