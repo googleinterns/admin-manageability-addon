@@ -31,11 +31,11 @@ function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
                                .setIconUrl(iconUrl)
                                .setOnClickAction(getRefreshAction);
   
-  var refreshButton = CardService.newKeyValue()
+  var headerSection = CardService.newKeyValue()
                           .setContent('<b>Execution Time Time Execeeded</b>')
                           .setButton(refreshImageButton);
   
-  tabSection.addWidget(refreshButton);
+  tabSection.addWidget(headerSection);
   card.addSection(tabSection);
   
   var section2 = CardService.newCardSection();
