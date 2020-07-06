@@ -27,9 +27,9 @@ function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
   var iconUrl =
       'https://www.gstatic.com/images/icons/material/system/1x/warning_black_48dp.png';
   var refreshImageButton = CardService.newImageButton()
-                      .setAltText('Most Executed Script')
-                      .setIconUrl(iconUrl)
-                      .setOnClickAction(getRefreshAction);
+                               .setAltText('Most Executed Script')
+                               .setIconUrl(iconUrl)
+                               .setOnClickAction(getRefreshAction);
   
   var imageKeyValue = CardService.newKeyValue()
                           .setContent('<b>Execution Time Execeeded</b>')
@@ -53,9 +53,9 @@ function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
   
   // Create a button to try again to generate report 
   var refreshButton = CardService.newTextButton()
-                      .setText('Refresh')
-                      .setOnClickAction(getRefreshAction)
-                      .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
+                          .setText('Refresh')
+                          .setOnClickAction(getRefreshAction)
+                          .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
   
   var cancelAction = CardService.newAction()
                          .setFunctionName('createUI');
