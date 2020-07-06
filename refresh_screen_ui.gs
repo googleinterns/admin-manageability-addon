@@ -15,7 +15,7 @@ function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
   var headerButtonSet = buttonSetSection(e);
   tabSection.addWidget(headerButtonSet);
   
-  var getReportAction = 
+  var getRefreshAction = 
       CardService.newAction()
           .setFunctionName('getResultFromAPIWithToken')
           .setParameters({
@@ -26,14 +26,14 @@ function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
           });
   var iconUrl =
       'https://www.gstatic.com/images/icons/material/system/1x/warning_black_48dp.png';
-  var getReport = CardService.newImageButton()
+  var refreshImageButton = CardService.newImageButton()
                       .setAltText('Most Executed Script')
                       .setIconUrl(iconUrl)
-                      .setOnClickAction(getReportAction);
+                      .setOnClickAction(getRefreshAction);
   
   var imageKeyValue = CardService.newKeyValue()
                           .setContent('<b>Execution Time Execeeded</b>')
-                          .setButton(getReport);
+                          .setButton(refreshImageButton);
   
   tabSection.addWidget(imageKeyValue);
   card.addSection(tabSection);
@@ -41,20 +41,20 @@ function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
   var section2 = CardService.newCardSection();
   
   // Add the time Filter
-  var timeFilterSection = CardService.newCardSection().setHeader(
-    '<b>Provide Consent</b>'
+  var contentSection = CardService.newCardSection().setHeader(
+    '<b>Execution Time Limit Exceeded</b>'
   );
   var textParagraph = CardService.newTextParagraph().setText(
-    'Drive Add-on will enable the logging API of all projects in the organization'
+    'Drive Add-on has crossed the maximum execution time limit'
   );
-  timeFilterSection.addWidget(textParagraph);
-  card.addSection(timeFilterSection);
+  contentSection.addWidget(textParagraph);
+  card.addSection(contentSection);
   
   
-  // Create a button for generating report 
-  var getReport = CardService.newTextButton()
+  // Create a button to try again to generate report 
+  var refreshButton = CardService.newTextButton()
                       .setText('Refresh')
-                      .setOnClickAction(getReportAction)
+                      .setOnClickAction(getRefreshAction)
                       .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
   
   var cancelAction = CardService.newAction()
@@ -65,7 +65,7 @@ function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
                    .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
   
   var buttonSet = CardService.newButtonSet()
-                      .addButton(getReport)
+                      .addButton(refreshButton)
                       .addButton(cancel);
   
   section2.addWidget(buttonSet);
