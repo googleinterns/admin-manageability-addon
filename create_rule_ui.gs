@@ -67,7 +67,9 @@ function createRuleUI(e) {
   }
   card.addSection(ruleProjectFilterSection);
   
-  var maxLimitSection = CardService.newCardSection().setHeader("<b>PARAMS</b>").setCollapsible(true);
+  var maxLimitSection = CardService.newCardSection()
+                            .setHeader("<b>PARAMS</b>")
+                            .setCollapsible(true);
   var maxLimit = CardService.newTextInput()
                      .setFieldName("maxLimit")
                      .setTitle("Enter the Maximum Limit ");
@@ -155,7 +157,8 @@ function createRule(e) {
     active.appendRow(rowContent);
     var lastRow = active.getLastRow();
     var lastCol = active.getLastColumn();
-    active.getRange(lastRow, 1, 1, lastCol).setFontSize(12).setFontWeight("BOLD");
+    active.getRange(lastRow, 1, 1, lastCol)
+      .setFontSize(12).setFontWeight("BOLD");
     rowContent = [
       input.ruleType,
       input.timeFilter,
