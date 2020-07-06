@@ -27,12 +27,12 @@ function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
   var iconUrl =
       'https://www.gstatic.com/images/icons/material/system/1x/warning_black_48dp.png';
   var refreshImageButton = CardService.newImageButton()
-                               .setAltText('Most Executed Script')
+                               .setAltText('Execution Time Limit Execeeded')
                                .setIconUrl(iconUrl)
                                .setOnClickAction(getRefreshAction);
   
   var imageKeyValue = CardService.newKeyValue()
-                          .setContent('<b>Execution Time Execeeded</b>')
+                          .setContent('<b>Execution Time Time Execeeded</b>')
                           .setButton(refreshImageButton);
   
   tabSection.addWidget(imageKeyValue);
