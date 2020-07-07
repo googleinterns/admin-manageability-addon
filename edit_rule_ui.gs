@@ -6,10 +6,10 @@
  */
 function editRule(e) {
   var ruleNumber = parseInt(e.parameters.Number);
-  var files = DriveApp.getFilesByName('Admin Rules For Apps Scripts');
+  var files = DriveApp.getFilesByName(adminRuleFileName);
   if (files.hasNext()) {
     var file = SpreadsheetApp.open(files.next());
-    var active = file.getSheetByName('Admin Rules');
+    var active = file.getSheetByName(adminRuleSheetName);
     var lastCol = active.getLastColumn();
     var ruleData = active.getRange(ruleNumber, 1, 1, lastCol).getValues()[0];
     e.formInput = {
@@ -45,14 +45,14 @@ function editRuleUI(e) {
   var iconUrl =
     'https://www.gstatic.com/images/icons/material/system/1x/save_black_48dp.png';
   var updateRuleAction = CardService.newAction()
-                            .setFunctionName('updateRule')
-                            .setParameters({
-                              'Number': ruleNumber.toString()
-                            });
+                             .setFunctionName('updateRule')
+                             .setParameters({
+                               'Number': ruleNumber.toString()
+                             });
   var updateRule = CardService.newImageButton()
-                        .setAltText('Update Rule')
-                        .setIconUrl()
-                        .setOnClickAction(updateRuleAction);
+                       .setAltText('Update Rule')
+                       .setIconUrl()
+                       .setOnClickAction(updateRuleAction);
   var imageKeyValue = 
       CardService.newKeyValue()
           .setButton(updateRule)
@@ -85,7 +85,7 @@ function editRuleUI(e) {
   var ruleProjectFilter = getProjectFilter(e);
   ruleProjectFilter.setOnChangeAction(
     CardService.newAction()
-        .setFunctionName('editruleProjectFilterCallback')
+        .setFunctionName('editRuleProjectFilterCallback')
         .setParameters({
           'Number': ruleNumber.toString()
         }));
@@ -151,9 +151,9 @@ function updateRule(e) {
   if (!projectId) {
     projectId = null;
   }
-  var files = DriveApp.getFilesByName('Admin Rules For Apps Scripts');
+  var files = DriveApp.getFilesByName(adminRuleFileName);
   if (files.hasNext()) {
-    var file = SpreadsheetApp.open(files.next());
+    var file = SpreadsheetApp.open(files.next(adminRuleSheetName));
     var active = file.getSheetByName('Admin Rules');
     var lastRow = parseInt(e.parameters.Number);
     var lastCol = active.getLastColumn();
