@@ -118,24 +118,13 @@ function createRule(e) {
   if (!projectId) {
     projectId = null;
   }
-  var files = DriveApp.getFilesByName("Admin Rules For Apps Scripts");
+  var files = DriveApp.getFilesByName(adminRuleFileName);
   if (files.hasNext()) {
     var file = SpreadsheetApp.open(files.next());
-    var active = file.getSheetByName("Admin Rules");
-    var lastRow = active.getLastRow();
-    var lastCol = active.getLastColumn();
-    var rowContent = [
-      input.ruleType,
-      input.timeFilter,
-      input.projectFilter,
-      projectId,
-      input.maxLimit,
-      Session.getActiveUser().getEmail()
-    ];
-    active.appendRow(rowContent);
+    var active = file.getSheetByName(adminRuleSheetName);
   } else {
-    var newSheet = SpreadsheetApp.create("Admin Rules For Apps Scripts");
-    var active = newSheet.getActiveSheet();
+    var newSheet = SpreadsheetApp.create(adminRuleFileName);
+    var active = newSheet.getActiveSheet(adminRuleSheetName);
     active.setName("Admin Rules");
     var rowContent = [
       "Rule Type",
@@ -150,16 +139,16 @@ function createRule(e) {
     var lastCol = active.getLastColumn();
     active.getRange(lastRow, 1, 1, lastCol)
       .setFontSize(12).setFontWeight("BOLD");
-    rowContent = [
-      input.ruleType,
-      input.timeFilter,
-      input.projectFilter,
-      projectId,
-      input.maxLimit,
-      Session.getActiveUser().getEmail()
-    ];
-    active.appendRow(rowContent);
   }
+  var rowContent = [
+    input.ruleType,
+    input.timeFilter,
+    input.projectFilter,
+    projectId,
+    input.maxLimit,
+    Session.getActiveUser().getEmail()
+  ];
+  active.appendRow(rowContent);
   var trigger = ScriptApp.newTrigger("mostExecutedTrigger");
   if (input.timeFilter == "EVERY_HOUR") {
     trigger.timeBased().everyHours(1).create();
