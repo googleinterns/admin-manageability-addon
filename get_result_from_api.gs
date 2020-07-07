@@ -1,5 +1,5 @@
 /**
-* Callback function to get report and create a card with report URL of the report
+* Get report from API and create a card with report URL of the report
 * @param {Object} e is the Event Object 
 * which contains information about the context
 * @return {CardService.Card} The card to show to the user
