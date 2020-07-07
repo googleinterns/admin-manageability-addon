@@ -13,10 +13,10 @@ function consentScreenUI(e) {
   tabSection.addWidget(headerButtonSet);
 
   var proceedAction = CardService.newAction()
-                            .setFunctionName('generateReport')
-                            .setParameters({
-                              'input': JSON.stringify(formInput)
-                            });
+                          .setFunctionName('generateReport')
+                          .setParameters({
+                            'input': JSON.stringify(formInput)
+                          });
   var iconUrl =
     'https://www.gstatic.com/images/icons/material/system/1x/warning_black_48dp.png';
   var proceedImageButton = 
@@ -26,8 +26,8 @@ function consentScreenUI(e) {
           .setOnClickAction(proceedAction);
 
   var headerKeyValue = CardService.newKeyValue()
-                          .setContent('<b>Consent Screen</b>')
-                          .setButton(proceedImageButton);
+                           .setContent('<b>Consent Screen</b>')
+                           .setButton(proceedImageButton);
 
   tabSection.addWidget(headerKeyValue);
   card.addSection(tabSection);
