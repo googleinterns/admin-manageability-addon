@@ -33,7 +33,7 @@ function consentScreenUI(e) {
   card.addSection(tabSection);
   var section2 = CardService.newCardSection();
 
-  // Add the time Filter
+  // add the consent screen content
   var contentSection = CardService.newCardSection().setHeader(
     '<b>Provide Consent</b>'
   );
