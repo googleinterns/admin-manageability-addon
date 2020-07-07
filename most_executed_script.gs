@@ -13,21 +13,22 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
   var limit = false;
   var processIdsMap = {};
   var projectIdsMap = {};
+  var header = {
+    'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
+  };
+  var body = {
+    'projectIds': [
+      cloudProjectId
+    ],
+    'resourceNames': [
+      'projects/' + cloudProjectId
+    ],
+    'pageToken': pageToken,
+    'orderBy': "timestamp desc"
+  };
+  var url = 'https://logging.googleapis.com/v2/entries:list';
   // loop to get the first page which has enteries in it
   do {
-    var header = {
-      'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
-    };
-    var body = {
-      'projectIds': [
-        cloudProjectId
-      ],
-      'resourceNames': [
-        'projects/' + cloudProjectId
-      ],
-      'pageToken': pageToken,
-      'orderBy': "timestamp desc"
-    };
     var options = {
       'method': 'post',
       'contentType': 'application/json',
@@ -35,7 +36,6 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
       'payload': JSON.stringify(body),
       'muteHttpExceptions': false
     };
-    var url = 'https://logging.googleapis.com/v2/entries:list';
     var response = UrlFetchApp.fetch(url, options);
     var json = response.getContentText();
     resultData = JSON.parse(json);
@@ -49,7 +49,6 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
         limit = true;
         break;
       }
-
       if (resultData.entries[i].labels) {
         var processId =
           resultData.entries[i].labels['script.googleapis.com/process_id'];
@@ -61,19 +60,7 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
     if (limit) {
       break;
     }
-    var header = {
-      'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
-    };
-    var body = {
-      'projectIds': [
-        cloudProjectId
-      ],
-      'resourceNames': [
-        'projects/' + cloudProjectId
-      ],
-      'pageToken': pageToken,
-      'orderBy': 'timestamp desc'
-    };
+    // this calls to the API are to fetch all the pages which have enteries
     var options = {
       'method': 'post',
       'contentType': 'application/json',
@@ -81,7 +68,6 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
       'payload': JSON.stringify(body),
       'muteHttpExceptions': false
     };
-    var url = 'https://logging.googleapis.com/v2/entries:list';
     var response = UrlFetchApp.fetch(url, options);
     var json = response.getContentText();
     resultData = JSON.parse(json);
@@ -140,6 +126,7 @@ function getMostExecutedScriptFromAllCloudProjects(
       if (allProjects[i].lifecycleState != 'ACTIVE') {
         continue;
       }
+      // This is to check whether the project is the system project or not
       if (JSON.stringify(allProjects[i].projectId, null, 2).indexOf("sys") ==
         1.0) {
         if (projectType == "CUSTOM_PROJECT") continue;
