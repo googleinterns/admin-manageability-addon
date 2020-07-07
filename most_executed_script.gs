@@ -140,15 +140,16 @@ function getMostExecutedScriptFromAllCloudProjects(
       if (allProjects[i].lifecycleState != 'ACTIVE') {
         continue;
       }
-      if (JSON.stringify(allProjects[i].projectId, null, 2).indexOf("sys") ==1.0) {
+      if (JSON.stringify(allProjects[i].projectId, null, 2).indexOf("sys") ==
+        1.0) {
         if (projectType == "CUSTOM_PROJECT") continue;
       } else {
         if (projectType == "SYSTEM_PROJECT") continue;
       }
       var apiEnabled = enableLogginApisPvt(allProjects[i].projectNumber);
       if (!apiEnabled) continue;
-      var result = 
-          getNumberOfExecutionOfScript(allProjects[i].projectId, fromTime);
+      var result =
+        getNumberOfExecutionOfScript(allProjects[i].projectId, fromTime);
       for (var j in result) {
         if (processIdWithExecutions[j]) {
           processIdWithExecutions[j] += result[j];
