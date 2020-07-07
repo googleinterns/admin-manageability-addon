@@ -4,13 +4,13 @@
 * @return {Boolean} API is enabled or not
 */
 function enableLogginApisPvt(projectNumber) {
-  var name = "projects/" + projectNumber + "/services/logging.googleapis.com";
-  var url = "https://serviceusage.googleapis.com/v1/" + name + ":enable";
+  var name = 'projects/' + projectNumber + '/services/logging.googleapis.com';
+  var url = 'https://serviceusage.googleapis.com/v1/' + name + ':enable';
   var header = {
-    "Authorization" : "Bearer " + ScriptApp.getOAuthToken(),
+    'Authorization': 'Bearer ' + ScriptApp.getOAuthToken(),
   };
   var options = {
-    'method' : 'post',
+    'method': 'post',
     'headers': header,
     'muteHttpExceptions': false,
   };
@@ -18,7 +18,7 @@ function enableLogginApisPvt(projectNumber) {
     var response = UrlFetchApp.fetch(url, options);
     var json = JSON.parse(response.getContentText());
     var apiEnabled = json.response.service;
-    if(apiEnabled.state == "ENABLED") {
+    if (apiEnabled.state == "ENABLED") {
       return true;
     } else {
       return false;
