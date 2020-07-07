@@ -1,8 +1,8 @@
 /**
-* Enable the logging API for cloud project
-* @param {int} projectNumber of the GCP project
-* @return {Boolean} API is enabled or not
-*/
+ * Enable the logging API for cloud project
+ * @param {int} projectNumber of the GCP project
+ * @return {Boolean} API is enabled or not
+ */
 function enableLogginApisPvt(projectNumber) {
   var name = 'projects/' + projectNumber + '/services/logging.googleapis.com';
   var url = 'https://serviceusage.googleapis.com/v1/' + name + ':enable';
