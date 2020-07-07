@@ -4,12 +4,12 @@
 * projectId, projectNumber, state, parent's projectId etc.
 */
 function listAllCloudProjects() {
-  var url = "https://cloudresourcemanager.googleapis.com/v1/projects";
+  var url = 'https://cloudresourcemanager.googleapis.com/v1/projects';
   var header = {
-    "Authorization" : "Bearer " + ScriptApp.getOAuthToken(),
+    'Authorization': 'Bearer ' + ScriptApp.getOAuthToken(),
   };
   var options = {
-    'method' : 'get',
+    'method': 'get',
     'contentType': 'application/json',
     'headers': header,
     'muteHttpExceptions': false
