@@ -18,23 +18,25 @@ function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
 
   var getRefreshAction =
     CardService.newAction()
-    .setFunctionName('getResultFromAPIWithToken')
-    .setParameters({
-      'token': token,
-      'limitResponse': limitResponse.toString(),
-      'reportTitle': reportTitle,
-      'url': url
-    });
+        .setFunctionName('getResultFromAPIWithToken')
+        .setParameters({
+          'token': token,
+          'limitResponse': limitResponse.toString(),
+          'reportTitle': reportTitle,
+          'url': url
+        });
   var iconUrl =
     'https://www.gstatic.com/images/icons/material/system/1x/warning_black_48dp.png';
-  var refreshImageButton = CardService.newImageButton()
-    .setAltText('Execution Time Limit Execeeded')
-    .setIconUrl(iconUrl)
-    .setOnClickAction(getRefreshAction);
+  var refreshImageButton = 
+      CardService.newImageButton()
+          .setAltText('Execution Time Limit Execeeded')
+          .setIconUrl(iconUrl)
+          .setOnClickAction(getRefreshAction);
 
-  var headerSection = CardService.newKeyValue()
-    .setContent('<b>Execution Time Time Execeeded</b>')
-    .setButton(refreshImageButton);
+  var headerSection = 
+      CardService.newKeyValue()
+          .setContent('<b>Execution Time Time Execeeded</b>')
+          .setButton(refreshImageButton);
 
   tabSection.addWidget(headerSection);
   card.addSection(tabSection);
@@ -55,19 +57,18 @@ function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
   // Create a button to try again to generate report 
   var refreshButton =
     CardService.newTextButton().setText('Refresh')
-    .setOnClickAction(getRefreshAction)
-    .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
-
-  var cancelAction = CardService.newAction()
-    .setFunctionName('createUI');
+        .setOnClickAction(getRefreshAction)
+        .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
+  var cancelAction = 
+      CardService.newAction().setFunctionName('createUI');
   var cancel =
     CardService.newTextButton().setText('Cancel')
-    .setOnClickAction(cancelAction)
-    .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
+        .setOnClickAction(cancelAction)
+        .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
 
   var buttonSet = CardService.newButtonSet()
-    .addButton(refreshButton)
-    .addButton(cancel);
+                      .addButton(refreshButton)
+                      .addButton(cancel);
 
   section2.addWidget(buttonSet);
   card.addSection(section2);
