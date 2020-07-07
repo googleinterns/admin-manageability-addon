@@ -1,11 +1,10 @@
 """
 This module returns the email of owner of Apps Script
 """
-import json
-import requests
 from all_cloud_projects import cloud_project
 from enable_logging_api import enable_loggin_apis_pvt
 from project_details import get_project_details
+from helper import get_first_page_of_logs
 
 def get_name_and_owner_of_script(cloud_project_id, project_name, token):
     """
@@ -19,38 +18,15 @@ def get_name_and_owner_of_script(cloud_project_id, project_name, token):
     Returns:
         Dict: Object having email of owner, name and cloud project Id
     """
-    page_token = None
-    result_data = None
-    while True:
-        url = "https://logging.googleapis.com/v2/entries:list"
-        header = {
-            "Authorization": token
-        }
-        body = {
-            "projectIds": [
-                cloud_project_id
-            ],
-            "resourceNames": [
-                "projects/"+cloud_project_id
-            ],
-            "filter": "protoPayload.methodName=CreateBrand",
-            "orderBy": "timestamp desc",
-            "pageToken": page_token
-        }
-        response = requests.post(url, headers=header, params=body)
-        result_data = response.text
-        result_data = json.loads(result_data)
-        if result_data.get("nextPageToken") is None:
-            break
-        page_token = result_data["nextPageToken"]
-        if result_data.get("entries") != None:
-            break
+    first_page = get_first_page_of_logs(cloud_project_id, token, "protoPayload.methodName=CreateBrand")
+    result_data = first_page['result_data']
     entry = result_data['entries'][0]
     return {
         "email": entry['protoPayload']['request']['brand']['supportEmail'],
         "name": project_name,
         "projectId": cloud_project_id
     }
+
 
 def get_owners_of_all_scripts(project_type, token, cloud_project_id, que):
     """
