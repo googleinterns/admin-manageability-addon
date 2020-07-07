@@ -60,7 +60,7 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
     if (limit) {
       break;
     }
-    // this calls to the API are to fetch all the pages which have enteries
+    // these calls to the API are to fetch all the pages which have enteries
     var options = {
       'method': 'post',
       'contentType': 'application/json',
