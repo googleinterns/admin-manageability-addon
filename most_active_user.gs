@@ -6,11 +6,14 @@
  * @return {Object} having key as user_key mapped to number of executions
  */
 function getUsersWithProcessId(cloudProjectId, fromTime) {
-  var pageToken = null;
-  var resultData = null;
   var limit = false;
   var processIdsMap = {};
   var userExecutions = {};
+  
+  var firstPage = getFirstPageOfLogs(cloudProjectId);
+  var pageToken = firstPage['nextPageToken'];
+  var resultData = firstPage['resultData'];
+  
   var header = {
     'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
   };
@@ -25,20 +28,6 @@ function getUsersWithProcessId(cloudProjectId, fromTime) {
     'orderBy': 'timestamp desc'
   };
   var url = 'https://logging.googleapis.com/v2/entries:list';
-  // loop to get the first page which has enteries in it
-  do {
-    var options = {
-      'method': 'post',
-      'contentType': 'application/json',
-      'headers': header,
-      'payload': JSON.stringify(body),
-      'muteHttpExceptions': false
-    };
-    var response = UrlFetchApp.fetch(url, options);
-    var json = response.getContentText();
-    resultData = JSON.parse(json);
-    pageToken = resultData.nextPageToken;
-  } while (!resultData.entries);
 
   // loop to go over all the enteries and map the processId with the userId
   while (resultData.entries) {
