@@ -1,6 +1,7 @@
 /**
 * Get the title and timestamp header for the reports
-* @param {string} timeFilter is the ENUM value {LAST_HOUR, LAST_6_HOUR, LAST_24_HOUR, LAST_7_DAYS, LAST_30_DAYS}
+* @param {string} timeFilter is the ENUM value 
+* {LAST_HOUR, LAST_6_HOUR, LAST_24_HOUR, LAST_7_DAYS, LAST_30_DAYS}
 * @return {Object} having two values fromTime and timestampHeader
 * fromTime is the start time for the reports
 * timestampHeader is the title part of time
@@ -26,27 +27,37 @@ function getTitleandTime(timeFilter) {
     timestampHeader = "30 days";
   }
   var fromTime = new Date(toTime.getTime() - millisInBetween);
-  fromTime = Utilities.formatDate(fromTime, 'Etc/GMT', 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');  
+  fromTime = Utilities.formatDate(
+    fromTime, 'Etc/GMT', 
+    'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\''
+  );  
   return {"fromTime" : fromTime, "timestampHeader" : title};
 }
 
 /**
 * Get the time Filter Card Section
-* @param {Object} e is the Event Object which contains information about the context
+* @param {Object} e is the Event Object 
+* which contains information about the context
 * @return {CardService.SelectionInput} time filter card widget
 */
 function getTimeFilter(e) {
-  var timeFilter = CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.RADIO_BUTTON)
-    .setFieldName("timeFilter");
+  var timeFilter = 
+      CardService.newSelectionInput()
+          .setType(CardService.SelectionInputType.RADIO_BUTTON)
+          .setFieldName("timeFilter");
   
   // add the items according to input
   if(e.formInput) {
-    timeFilter.addItem("Last Hour", "LAST_HOUR", e.formInput.timeFilter == "LAST_HOUR");
-    timeFilter.addItem("Last 6 Hours", "LAST_6_HOUR", e.formInput.timeFilter == "LAST_6_HOUR");
-    timeFilter.addItem("Last 24 Hours", "LAST_24_HOUR", e.formInput.timeFilter == "LAST_24_HOUR");
-    timeFilter.addItem("Last 7 Days", "LAST_7_DAYS", e.formInput.timeFilter == "LAST_7_DAYS");
-    timeFilter.addItem("Last 30 Days", "LAST_30_DAYS", e.formInput.timeFilter == "LAST_30_DAYS");
+    timeFilter.addItem("Last Hour", "LAST_HOUR", 
+                       e.formInput.timeFilter == "LAST_HOUR");
+    timeFilter.addItem("Last 6 Hours", "LAST_6_HOUR", 
+                       e.formInput.timeFilter == "LAST_6_HOUR");
+    timeFilter.addItem("Last 24 Hours", "LAST_24_HOUR", 
+                       e.formInput.timeFilter == "LAST_24_HOUR");
+    timeFilter.addItem("Last 7 Days", "LAST_7_DAYS", 
+                       e.formInput.timeFilter == "LAST_7_DAYS");
+    timeFilter.addItem("Last 30 Days", "LAST_30_DAYS", 
+                       e.formInput.timeFilter == "LAST_30_DAYS");
   }
   else {
     timeFilter.addItem("Last Hour", "LAST_HOUR", true);
@@ -62,20 +73,26 @@ function getTimeFilter(e) {
 
 /**
 * Get the project Filter Card Section
-* @param {Object} e is the Event Object which contains information about the context
+* @param {Object} e is the Event Object 
+* which contains information about the context
 * @return {CardService.SelectionInput} project filter card widget
 */
 function getProjectFilter(e) {
-  var projectFilter = CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.RADIO_BUTTON)
-    .setFieldName("projectFilter");
+  var projectFilter = 
+      CardService.newSelectionInput()
+          .setType(CardService.SelectionInputType.RADIO_BUTTON)
+          .setFieldName("projectFilter");
   
   // add the items according to input
   if(e.formInput) {
-    projectFilter.addItem("System Projects", "SYSTEM_PROJECT", e.formInput.projectFilter == "SYSTEM_PROJECT");
-    projectFilter.addItem("Custom Projects", "CUSTOM_PROJECT", e.formInput.projectFilter == "CUSTOM_PROJECT");
-    projectFilter.addItem("Specific Project", "SPECIFIC_PROJECT", e.formInput.projectFilter == "SPECIFIC_PROJECT");
-    projectFilter.addItem("All Projects", "ALL_PROJECT", e.formInput.projectFilter == "ALL_PROJECT");
+    projectFilter.addItem("System Projects", "SYSTEM_PROJECT", 
+                          e.formInput.projectFilter == "SYSTEM_PROJECT");
+    projectFilter.addItem("Custom Projects", "CUSTOM_PROJECT", 
+                          e.formInput.projectFilter == "CUSTOM_PROJECT");
+    projectFilter.addItem("Specific Project", "SPECIFIC_PROJECT", 
+                          e.formInput.projectFilter == "SPECIFIC_PROJECT");
+    projectFilter.addItem("All Projects", "ALL_PROJECT", 
+                          e.formInput.projectFilter == "ALL_PROJECT");
   }
   else {
     projectFilter.addItem("System Projects", "SYSTEM_PROJECT", true);
@@ -89,16 +106,23 @@ function getProjectFilter(e) {
 
 /**
 * get the header Section Card Buttons
-* @param {Object} e is the Event Object which contains information about the context
+* @param {Object} e is the Event Object 
+* which contains information about the context
 * @return {CardService.ButtomSet} Button Set of the header section of each Card
 */
 function buttonSetSection(e) {
-  var generateReportAction = CardService.newAction().setFunctionName('createUI');
-  var btn1 = CardService.newTextButton().setText('Insights').setOnClickAction(generateReportAction);
-  var createRuleAction = CardService.newAction().setFunctionName('listRuleUI');
-  var btn2 = CardService.newTextButton().setText('Actions').setOnClickAction(createRuleAction);
+  var generateReportAction = 
+      CardService.newAction().setFunctionName('createUI');
+  var btn1 = 
+      CardService.newTextButton().setText('Insights')
+          .setOnClickAction(generateReportAction);
+  var createRuleAction = 
+      CardService.newAction().setFunctionName('listRuleUI');
+  var btn2 = 
+      CardService.newTextButton().setText('Actions')
+          .setOnClickAction(createRuleAction);
   var headerButtonSet = CardService.newButtonSet()
-    .addButton(btn1)
-    .addButton(btn2);
+                            .addButton(btn1)
+                            .addButton(btn2);
   return headerButtonSet;
 }
