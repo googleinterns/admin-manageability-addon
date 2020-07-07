@@ -52,17 +52,17 @@ function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
   
   
   // Create a button to try again to generate report 
-  var refreshButton = CardService.newTextButton()
-                          .setText('Refresh')
-                          .setOnClickAction(getRefreshAction)
-                          .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
+  var refreshButton = 
+      CardService.newTextButton().setText('Refresh')
+          .setOnClickAction(getRefreshAction)
+          .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
   
   var cancelAction = CardService.newAction()
                          .setFunctionName('createUI');
-  var cancel = CardService.newTextButton()
-                   .setText('Cancel')
-                   .setOnClickAction(cancelAction)
-                   .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
+  var cancel =
+      CardService.newTextButton().setText('Cancel')
+          .setOnClickAction(cancelAction)
+          .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
   
   var buttonSet = CardService.newButtonSet()
                       .addButton(refreshButton)
