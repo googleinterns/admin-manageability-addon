@@ -1,12 +1,12 @@
 /**
-* Get the token from the API for getting the result later
-* @param {Date} fromTime is the start time of the report to be generated
-* @param {String} projectType is the enum having values 
-* {SYSTEM_PROJECT, ALL_PROJECT, SPECIFIC_PROJECT, CUSTOM_PROJECT}
-* @param {String} projectId is the cloud project id
-* @param {String} urlEnd is the end of the API call
-* @return {CardService.Card} The card to show to the user
-*/
+ * Get the token from the API for getting the result later
+ * @param {Date} fromTime is the start time of the report to be generated
+ * @param {String} projectType is the enum having values 
+ *    {SYSTEM_PROJECT, ALL_PROJECT, SPECIFIC_PROJECT, CUSTOM_PROJECT}
+ * @param {String} projectId is the cloud project id
+ * @param {String} urlEnd is the end of the API call
+ * @return {CardService.Card} The card to show to the user
+ */
 function getTokenFromAPI(fromTime, projectType, projectId, urlEnd) {
   var header = {
     'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
