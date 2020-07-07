@@ -1,32 +1,32 @@
 /**
-* Get the users with their number of executions in a cloud project
-* @param {string} cloudProjectId of the cloud project
-* @param {Date} fromTime is the date and time from 
-* which the executions has to be seen
-* @return {Object} having key as user_key mapped to number of executions
-*/
+ * Get the users with their number of executions in a cloud project
+ * @param {string} cloudProjectId of the cloud project
+ * @param {Date} fromTime is the date and time from 
+ *    which the executions has to be seen
+ * @return {Object} having key as user_key mapped to number of executions
+ */
 function getUsersWithProcessId(cloudProjectId, fromTime) {
   var pageToken = null;
   var resultData = null;
   var limit = false;
   var processIdsMap = {};
   var userExecutions = {};
-
+  var header = {
+    'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
+  };
+  var body = {
+    'projectIds': [
+      cloudProjectId
+    ],
+    'resourceNames': [
+      'projects/' + cloudProjectId
+    ],
+    'pageToken': pageToken,
+    'orderBy': 'timestamp desc'
+  };
+  var url = 'https://logging.googleapis.com/v2/entries:list';
   // loop to get the first page which has enteries in it
   do {
-    var header = {
-      'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
-    };
-    var body = {
-      'projectIds': [
-        cloudProjectId
-      ],
-      'resourceNames': [
-        'projects/' + cloudProjectId
-      ],
-      'pageToken': pageToken,
-      'orderBy': 'timestamp desc'
-    };
     var options = {
       'method': 'post',
       'contentType': 'application/json',
@@ -34,7 +34,6 @@ function getUsersWithProcessId(cloudProjectId, fromTime) {
       'payload': JSON.stringify(body),
       'muteHttpExceptions': false
     };
-    var url = 'https://logging.googleapis.com/v2/entries:list';
     var response = UrlFetchApp.fetch(url, options);
     var json = response.getContentText();
     resultData = JSON.parse(json);
@@ -59,19 +58,7 @@ function getUsersWithProcessId(cloudProjectId, fromTime) {
     if (limit) {
       break;
     }
-    var header = {
-      'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
-    };
-    var body = {
-      'projectIds': [
-        cloudProjectId
-      ],
-      'resourceNames': [
-        'projects/' + cloudProjectId
-      ],
-      'pageToken': pageToken,
-      'orderBy': 'timestamp desc'
-    };
+    // these calls to the API are to fetch all the pages which have enteries
     var options = {
       'method': 'post',
       'contentType': 'application/json',
@@ -79,7 +66,6 @@ function getUsersWithProcessId(cloudProjectId, fromTime) {
       'payload': JSON.stringify(body),
       'muteHttpExceptions': false
     };
-    var url = 'https://logging.googleapis.com/v2/entries:list';
     var response = UrlFetchApp.fetch(url, options);
     var json = response.getContentText();
     resultData = JSON.parse(json);
@@ -100,13 +86,13 @@ function getUsersWithProcessId(cloudProjectId, fromTime) {
 }
 
 /**
-* Get the most active users i.e., who runs maximum executions from all the cloud projects
-* @param {Date} fromTime is the date and time from which executions has to be seen
-* @param {String} projectType is the enum having values 
-* {SYSTEM_PROJECT, ALL_PROJECT, SPECIFIC_PROJECT, CUSTOM_PROJECT}
-* @param {string} cloudProjectId is cloud project id of specific project otherwise null
-* @return {Object} Array of user_keys mapped to number of executions of all the users
-*/
+ * Get the most active users i.e., who runs maximum executions from all the cloud projects
+ * @param {Date} fromTime is the date and time from which executions has to be seen
+ * @param {String} projectType is the enum having values 
+ *    {SYSTEM_PROJECT, ALL_PROJECT, SPECIFIC_PROJECT, CUSTOM_PROJECT}
+ * @param {string} cloudProjectId is cloud project id of specific project otherwise null
+ * @return {Object} Array of user_keys mapped to number of executions of all the users
+ */
 function getMostActiveUser(fromTime, projectType, cloudProjectId) {
   var userIdWithExecutions = {};
   if (projectType == "SPECIFIC_PROJECT") {
@@ -132,6 +118,7 @@ function getMostActiveUser(fromTime, projectType, cloudProjectId) {
         continue;
       }
       var projectId = JSON.stringify(allProjects[i].projectId, null, 2);
+       // go through all the processIds and count the different projectIds
       if (projectId.indexOf("sys") == 1.0) {
         if (projectType == "CUSTOM_PROJECT") continue;
       } else {
@@ -150,7 +137,7 @@ function getMostActiveUser(fromTime, projectType, cloudProjectId) {
       }
     }
   }
-  var mostActiveUsers = 
-      convertObjectToSortedArrayForMostActiveUsers(userIdWithExecutions);
+  var mostActiveUsers =
+    convertObjectToSortedArrayForMostActiveUsers(userIdWithExecutions);
   return mostActiveUsers;
 }
