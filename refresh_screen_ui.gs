@@ -35,7 +35,7 @@ function refreshScreenUI(e, token, limitResponse, reportTitle, url) {
 
   var headerSection = 
       CardService.newKeyValue()
-          .setContent('<b>Execution Time Time Execeeded</b>')
+          .setContent('<b>Execution Time Limit Execeeded</b>')
           .setButton(refreshImageButton);
 
   tabSection.addWidget(headerSection);
