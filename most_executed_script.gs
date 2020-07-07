@@ -29,6 +29,13 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
     'pageToken': pageToken,
     'orderBy': "timestamp desc"
   };
+  var options = {
+    'method': 'post',
+    'contentType': 'application/json',
+    'headers': header,
+    'payload': JSON.stringify(body),
+    'muteHttpExceptions': false
+  };
   var url = 'https://logging.googleapis.com/v2/entries:list';
 
   // loop to go over all the enteries and map the processId with the projectId
@@ -49,14 +56,10 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
     if (limit) {
       break;
     }
+    body['pageToken'] = pageToken;
+    options['payload'] = JSON.stringify(body);
+    
     // these calls to the API are to fetch all the pages which have enteries
-    var options = {
-      'method': 'post',
-      'contentType': 'application/json',
-      'headers': header,
-      'payload': JSON.stringify(body),
-      'muteHttpExceptions': false
-    };
     var response = UrlFetchApp.fetch(url, options);
     var json = response.getContentText();
     resultData = JSON.parse(json);
