@@ -6,6 +6,7 @@ import requests
 from all_cloud_projects import cloud_project
 from enable_logging_api import enable_loggin_apis_pvt
 from project_details import get_project_details
+from helper import get_first_page_of_logs
 
 def get_number_of_execution_of_script(cloud_project_id, from_time, token):
     """
@@ -22,32 +23,24 @@ def get_number_of_execution_of_script(cloud_project_id, from_time, token):
     limit = False
     process_ids_map = {}
     project_ids_map = {}
-    page_token = None
-    #loop to get the first page which has enteries in it
-    while True:
-        url = "https://logging.googleapis.com/v2/entries:list"
-        header = {
-            "Authorization": token
-        }
-        body = {
-            "projectIds": [
-                cloud_project_id
-            ],
-            "resourceNames": [
-                "projects/"+cloud_project_id
-            ],
-            "pageToken": page_token,
-            "orderBy": "timestamp desc"
-        }
+    first_page = get_first_page_of_logs(cloud_project_id, token, None)
+    page_token = first_page['next_page_token']
+    result_data = first_page['result_data']
 
-        response = requests.post(url, headers=header, params=body)
-        result_data = response.text
-        result_data = json.loads(result_data)
-        if result_data.get('nextPageToken') is None:
-            break
-        page_token = result_data["nextPageToken"]
-        if result_data.get("entries"):
-            break
+    url = 'https://logging.googleapis.com/v2/entries:list'
+    header = {
+        "Authorization": token
+    }
+    body = {
+        "projectIds": [
+            cloud_project_id
+        ],
+        "resourceNames": [
+            "projects/"+cloud_project_id
+        ],
+        "pageToken":page_token,
+        "orderBy": "timestamp desc"
+    }
 
     while result_data.get("entries"):
         for i in result_data["entries"]:
@@ -62,26 +55,13 @@ def get_number_of_execution_of_script(cloud_project_id, from_time, token):
 
         if limit:
             break
-        url = 'https://logging.googleapis.com/v2/entries:list'
-        header = {
-            "Authorization": token
-        }
-        body = {
-            "projectIds": [
-                cloud_project_id
-            ],
-            "resourceNames": [
-                "projects/"+cloud_project_id
-            ],
-            "pageToken":page_token,
-            "orderBy": "timestamp desc"
-        }
         response = requests.post(url, headers=header, params=body)
         result_data = response.text
         result_data = json.loads(result_data)
         if result_data.get('nextPageToken') is None:
             break
         page_token = result_data["nextPageToken"]
+        body['pageToken'] = page_token
 
     # go through all the processIds and count the different projectIds
     for i in process_ids_map:
@@ -101,7 +81,7 @@ def get_most_executed_script_from_cloud_projects(from_time, project_type, token,
         token (str):The authorization token for cloud Project
         cloud_project_id (string):Project Id of the cloud project
         que (Queue):queue to store the most executed script
-    
+
     """
 
     most_executed_script = []
