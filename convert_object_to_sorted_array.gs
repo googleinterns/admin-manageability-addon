@@ -4,8 +4,8 @@
 * key as processId and value as number of executions
 * @param {Object} processIdWithGCPId will have key value pair with 
 * key as processId and value as Cloud ProjectId
-* @return {Object} Sorted Array of the JSON object having key as 
-* ProcessId value as execution count and GCPId as cloud project id in descending order
+* @return {Object} Sorted Array of the JSON object having key as ProcessId 
+* value as execution count and GCPId as cloud project id in descending order
 */
 function convertObjectToSortedArrayForMostExecutedScript(
   processIdWithExecutions, processIdWithGCPId) {
