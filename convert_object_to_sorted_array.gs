@@ -13,15 +13,15 @@ function convertObjectToSortedArrayForMostExecutedScript(
   for(var i in processIdWithExecutions) {
     mostExecutedScript.push(
       {
-        "key" : i, 
-        "value" : processIdWithExecutions[i], 
-        "GCPId" : processIdWithGCPId[i]
+        'key': i, 
+        'value': processIdWithExecutions[i], 
+        'GCPId': processIdWithGCPId[i]
       }
     );
   }
   
   // get the sorted array
-  var mostExecutedScriptSortedArray = sortByKey(mostExecutedScript, "value");
+  var mostExecutedScriptSortedArray = sortByKey(mostExecutedScript, 'value');
   return mostExecutedScriptSortedArray;
 }
 
@@ -37,13 +37,13 @@ function convertObjectToSortedArrayForMostActiveUsers(userIdWithExecutions) {
   for(var i in userIdWithExecutions) {
     mostActiveUsers.push(
       {
-        "key" : i,
-        "value" : userIdWithExecutions[i]
+        'key': i,
+        'value': userIdWithExecutions[i]
       }
     );
   }
   
   // get the sorted array
-  var mostActiveUsersSortedArray = sortByKey(mostActiveUsers, "value");
+  var mostActiveUsersSortedArray = sortByKey(mostActiveUsers, 'value');
   return mostActiveUsersSortedArray;
 }
