@@ -3,41 +3,14 @@
 * @param {string} cloudProjectId of the cloud project
 * @param {string} cloudProjectName display name of the cloud project
 * @return {Object} having two values name, email and projectId
-* name is the name of the cloud project
-* email is the email id of the owner of apps script
-* projectId is the cloud project Id
+*     name is the name of the cloud project
+*     email is the email id of the owner of apps script
+*     projectId is the cloud project Id
 */
 function getOriginalNameAndOwnerOfScript(cloudProjectId, cloudProjectName) {
-  var pageToken = null;
-  var resultData = null;
-  do {
-    var header = {
-      'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
-    };
-    var body = {
-      'projectIds': [
-        cloudProjectId
-      ],
-      'resourceNames': [
-        'projects/' + cloudProjectId
-      ],
-      'filter': 'protoPayload.methodName=CreateBrand',
-      'orderBy': 'timestamp desc',
-      'pageToken': pageToken
-    };
-    var options = {
-      'method': 'post',
-      'contentType': 'application/json',
-      'headers': header,
-      'payload': JSON.stringify(body),
-      'muteHttpExceptions': false
-    };
-    var url = 'https://logging.googleapis.com/v2/entries:list';
-    var response = UrlFetchApp.fetch(url, options);
-    var json = response.getContentText();
-    resultData = JSON.parse(json);
-    pageToken = resultData.nextPageToken;
-  } while (!resultData.entries);
+  var firstPage = getFirstPageOfLogs(cloudProjectId);
+  var pageToken = firstPage['nextPageToken'];
+  var resultData = firstPage['resultData'];
   return {
     'email': resultData.entries[0].protoPayload.request.brand.supportEmail,
     'name': cloudProjectName,
