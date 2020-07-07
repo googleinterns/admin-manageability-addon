@@ -49,6 +49,7 @@ function consentScreenUI(e) {
           .setOnClickAction(proceedAction)
           .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
 
+  // create a cancel button which will take user back to the generate report section
   var cancelAction = CardService.newAction()
                          .setFunctionName('createUI');
   var cancel = CardService.newTextButton()
