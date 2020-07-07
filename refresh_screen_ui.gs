@@ -2,7 +2,7 @@
 * Create a card for refresh screen
 * @param {Object} e is the Event Object 
 * which contains information about the context
-* @param {string} token is the token generated be API to gey result
+* @param {string} token is the token generated be API to get result
 * @param {int} limitResponse is the maximum number of responses
 * @param {string} reportTitle is the title of the report
 * @param {string} url is the ending of the API call
