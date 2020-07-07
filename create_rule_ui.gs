@@ -17,63 +17,62 @@ function createRuleUI(e) {
   var iconUrl =
     "https://www.gstatic.com/images/icons/material/system/1x/edit_black_48dp.png";
   var updateRule = CardService.newImageButton()
-    .setAltText("Update Rule")
-    .setIconUrl(iconUrl)
-    .setOnClickAction(updateRuleAction);
+                       .setAltText("Update Rule")
+                       .setIconUrl(iconUrl)
+                       .setOnClickAction(updateRuleAction);
 
   var imageKeyValue = CardService.newKeyValue()
-    .setContent("<b>Create Rule</b>")
-    .setButton(updateRule);
+                          .setContent("<b>Create Rule</b>")
+                          .setButton(updateRule);
 
   tabSection.addWidget(imageKeyValue);
   card.addSection(tabSection);
 
   // Add Rule Type to the Card
   var ruleTypeSection = CardService.newCardSection()
-    .setHeader("<b>RULE TYPE</b>")
-    .setCollapsible(true);
+                            .setHeader("<b>RULE TYPE</b>")
+                            .setCollapsible(true);
   var ruleType =
     CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.RADIO_BUTTON)
-    .setFieldName("ruleType");
-
+        .setType(CardService.SelectionInputType.RADIO_BUTTON)
+        .setFieldName("ruleType");
   ruleType.addItem("Maximum Number of Executions", "MAX_NO_OF_EXECS", true);
   ruleTypeSection.addWidget(ruleType);
   card.addSection(ruleTypeSection);
 
   // Add Trigger Frequency to the Card
   var triggerFrequencySection = CardService.newCardSection()
-    .setHeader("<b>TRIGGER FREQUENCY</b>")
-    .setCollapsible(true);
+                                    .setHeader("<b>TRIGGER FREQUENCY</b>")
+                                    .setCollapsible(true);
   var triggerFrequency = getTimeFilter(e);
   triggerFrequencySection.addWidget(triggerFrequency);
   card.addSection(triggerFrequencySection);
 
   // Create a dropdown of Project Filters
   var ruleProjectFilterSection = CardService.newCardSection()
-    .setHeader("<b>PROJECT FILTER</b>")
-    .setCollapsible(true);
+                                     .setHeader("<b>PROJECT FILTER</b>")
+                                     .setCollapsible(true);
   var ruleProjectFilter = getProjectFilter(e);
   ruleProjectFilter.setOnChangeAction(
     CardService.newAction()
-    .setFunctionName("ruleProjectFilterCallback"));
+        .setFunctionName("ruleProjectFilterCallback"));
   ruleProjectFilterSection.addWidget(ruleProjectFilter);
 
   // Create a new Text field for entering projectId
   if (e.formInput && e.formInput.projectFilter == "SPECIFIC_PROJECT") {
     var projectId = CardService.newTextInput()
-      .setFieldName("projectId")
-      .setTitle("Enter the Cloud Project Id");
+                        .setFieldName("projectId")
+                        .setTitle("Enter the Cloud Project Id");
     ruleProjectFilterSection.addWidget(projectId);
   }
   card.addSection(ruleProjectFilterSection);
 
   var maxLimitSection = CardService.newCardSection()
-    .setHeader("<b>PARAMS</b>")
-    .setCollapsible(true);
+                            .setHeader("<b>PARAMS</b>")
+                            .setCollapsible(true);
   var maxLimit = CardService.newTextInput()
-    .setFieldName("maxLimit")
-    .setTitle("Enter the Maximum Limit ");
+                     .setFieldName("maxLimit")
+                     .setTitle("Enter the Maximum Limit ");
   maxLimitSection.addWidget(maxLimit);
   card.addSection(maxLimitSection);
 
@@ -81,10 +80,11 @@ function createRuleUI(e) {
   var createRuleSection = CardService.newCardSection();
   var createRuleAction =
     CardService.newAction().setFunctionName('createRule');
-  var createRule = CardService.newTextButton()
-    .setText('Create Rule')
-    .setOnClickAction(createRuleAction)
-    .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
+  var createRule = 
+      CardService.newTextButton()
+          .setText('Create Rule')
+          .setOnClickAction(createRuleAction)
+          .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
   createRuleSection.addWidget(createRule);
   card.addSection(createRuleSection);
 
