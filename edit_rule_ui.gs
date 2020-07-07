@@ -1,7 +1,7 @@
 /**
  * Creates edit rule UI and return the card
  * @param {Object} e is the Event Object 
-   which contains information about the context
+ * which contains information about the context
  * @return {CardService.Card} The card to show to the user
  */
 function editRule(e) {
@@ -30,7 +30,7 @@ function editRule(e) {
 /**
  * Creates edit rule UI and return the card
  * @param {Object} e is the Event Object 
-   which contains information about the context
+ * which contains information about the context
  * @return {CardService.Card} The card to show to the user
  */
 function editRuleUI(e) {
@@ -128,7 +128,7 @@ function editRuleUI(e) {
 /**
  * Callback for the project Filter
  * @param {Object} e is the Event Object 
-   which contains information about the context
+ * which contains information about the context
  * @return {CardService.Card} The card to show to the user
  */
 function editRuleProjectFilterCallback(e) {
@@ -142,7 +142,7 @@ function editRuleProjectFilterCallback(e) {
 /**
  * Callback function on clicking the update rule button
  * @param {Object} e is the Event Object 
-   which contains information about the context
+ * which contains information about the context
  * @return {CardService.Card} The card to show to the rules to the user
  */
 function updateRule(e) {
