@@ -10,16 +10,16 @@
 function getOriginalNameAndOwnerOfScript(cloudProjectId, cloudProjectName) {
   var pageToken = null;
   var resultData = null;
-  do {  
+  do {
     var header = {
-      'Authorization': 'Bearer '+ ScriptApp.getOAuthToken()
-    }; 
+      'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
+    };
     var body = {
       'projectIds': [
         cloudProjectId
       ],
       'resourceNames': [
-        'projects/'+ cloudProjectId
+        'projects/' + cloudProjectId
       ],
       'filter': 'protoPayload.methodName=CreateBrand',
       'orderBy': 'timestamp desc',
@@ -37,11 +37,11 @@ function getOriginalNameAndOwnerOfScript(cloudProjectId, cloudProjectName) {
     var json = response.getContentText();
     resultData = JSON.parse(json);
     pageToken = resultData.nextPageToken;
-  } while(!resultData.entries);
+  } while (!resultData.entries);
   return {
-    'email' : resultData.entries[0].protoPayload.request.brand.supportEmail,
-    'name' : cloudProjectName,
-    'projectId' : cloudProjectId
+    'email': resultData.entries[0].protoPayload.request.brand.supportEmail,
+    'name': cloudProjectName,
+    'projectId': cloudProjectId
   };
 }
 
@@ -54,40 +54,42 @@ function getOriginalNameAndOwnerOfScript(cloudProjectId, cloudProjectName) {
 * @return {Object} Array of objects having name, email of owner 
 * and projectId of Apps Script
 */
-function getOwnersOfAllScripts(projectType, cloudProjectId) {  
+function getOwnersOfAllScripts(projectType, cloudProjectId) {
   var emailOfOwnerOfScripts = [];
-  if(projectType == "SPECIFIC_PROJECT") {
+  if (projectType == "SPECIFIC_PROJECT") {
     var projDetails = getProjectDetails(cloudProjectId);
-    if(projDetails != null) {
+    if (projDetails != null) {
       var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
-      if(apiEnabled) {
-        var owner = 
-            getOriginalNameAndOwnerOfScript(cloudProjectId, projDetails.name);
+      if (apiEnabled) {
+        var owner =
+          getOriginalNameAndOwnerOfScript(cloudProjectId, projDetails.name);
         emailOfOwnerOfScripts.push(owner);
       }
     }
-  }
-  else {
+  } else {
     var allProjects = listAllCloudProjects();
     var i;
-    for(i=0; i<allProjects.length; i++) {
+    for (i = 0; i < allProjects.length; i++) {
       if (allProjects[i].lifecycleState != 'ACTIVE') {
         continue;
       }
-      var projectId = JSON.stringify(allProjects[i].projectId,null,2);
-      if(projectId.indexOf("sys") == 1.0) {
-        if(projectType == "CUSTOM_PROJECT") continue;
+      var projectId = JSON.stringify(allProjects[i].projectId, null, 2);
+      if (projectId.indexOf("sys") == 1.0) {
+        if (projectType == "CUSTOM_PROJECT") continue;
       } else {
-        if(projectType == "SYSTEM_PROJECT") continue;
+        if (projectType == "SYSTEM_PROJECT") continue;
       }
       var apiEnabled = enableLogginApisPvt(allProjects[i].projectNumber);
-      if(!apiEnabled){
+      if (!apiEnabled) {
         continue;
       }
-      var owner = 
-          getOriginalNameAndOwnerOfScript(allProjects[i].projectId, allProjects[i].name);
+      var owner =
+        getOriginalNameAndOwnerOfScript(
+          allProjects[i].projectId,
+          allProjects[i].name
+        );
       emailOfOwnerOfScripts.push(owner);
-    } 
+    }
   }
-  return emailOfOwnerOfScripts; 
+  return emailOfOwnerOfScripts;
 }
