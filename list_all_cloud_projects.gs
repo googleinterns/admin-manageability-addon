@@ -1,8 +1,8 @@
 /**
-* List all cloud projects
-* @return {json} Cloud projects with details like 
-* projectId, projectNumber, state, parent's projectId etc.
-*/
+ * List all cloud projects
+ * @return {json} Cloud projects with details like 
+ *    projectId, projectNumber, state, parent's projectId etc.
+ */
 function listAllCloudProjects() {
   var url = 'https://cloudresourcemanager.googleapis.com/v1/projects';
   var header = {
