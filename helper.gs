@@ -150,15 +150,19 @@ function getFirstPageOfLogs(cloudProjectId) {
     'pageToken': pageToken,
     'orderBy': 'timestamp desc'
   };
+  var options = {
+    'method': 'post',
+    'contentType': 'application/json',
+    'headers': header,
+    'payload': JSON.stringify(body),
+    'muteHttpExceptions': false
+  };
   var url = 'https://logging.googleapis.com/v2/entries:list';
   do {
-    var options = {
-      'method': 'post',
-      'contentType': 'application/json',
-      'headers': header,
-      'payload': JSON.stringify(body),
-      'muteHttpExceptions': false
-    };
+    
+    body['pageToken'] = pageToken;
+    options['payload'] = JSON.stringify(body);
+    
     var response = UrlFetchApp.fetch(url, options);
     var json = response.getContentText();
     resultData = JSON.parse(json);
