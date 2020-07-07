@@ -12,43 +12,47 @@ function getOriginalNameAndOwnerOfScript(cloudProjectId, cloudProjectName) {
   var resultData = null;
   do {  
     var header = {
-      "Authorization": "Bearer "+ScriptApp.getOAuthToken()
+      'Authorization': 'Bearer '+ ScriptApp.getOAuthToken()
     }; 
     var body = {
-      "projectIds": [
+      'projectIds': [
         cloudProjectId
       ],
-      "resourceNames": [
-        "projects/"+cloudProjectId
+      'resourceNames': [
+        'projects/'+ cloudProjectId
       ],
-      "filter": "protoPayload.methodName=CreateBrand",
-      "orderBy": "timestamp desc",
-      "pageToken":pageToken
+      'filter': 'protoPayload.methodName=CreateBrand',
+      'orderBy': 'timestamp desc',
+      'pageToken': pageToken
     };
     var options = {
-      'method' : 'post',
+      'method': 'post',
       'contentType': 'application/json',
       'headers': header,
-      'payload' : JSON.stringify(body),
+      'payload': JSON.stringify(body),
       'muteHttpExceptions': false
     };
-    var response = UrlFetchApp.fetch('https://logging.googleapis.com/v2/entries:list', options);
+    var url = 'https://logging.googleapis.com/v2/entries:list';
+    var response = UrlFetchApp.fetch(url, options);
     var json = response.getContentText();
     resultData = JSON.parse(json);
     pageToken = resultData.nextPageToken;
   } while(!resultData.entries);
   return {
-    "email" : resultData.entries[0].protoPayload.request.brand.supportEmail,
-    "name" : projectName,
-    "projectId" : cloudProjectId
+    'email' : resultData.entries[0].protoPayload.request.brand.supportEmail,
+    'name' : cloudProjectName,
+    'projectId' : cloudProjectId
   };
 }
 
+
 /**
 * Get the owners of all the cloud projects
-* @param {string} projectType is the types of cloud projects to be checked i.e., CUSTOM_PROJECTs which are user created and SYSTEM_PROJECTs which are system generate
+* @param {String} projectType is the enum having values 
+* {SYSTEM_PROJECT, ALL_PROJECT, SPECIFIC_PROJECT, CUSTOM_PROJECT}
 * @param {string} cloudProjectId is cloud project id of specific project otherwise null
-* @return {Object} Array of objects having name, email of owner and projectId of Apps Script
+* @return {Object} Array of objects having name, email of owner 
+* and projectId of Apps Script
 */
 function getOwnersOfAllScripts(projectType, cloudProjectId) {  
   var emailOfOwnerOfScripts = [];
@@ -57,7 +61,8 @@ function getOwnersOfAllScripts(projectType, cloudProjectId) {
     if(projDetails != null) {
       var apiEnabled = enableLogginApisPvt(projDetails.projectNumber);
       if(apiEnabled) {
-        var owner = getOriginalNameAndOwnerOfScript(cloudProjectId, projDetails.name);
+        var owner = 
+            getOriginalNameAndOwnerOfScript(cloudProjectId, projDetails.name);
         emailOfOwnerOfScripts.push(owner);
       }
     }
@@ -79,7 +84,8 @@ function getOwnersOfAllScripts(projectType, cloudProjectId) {
       if(!apiEnabled){
         continue;
       }
-      var owner = getOriginalNameAndOwnerOfScript(allProjects[i].projectId, allProjects[i].name);
+      var owner = 
+          getOriginalNameAndOwnerOfScript(allProjects[i].projectId, allProjects[i].name);
       emailOfOwnerOfScripts.push(owner);
     } 
   }
