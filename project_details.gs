@@ -1,9 +1,9 @@
 /**
-* Get the details of the project
-* @param {String} cloudProjectId of the GCP project
-* @return {Object} Project Details having name, Project Number,
-* project Id and other details
-*/
+ * Get the details of the project
+ * @param {String} cloudProjectId of the GCP project
+ * @return {Object} Project Details having name, Project Number,
+ * project Id and other details
+ */
 function getProjectDetails(cloudProjectId) {
   var url = 'https://cloudresourcemanager.googleapis.com/v1/projects/' +
     cloudProjectId;
