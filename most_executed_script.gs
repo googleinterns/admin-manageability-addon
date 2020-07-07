@@ -1,10 +1,10 @@
 /**
-* Get the maximum number of executions of a cloud project
-* @param {string} cloudProjectId of the cloud project
-* @param {Date} fromTime is the date and time 
-* from which the executions has to be seen
-* @return {Object} having key as projectId and value as number of executions
-*/
+ * Get the maximum number of executions of a cloud project
+ * @param {string} cloudProjectId of the cloud project
+ * @param {Date} fromTime is the date and time 
+ * from which the executions has to be seen
+ * @return {Object} having key as projectId and value as number of executions
+ */
 function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
   var pageToken = null;
   var resultData = null;
@@ -100,16 +100,16 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
 }
 
 /**
-* Get the maximum executed Script from all the cloud projects
-* @param {Date} fromTime is the date and time from 
-* which executions has to be seen
-* @param {String} projectType is the enum having values 
-* {SYSTEM_PROJECT, ALL_PROJECT, SPECIFIC_PROJECT, CUSTOM_PROJECT}
-* @param {string} cloudProjectId is cloud project id of specific project 
-* otherwise null
-* @return {Object} Array of projectIds along with the number of executions 
-* of the executed scripts and the cloud project id
-*/
+ * Get the maximum executed Script from all the cloud projects
+ * @param {Date} fromTime is the date and time from 
+ * which executions has to be seen
+ * @param {String} projectType is the enum having values 
+ * {SYSTEM_PROJECT, ALL_PROJECT, SPECIFIC_PROJECT, CUSTOM_PROJECT}
+ * @param {string} cloudProjectId is cloud project id of specific project 
+ * otherwise null
+ * @return {Object} Array of projectIds along with the number of executions 
+ * of the executed scripts and the cloud project id
+ */
 function getMostExecutedScriptFromAllCloudProjects(
   fromTime, projectType, cloudProjectId) {
   var processIdWithExecutions = {};
