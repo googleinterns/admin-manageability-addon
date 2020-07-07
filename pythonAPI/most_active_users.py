@@ -6,7 +6,7 @@ import requests
 from all_cloud_projects import cloud_project
 from enable_logging_api import enable_loggin_apis_pvt
 from project_details import get_project_details
-
+from helper import get_first_page_of_logs
 def get_users_with_process_id(cloud_project_id, from_time, token):
     """
     Function for returning the user_key with number of executions
@@ -19,36 +19,28 @@ def get_users_with_process_id(cloud_project_id, from_time, token):
     Returns:
         Dict: having user_key with the number of executions
     """
-    page_token = None
-    result_data = None
     limit = False
     process_ids_map = {}
     user_executions = {}
 
-    while True:
-        url = "https://logging.googleapis.com/v2/entries:list"
-        header = {
-            "Authorization": token
-        }
-        body = {
-            "projectIds": [
-                cloud_project_id
-            ],
-            "resourceNames": [
-                "projects/"+cloud_project_id
-            ],
-            "pageToken":page_token,
-            "orderBy": "timestamp desc"
-        }
+    first_page = get_first_page_of_logs(cloud_project_id, token, None)
+    page_token = first_page['next_page_token']
+    result_data = first_page['result_data']
 
-        response = requests.post(url, headers=header, params=body)
-        result_data = response.text
-        result_data = json.loads(result_data)
-        if result_data.get('nextPageToken') is None:
-            break
-        page_token = result_data["nextPageToken"]
-        if result_data.get("entries"):
-            break
+    url = 'https://logging.googleapis.com/v2/entries:list'
+    header = {
+        "Authorization": token
+    }
+    body = {
+        "projectIds": [
+            cloud_project_id
+        ],
+        "resourceNames": [
+            "projects/"+cloud_project_id
+        ],
+        "pageToken": page_token,
+        "orderBy": "timestamp desc"
+    }
 
     # loop to go over all the enteries and map the processId with the userId
     while result_data.get("entries"):
@@ -57,33 +49,21 @@ def get_users_with_process_id(cloud_project_id, from_time, token):
                 limit = True
                 break
             if i.get('labels'):
-                if i['labels'].get("script.googleapis.com/process_id"):
+                if i['labels'].get("script.googleapis.com/process_id") and i['labels'].get("script.googleapis.com/user_key"):
                     process_id = i["labels"]["script.googleapis.com/process_id"]
                     user_key = i["labels"]["script.googleapis.com/user_key"]
                     # print (process_id, user_key)
                     process_ids_map[process_id] = user_key
         if limit:
             break
-        url = 'https://logging.googleapis.com/v2/entries:list'
-        header = {
-            "Authorization": token
-        }
-        body = {
-            "projectIds": [
-                cloud_project_id
-            ],
-            "resourceNames": [
-                "projects/"+cloud_project_id
-            ],
-            "pageToken": page_token,
-            "orderBy": "timestamp desc"
-        }
+
         response = requests.post(url, headers=header, params=body)
         result_data = response.text
         result_data = json.loads(result_data)
         if result_data.get('nextPageToken') is None:
             break
         page_token = result_data["nextPageToken"]
+        body['pageToken'] = page_token
     for i in process_ids_map:
         if process_ids_map[i]:
             if user_executions.get(process_ids_map[i]):
@@ -108,7 +88,7 @@ def get_most_active_user(from_time, project_type, token, cloud_project_id, que):
     most_active_users = []
     if project_type == "SPECIFIC_PROJECT":
         proj_details = get_project_details(cloud_project_id, token)
-        if proj_details != None:
+        if not proj_details is None:
             api_enabled = enable_loggin_apis_pvt(proj_details["projectNumber"], token)
             if api_enabled:
                 user_executions = get_users_with_process_id(cloud_project_id, from_time, token)
