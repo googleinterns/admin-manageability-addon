@@ -46,8 +46,8 @@ function getTitleandTime(timeFilter) {
 function getTimeFilter(e) {
   var timeFilter =
     CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.RADIO_BUTTON)
-    .setFieldName("timeFilter");
+        .setType(CardService.SelectionInputType.RADIO_BUTTON)
+        .setFieldName("timeFilter");
 
   // add the items according to input
   if (e.formInput) {
@@ -82,8 +82,8 @@ function getTimeFilter(e) {
 function getProjectFilter(e) {
   var projectFilter =
     CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.RADIO_BUTTON)
-    .setFieldName("projectFilter");
+        .setType(CardService.SelectionInputType.RADIO_BUTTON)
+        .setFieldName("projectFilter");
 
   // add the items according to input
   if (e.formInput) {
@@ -116,15 +116,15 @@ function buttonSetSection(e) {
     CardService.newAction().setFunctionName('createUI');
   var btn1 =
     CardService.newTextButton().setText('Insights')
-    .setOnClickAction(generateReportAction);
+        .setOnClickAction(generateReportAction);
   var createRuleAction =
     CardService.newAction().setFunctionName('listRuleUI');
   var btn2 =
     CardService.newTextButton().setText('Actions')
-    .setOnClickAction(createRuleAction);
+        .setOnClickAction(createRuleAction);
   var headerButtonSet = CardService.newButtonSet()
-    .addButton(btn1)
-    .addButton(btn2);
+                            .addButton(btn1)
+                            .addButton(btn2);
   return headerButtonSet;
 }
 /**
