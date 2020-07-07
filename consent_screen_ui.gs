@@ -5,7 +5,6 @@
  */
 function consentScreenUI(e) {
   var formInput = e.formInput;
-  var i;
   var card = CardService.newCardBuilder();
 
   // Add the tabs
@@ -20,10 +19,11 @@ function consentScreenUI(e) {
                             });
   var iconUrl =
     'https://www.gstatic.com/images/icons/material/system/1x/warning_black_48dp.png';
-  var proceedImageButton = CardService.newImageButton()
-                      .setAltText('Proceed')
-                      .setIconUrl(iconUrl)
-                      .setOnClickAction(proceedAction);
+  var proceedImageButton = 
+      CardService.newImageButton()
+          .setAltText('Proceed')
+          .setIconUrl(iconUrl)
+          .setOnClickAction(proceedAction);
 
   var headerKeyValue = CardService.newKeyValue()
                           .setContent('<b>Consent Screen</b>')
@@ -37,16 +37,17 @@ function consentScreenUI(e) {
   var contentSection = CardService.newCardSection().setHeader(
     '<b>Provide Consent</b>'
   );
-  var textParagraph = CardService.newTextParagraph().setText(
-    'Drive Add-on will enable the logging API of all projects in the organization'
-  );
+  var content = 'Drive Add-on will enable the logging API ' +  
+      'of all projects in the organization';
+  var textParagraph = CardService.newTextParagraph().setText(content);
   contentSection.addWidget(textParagraph);
   card.addSection(contentSection);
 
-  var proceedButton = CardService.newTextButton()
-                          .setText('Proceed')
-                          .setOnClickAction(proceedAction)
-                          .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
+  var proceedButton = 
+      CardService.newTextButton()
+          .setText('Proceed')
+          .setOnClickAction(proceedAction)
+          .setTextButtonStyle(CardService.TextButtonStyle.FILLED);
 
   var cancelAction = CardService.newAction()
                          .setFunctionName('createUI');
