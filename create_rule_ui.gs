@@ -1,7 +1,7 @@
 /**
 * Creates a UI and return the card
 * @param {Object} e is the Event Object 
-  which contains information about the context
+* which contains information about the context
 * @return {CardService.Card} The card to show to the user
 */
 function createRuleUI(e) {
@@ -94,7 +94,7 @@ function createRuleUI(e) {
 /**
 * Callback for the Rule project Filter
 * @param {Object} e is the Event Object 
-  which contains information about the context
+* which contains information about the context
 * @return {CardService.Card} The card to show to the user
 */
 function ruleProjectFilterCallback(e) {
@@ -107,9 +107,9 @@ function ruleProjectFilterCallback(e) {
 
 /**
 * Callback function on clicking the create Rule Button and 
-  create a trigger for the rule too
+* create a trigger for the rule too
 * @param {Object} e is the Event Object 
-  which contains information about the context
+* which contains information about the context
 * @return {CardService.Card} The card to show to the user
 */
 function createRule(e) {
@@ -133,19 +133,6 @@ function createRule(e) {
       Session.getActiveUser().getEmail()
     ];
     active.appendRow(rowContent);   
-
-    var trigger = ScriptApp.newTrigger("mostExecutedTrigger");
-    if(input.timeFilter == "EVERY_HOUR") {
-      trigger.timeBased().everyHours(1).create();
-    } else if(input.timeFilter == "EVERY_6_HOUR") {
-      trigger.timeBased().everyHours(6).create();
-    } else if(input.timeFilter == "EVERY_24_HOUR") {
-      trigger.timeBased().everyDays(1).create();
-    } else if(input.timeFilter == "EVERY_7_DAYS") {
-      trigger.timeBased().everyDays(7).create();
-    } else if(input.timeFilter == "EVERY_30_DAYS") {
-      trigger.timeBased().everyDays(30).create();
-    }
   } else {
     var newSheet = SpreadsheetApp.create("Admin Rules For Apps Scripts");
     var active  = newSheet.getActiveSheet();
@@ -172,17 +159,17 @@ function createRule(e) {
       Session.getActiveUser().getEmail()
     ];
     active.appendRow(rowContent);   
-    var trigger = ScriptApp.newTrigger("mostExecutedTrigger");
-    if(input.timeFilter == "EVERY_HOUR") {
-      trigger.timeBased().everyHours(1).create();
-    } else if(input.timeFilter == "EVERY_6_HOUR") {
-      trigger.timeBased().everyHours(6).create();
-    } else if(input.timeFilter == "EVERY_24_HOUR") {
-      trigger.timeBased().everyDays(1).create();
-    } else if(input.timeFilter == "EVERY_7_DAYS") {
-      trigger.timeBased().everyDays(7).create();
-    } else if(input.timeFilter == "EVERY_30_DAYS") {
-      trigger.timeBased().everyDays(30).create();
-    }
+  }
+  var trigger = ScriptApp.newTrigger("mostExecutedTrigger");
+  if(input.timeFilter == "EVERY_HOUR") {
+    trigger.timeBased().everyHours(1).create();
+  } else if(input.timeFilter == "EVERY_6_HOUR") {
+    trigger.timeBased().everyHours(6).create();
+  } else if(input.timeFilter == "EVERY_24_HOUR") {
+    trigger.timeBased().everyDays(1).create();
+  } else if(input.timeFilter == "EVERY_7_DAYS") {
+    trigger.timeBased().everyDays(7).create();
+  } else if(input.timeFilter == "EVERY_30_DAYS") {
+    trigger.timeBased().everyDays(30).create();
   }
 }
