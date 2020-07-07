@@ -6,13 +6,16 @@
  * @return {Object} having key as projectId and value as number of executions
  */
 function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
-  var pageToken = null;
-  var resultData = null;
   var max = 0;
   var i;
   var limit = false;
   var processIdsMap = {};
   var projectIdsMap = {};
+  
+  var firstPage = getFirstPageOfLogs(cloudProjectId);
+  var pageToken = firstPage['nextPageToken'];
+  var resultData = firstPage['resultData'];
+  
   var header = {
     'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
   };
@@ -27,20 +30,6 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
     'orderBy': "timestamp desc"
   };
   var url = 'https://logging.googleapis.com/v2/entries:list';
-  // loop to get the first page which has enteries in it
-  do {
-    var options = {
-      'method': 'post',
-      'contentType': 'application/json',
-      'headers': header,
-      'payload': JSON.stringify(body),
-      'muteHttpExceptions': false
-    };
-    var response = UrlFetchApp.fetch(url, options);
-    var json = response.getContentText();
-    resultData = JSON.parse(json);
-    pageToken = resultData.nextPageToken;
-  } while (!resultData.entries);
 
   // loop to go over all the enteries and map the processId with the projectId
   while (resultData.entries) {
