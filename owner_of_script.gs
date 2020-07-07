@@ -22,10 +22,10 @@ function getOriginalNameAndOwnerOfScript(cloudProjectId, cloudProjectName) {
 /**
 * Get the owners of all the cloud projects
 * @param {String} projectType is the enum having values 
-* {SYSTEM_PROJECT, ALL_PROJECT, SPECIFIC_PROJECT, CUSTOM_PROJECT}
+*     {SYSTEM_PROJECT, ALL_PROJECT, SPECIFIC_PROJECT, CUSTOM_PROJECT}
 * @param {string} cloudProjectId is cloud project id of specific project otherwise null
 * @return {Object} Array of objects having name, email of owner 
-* and projectId of Apps Script
+*     and projectId of Apps Script
 */
 function getOwnersOfAllScripts(projectType, cloudProjectId) {
   var emailOfOwnerOfScripts = [];
