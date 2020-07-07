@@ -127,3 +127,45 @@ function buttonSetSection(e) {
     .addButton(btn2);
   return headerButtonSet;
 }
+/**
+ * Get the first page of stcakdriver logs which has enteries in it
+ * @param {string} cloudProjectId of the cloud project
+ * @return {Object} having two values nextPageToken, resultData
+ *    nextPageToken is the pageToken for the next page
+ *    resultData have the enteries for the current page
+ */
+function getFirstPageOfLogs(cloudProjectId) {
+  var pageToken = null;
+  var resultData = null;
+  var header = {
+    'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
+  };
+  var body = {
+    'projectIds': [
+      cloudProjectId
+    ],
+    'resourceNames': [
+      'projects/' + cloudProjectId
+    ],
+    'pageToken': pageToken,
+    'orderBy': 'timestamp desc'
+  };
+  var url = 'https://logging.googleapis.com/v2/entries:list';
+  do {
+    var options = {
+      'method': 'post',
+      'contentType': 'application/json',
+      'headers': header,
+      'payload': JSON.stringify(body),
+      'muteHttpExceptions': false
+    };
+    var response = UrlFetchApp.fetch(url, options);
+    var json = response.getContentText();
+    resultData = JSON.parse(json);
+    pageToken = resultData.nextPageToken;
+  } while (!resultData.entries);
+  return {
+    'nextPageToken': pageToken, 
+    'resultData': resultData
+  };
+}
