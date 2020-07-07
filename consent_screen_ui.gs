@@ -51,7 +51,7 @@ function consentScreenUI(e) {
 
   // create a cancel button which will take user back to the generate report section
   var cancelAction = CardService.newAction()
-                         .setFunctionName('createUI');
+                         .setFunctionName('cancelButtonCallback');
   var cancel = CardService.newTextButton()
                    .setText('Cancel')
                    .setOnClickAction(cancelAction)
@@ -64,4 +64,15 @@ function consentScreenUI(e) {
   section2.addWidget(buttonSet);
   card.addSection(section2);
   return card.build();
+}
+function cancelButtonCallback(e) {
+  var card = createUI(e);
+  var cancelNotification = 
+      CardService.newNotification().setText("Report will not be generated");
+  var navigation = CardService.newNavigation().updateCard(card);
+  var actionResponse = 
+      CardService.newActionResponseBuilder()
+          .setNavigation(navigation)
+          .setNotification(cancelNotification);
+  return actionResponse.build();
 }
