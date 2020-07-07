@@ -1,6 +1,6 @@
 /**
-* Trigger for the rule for the number of executions for the script
-*/
+ * Trigger for the rule for the number of executions for the script
+ */
 function mostExecutedTrigger() {
   var files = DriveApp.getFilesByName(adminRuleFileName);
   if (files.hasNext()) {
