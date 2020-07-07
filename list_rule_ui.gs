@@ -18,13 +18,13 @@ function listRuleUI(e) {
   var createRuleAction =
     CardService.newAction().setFunctionName('createRuleUI');
   var createRule = CardService.newImageButton()
-    .setAltText("Update Rule")
-    .setIconUrl(createIconUrl)
-    .setOnClickAction(createRuleAction);
+                       .setAltText("Update Rule")
+                       .setIconUrl(createIconUrl)
+                       .setOnClickAction(createRuleAction);
 
   var imageKeyValue = CardService.newKeyValue()
-    .setContent("<b>Rules List</b>")
-    .setButton(createRule);
+                          .setContent("<b>Rules List</b>")
+                          .setButton(createRule);
 
   tabSection.addWidget(imageKeyValue);
   card.addSection(tabSection);
@@ -38,25 +38,26 @@ function listRuleUI(e) {
 
     for (var i = 2; i <= lastRow; i++) {
       var ruleSection = CardService.newCardSection()
-        .setCollapsible(true)
-        .setNumUncollapsibleWidgets(1);
+                            .setCollapsible(true)
+                            .setNumUncollapsibleWidgets(1);
       var ruleData = active.getRange(i, 1, 1, lastCol).getValues()[0];
 
       var editRuleAction = CardService.newAction()
-        .setFunctionName('editRule')
-        .setParameters({
-          "Number": i.toString()
-        });
+                               .setFunctionName('editRule')
+                               .setParameters({
+                                 "Number": i.toString()
+                               });
       var editIconUrl =
         "https://www.gstatic.com/images/icons/material/system/1x/edit_black_48dp.png";
+      
       var editRule = CardService.newImageButton()
-        .setAltText("Edit Rule")
-        .setIconUrl(editIconUrl)
-        .setOnClickAction(editRuleAction);
+                         .setAltText("Edit Rule")
+                         .setIconUrl(editIconUrl)
+                         .setOnClickAction(editRuleAction);
 
       var imageKeyValueRuleHeader = CardService.newKeyValue()
-        .setContent("Rule " + (i - 1))
-        .setButton(editRule);
+                                        .setContent("Rule " + (i - 1))
+                                        .setButton(editRule);
       ruleSection.addWidget(imageKeyValueRuleHeader);
 
       var imageKeyValueRuleData =
