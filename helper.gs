@@ -179,3 +179,33 @@ function getFirstPageOfLogs(cloudProjectId, filter) {
     'resultData': resultData
   };
 }
+
+/**
+ * Get the folder Id where system projects are stored;
+ */
+function getSystemProjectsFolderId() {
+  var url = "https://cloudresourcemanager.googleapis.com/v2/folders:search";
+  var header = {
+    "Authorization": "Bearer "+ScriptApp.getOAuthToken()
+  };
+  var body = {
+    "query": "displayName=apps-script"
+  };
+  var options = {
+      'method' : 'post',
+      'contentType': 'application/json',
+      'headers': header,
+      'payload' : JSON.stringify(body),
+      'muteHttpExceptions': false
+   };
+  try {
+    var response = UrlFetchApp.fetch(url, options);
+    var folderDetails = JSON.parse(response.getContentText());
+    folderDetails = folderDetails['folders'][0];
+    var folderName = (folderDetails['name']);
+    var folderId = folderName.substring(8);
+    return folderId;
+  } catch (ex) {
+    return null;
+  }
+}
