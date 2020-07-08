@@ -1,16 +1,19 @@
 /**
-* Get the original name and email of App Script
-* @param {string} cloudProjectId of the cloud project
-* @param {string} cloudProjectName display name of the cloud project
-* @return {Object} having two values name, email and projectId
-*     name is the name of the cloud project
-*     email is the email id of the owner of apps script
-*     projectId is the cloud project Id
-*/
+ * Get the original name and email of App Script
+ * @param {string} cloudProjectId of the cloud project
+ * @param {string} cloudProjectName display name of the cloud project
+ * @return {Object} having two values name, email and projectId
+ *     name is the name of the cloud project
+ *     email is the email id of the owner of apps script
+ *     projectId is the cloud project Id
+ */
 function getOriginalNameAndOwnerOfScript(cloudProjectId, cloudProjectName) {
   var filter = 'protoPayload.methodName=CreateBrand';
   var firstPage = getFirstPageOfLogs(cloudProjectId, filter);
   var resultData = firstPage['resultData'];
+  if (resultData == null) {
+    return {};
+  }
   return {
     'email': resultData.entries[0].protoPayload.request.brand.supportEmail,
     'name': cloudProjectName,
@@ -20,13 +23,13 @@ function getOriginalNameAndOwnerOfScript(cloudProjectId, cloudProjectName) {
 
 
 /**
-* Get the owners of all the cloud projects
-* @param {String} projectType is the enum having values 
-*     {SYSTEM_PROJECT, ALL_PROJECT, SPECIFIC_PROJECT, CUSTOM_PROJECT}
-* @param {string} cloudProjectId is cloud project id of specific project otherwise null
-* @return {Object} Array of objects having name, email of owner 
-*     and projectId of Apps Script
-*/
+ * Get the owners of all the cloud projects
+ * @param {String} projectType is the enum having values 
+ *     {SYSTEM_PROJECT, ALL_PROJECT, SPECIFIC_PROJECT, CUSTOM_PROJECT}
+ * @param {string} cloudProjectId is cloud project id of specific project otherwise null
+ * @return {Object} Array of objects having name, email of owner 
+ *     and projectId of Apps Script
+ */
 function getOwnersOfAllScripts(projectType, cloudProjectId) {
   var emailOfOwnerOfScripts = [];
   if (projectType == "SPECIFIC_PROJECT") {
