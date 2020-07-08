@@ -113,6 +113,29 @@ function getMostExecutedScriptFromAllCloudProjects(
         }
       }
     }
+  } else if (projectType == "ALL_PROJECT") {
+    var allProjects = listAllCloudProjects();
+    var i;
+    var max = 0;
+
+    // loop for all thr projects and get most executed scripts of each project
+    for (i = 0; i < allProjects.length; i++) {
+      if (allProjects[i].lifecycleState != 'ACTIVE') {
+        continue;
+      }
+      var apiEnabled = enableLogginApisPvt(allProjects[i].projectNumber);
+      if (!apiEnabled) continue;
+      var result =
+        getNumberOfExecutionOfScript(allProjects[i].projectId, fromTime);
+      for (var j in result) {
+        if (processIdWithExecutions[j]) {
+          processIdWithExecutions[j] += result[j];
+        } else {
+          processIdWithExecutions[j] = result[j];
+        }
+        processIdWithGCPId[j] = allProjects[i].projectId;
+      }
+    }
   } else {
     var allProjects = listAllCloudProjects();
     var i;
@@ -123,9 +146,10 @@ function getMostExecutedScriptFromAllCloudProjects(
       if (allProjects[i].lifecycleState != 'ACTIVE') {
         continue;
       }
+      var folderId = getSystemProjectsFolderId();
+      
       // This is to check whether the project is the system project or not
-      if (JSON.stringify(allProjects[i].projectId, null, 2).indexOf("sys") ==
-        1.0) {
+      if (allProjects[i].projectId == folderId) {
         if (projectType == "CUSTOM_PROJECT") continue;
       } else {
         if (projectType == "SYSTEM_PROJECT") continue;
