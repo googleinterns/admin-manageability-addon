@@ -107,7 +107,7 @@ function getMostActiveUser(fromTime, projectType, cloudProjectId) {
         }
       }
     }
-  } else {
+  } else if (projectType == "ALL_PROJECT") {
     var allProjects = listAllCloudProjects();
     var i;
     for (i = 0; i < allProjects.length; i++) {
@@ -115,8 +115,28 @@ function getMostActiveUser(fromTime, projectType, cloudProjectId) {
         continue;
       }
       var projectId = JSON.stringify(allProjects[i].projectId, null, 2);
+      var apiEnabled = enableLogginApisPvt(allProjects[i].projectNumber);
+      if (!apiEnabled) continue;
+      var userExecutions =
+        getUsersWithProcessId(allProjects[i].projectId, fromTime);
+      for (var j in userExecutions) {
+        if (userIdWithExecutions[j]) {
+          userIdWithExecutions[j] += userExecutions[j];
+        } else {
+          userIdWithExecutions[j] = userExecutions[j];
+        }
+      }
+    }
+  } else {
+    var allProjects = listAllCloudProjects();
+    var i;
+    for (i = 0; i < allProjects.length; i++) {
+      if (allProjects[i].lifecycleState != 'ACTIVE') {
+        continue;
+      }
+      var folderId = getSystemProjectsFolderId();
       // go through all the processIds and count the different projectIds
-      if (projectId.indexOf("sys") == 1.0) {
+      if (allProjects[i].projectId == folderId) {
         if (projectType == "CUSTOM_PROJECT") continue;
       } else {
         if (projectType == "SYSTEM_PROJECT") continue;
