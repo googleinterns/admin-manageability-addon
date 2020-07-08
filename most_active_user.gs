@@ -9,11 +9,11 @@ function getUsersWithProcessId(cloudProjectId, fromTime) {
   var limit = false;
   var processIdsMap = {};
   var userExecutions = {};
-  
+
   var firstPage = getFirstPageOfLogs(cloudProjectId);
   var pageToken = firstPage['nextPageToken'];
   var resultData = firstPage['resultData'];
-  
+
   var header = {
     'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
   };
@@ -56,12 +56,17 @@ function getUsersWithProcessId(cloudProjectId, fromTime) {
     }
     body['pageToken'] = pageToken;
     options['payload'] = JSON.stringify(body);
-    
+
     // these calls to the API are to fetch all the pages which have enteries
-    var response = UrlFetchApp.fetch(url, options);
-    var json = response.getContentText();
-    resultData = JSON.parse(json);
-    pageToken = resultData.nextPageToken;
+    try {
+      var response = UrlFetchApp.fetch(url, options);
+      var json = response.getContentText();
+      resultData = JSON.parse(json);
+      pageToken = resultData.nextPageToken;
+    } catch (ex) {
+      Logger.log(ex);
+      break;
+    }
   }
 
   // go through all the processIds and count the user executions
@@ -110,7 +115,7 @@ function getMostActiveUser(fromTime, projectType, cloudProjectId) {
         continue;
       }
       var projectId = JSON.stringify(allProjects[i].projectId, null, 2);
-       // go through all the processIds and count the different projectIds
+      // go through all the processIds and count the different projectIds
       if (projectId.indexOf("sys") == 1.0) {
         if (projectType == "CUSTOM_PROJECT") continue;
       } else {
