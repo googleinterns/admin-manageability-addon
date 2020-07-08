@@ -11,11 +11,11 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
   var limit = false;
   var processIdsMap = {};
   var projectIdsMap = {};
-  
+
   var firstPage = getFirstPageOfLogs(cloudProjectId);
   var pageToken = firstPage['nextPageToken'];
   var resultData = firstPage['resultData'];
-  
+
   var header = {
     'Authorization': 'Bearer ' + ScriptApp.getOAuthToken()
   };
@@ -58,12 +58,17 @@ function getNumberOfExecutionOfScript(cloudProjectId, fromTime) {
     }
     body['pageToken'] = pageToken;
     options['payload'] = JSON.stringify(body);
-    
+
     // these calls to the API are to fetch all the pages which have enteries
-    var response = UrlFetchApp.fetch(url, options);
-    var json = response.getContentText();
-    resultData = JSON.parse(json);
-    pageToken = resultData.nextPageToken;
+    try {
+      var response = UrlFetchApp.fetch(url, options);
+      var json = response.getContentText();
+      resultData = JSON.parse(json);
+      pageToken = resultData.nextPageToken;
+    } catch (ex) {
+      Logger.log(ex);
+      break;
+    }
   }
 
   // go through all the processIds and count the different projectIds
@@ -139,7 +144,7 @@ function getMostExecutedScriptFromAllCloudProjects(
       }
     }
   }
-  var mostExecutedScript =
-    convertObjectToSortedArray(processIdWithExecutions, processIdWithGCPId);
+  var mostExecutedScript = convertObjectToSortedArrayForMostExecutedScript(
+    processIdWithExecutions, processIdWithGCPId);
   return mostExecutedScript;
 }
