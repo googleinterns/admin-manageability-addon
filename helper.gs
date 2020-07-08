@@ -130,11 +130,12 @@ function buttonSetSection(e) {
 /**
  * Get the first page of stcakdriver logs which has enteries in it
  * @param {string} cloudProjectId of the cloud project
+ * @param {string} filter for the owner of script
  * @return {Object} having two values nextPageToken, resultData
  *    nextPageToken is the pageToken for the next page
  *    resultData have the enteries for the current page
  */
-function getFirstPageOfLogs(cloudProjectId) {
+function getFirstPageOfLogs(cloudProjectId, filter) {
   var pageToken = null;
   var resultData = null;
   var header = {
@@ -148,7 +149,8 @@ function getFirstPageOfLogs(cloudProjectId) {
       'projects/' + cloudProjectId
     ],
     'pageToken': pageToken,
-    'orderBy': 'timestamp desc'
+    'orderBy': 'timestamp desc',
+    'filter': filter
   };
   var options = {
     'method': 'post',
