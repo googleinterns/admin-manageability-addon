@@ -42,6 +42,24 @@ function getOwnersOfAllScripts(projectType, cloudProjectId) {
         emailOfOwnerOfScripts.push(owner);
       }
     }
+  } else if (projectType == "ALL_PROJECT"){
+    var allProjects = listAllCloudProjects();
+    var i;
+    for (i = 0; i < allProjects.length; i++) {
+      if (allProjects[i].lifecycleState != 'ACTIVE') {
+        continue;
+      }
+      var apiEnabled = enableLogginApisPvt(allProjects[i].projectNumber);
+      if (!apiEnabled) {
+        continue;
+      }
+      var owner =
+        getOriginalNameAndOwnerOfScript(
+          allProjects[i].projectId,
+          allProjects[i].name
+        );
+      emailOfOwnerOfScripts.push(owner);
+    }
   } else {
     var allProjects = listAllCloudProjects();
     var i;
@@ -49,8 +67,10 @@ function getOwnersOfAllScripts(projectType, cloudProjectId) {
       if (allProjects[i].lifecycleState != 'ACTIVE') {
         continue;
       }
-      var projectId = JSON.stringify(allProjects[i].projectId, null, 2);
-      if (projectId.indexOf("sys") == 1.0) {
+      var folderId = getSystemProjectsFolderId();
+      
+      // This is to check whether the project is the system project or not
+      if (allProjects[i].projectId == folderId) {
         if (projectType == "CUSTOM_PROJECT") continue;
       } else {
         if (projectType == "SYSTEM_PROJECT") continue;
