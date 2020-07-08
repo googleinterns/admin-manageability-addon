@@ -8,8 +8,8 @@
 *     projectId is the cloud project Id
 */
 function getOriginalNameAndOwnerOfScript(cloudProjectId, cloudProjectName) {
-  var firstPage = getFirstPageOfLogs(cloudProjectId);
-  var pageToken = firstPage['nextPageToken'];
+  var filter = 'protoPayload.methodName=CreateBrand';
+  var firstPage = getFirstPageOfLogs(cloudProjectId, filter);
   var resultData = firstPage['resultData'];
   return {
     'email': resultData.entries[0].protoPayload.request.brand.supportEmail,
