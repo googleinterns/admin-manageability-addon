@@ -33,46 +33,36 @@ Actions allowed to admin are
 
 ## Installation
 
-```
-Open the link https://script.google.com/d/14FNZZH4F__s3n3DkRcm-ym6_3QAuWJaD33bGdBcXbqDf3DASTkXXyKLb/edit?usp=sharing
-```
+```Open the link https://script.google.com/d/14FNZZH4F__s3n3DkRcm-ym6_3QAuWJaD33bGdBcXbqDf3DASTkXXyKLb/edit?usp=sharing```
 ![Installing](./images/add-on.png)
 
-```
-Select Publish
-```
+```Select Publish```
 ![Installing](./images/select_publish.png)
  
-```
-Select Deploy from Manifest
-```
+```Select Deploy from Manifest```
 ![Installing](./images/select_manifest.png)
 
-```
-A dialog box appears
-Select install add-on
-```
+```A dialog box appears and select install add-on```
 ![Installing](./images/install_add-on.png)
 
-```
-Click Close Button
-```
+```Click Close Button```
 ![Installing](./images/close_button.png)
 
-```
-Open the drive and click the chart icon
-```
+```Open the drive and click the chart icon```
 ![Installing](./images/add-on_icon.png)
+
+```UI of the add-on```
+![Installing](./images/add-on_ui.png)
 
 ## Built With
 
-- [Apps Script](https://developers.google.com/apps-script) Used for creating the whole back end
-- [Card Service](https://developers.google.com/apps-script/reference/card-service) Used to build the UI for the add-on
-- [Python](https://www.python.org/) Used to build the script files
-- [Flask](https://flask.palletsprojects.com/en/1.1.x/) Used to create the API
+- [Apps Script](https://developers.google.com/apps-script) : Used for creating the whole back end
+- [Card Service](https://developers.google.com/apps-script/reference/card-service) : Used to build the UI for the add-on
+- [Python](https://www.python.org/) : Used to build the script files
+- [Flask](https://flask.palletsprojects.com/en/1.1.x/) : Used to create the API
 
 ## Other Refrences 
 
-- [Add-ons](https://developers.google.com/gsuite/add-ons/overview) Overview of an add-on with sample add-on
-- [Cloud Logging APIs](https://cloud.google.com/logging/docs)Overview of logging APIs with functionality and usage
-- [Log Entry](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry) Structure of the stackdriver logs with functionality
+- [Add-ons](https://developers.google.com/gsuite/add-ons/overview) : Overview of an add-on with sample add-on
+- [Cloud Logging APIs](https://cloud.google.com/logging/docs) : Overview of logging APIs with functionality and usage
+- [Log Entry](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry) : Structure of the stackdriver logs with functionality
