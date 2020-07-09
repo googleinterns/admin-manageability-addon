@@ -186,18 +186,18 @@ function getFirstPageOfLogs(cloudProjectId, filter) {
 function getSystemProjectsFolderId() {
   var url = "https://cloudresourcemanager.googleapis.com/v2/folders:search";
   var header = {
-    "Authorization": "Bearer "+ScriptApp.getOAuthToken()
+    "Authorization": "Bearer " + ScriptApp.getOAuthToken()
   };
   var body = {
     "query": "displayName=apps-script"
   };
   var options = {
-      'method' : 'post',
-      'contentType': 'application/json',
-      'headers': header,
-      'payload' : JSON.stringify(body),
-      'muteHttpExceptions': false
-   };
+    'method': 'post',
+    'contentType': 'application/json',
+    'headers': header,
+    'payload': JSON.stringify(body),
+    'muteHttpExceptions': false
+  };
   try {
     var response = UrlFetchApp.fetch(url, options);
     var folderDetails = JSON.parse(response.getContentText());
