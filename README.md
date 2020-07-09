@@ -35,7 +35,7 @@ Actions allowed to admin are
 ## Installing
 
 ```
-Open the link https://script.google.com/a/adminintern.com/d/14FNZZH4F__s3n3DkRcm-ym6_3QAuWJaD33bGdBcXbqDf3DASTkXXyKLb/edit?usp=drive_web
+Open the link https://script.google.com/d/14FNZZH4F__s3n3DkRcm-ym6_3QAuWJaD33bGdBcXbqDf3DASTkXXyKLb/edit?usp=sharing
 ```
 ![Installing](./images/add-on.png)
 
