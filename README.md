@@ -1,5 +1,6 @@
 # Admin-Manageability-Addon
 
+## Introduction
 Drive add-on which can provide some insights to the admin of Apps Scripts and also allow them to perform some actions.
 
 Insights to be provided are
@@ -12,7 +13,7 @@ Actions allowed to admin are
 - Update a rule
 - Send notification to both admin and owner if a rule is broken
 
-# Background
+## Background
 - Drive add-on is built using Google apps script
 - Cloud Logging APIs are used to analyze the stackdriver logs
 - Log entry
@@ -23,16 +24,14 @@ Actions allowed to admin are
 
  ![Background](./images/log_entry.png)
 
-# Getting Started
-- Follow the given instructions to install the drive add-on for your organization.
 
-## Prerequisites
+## Requirements
 ```
 1. Having a registered organization with Google
 2. Having the IAM Admin role of Resource Manager
 ```
 
-## Installing
+## Installation
 
 ```
 Open the link https://script.google.com/d/14FNZZH4F__s3n3DkRcm-ym6_3QAuWJaD33bGdBcXbqDf3DASTkXXyKLb/edit?usp=sharing
@@ -65,8 +64,15 @@ Open the drive and click the chart icon
 ```
 ![Installing](./images/add-on_icon.png)
 
+## Built With
 
-# Built With
-
-- [Apps Script](https://developers.google.com/apps-script) Used for creating the shole back end
+- [Apps Script](https://developers.google.com/apps-script) Used for creating the whole back end
 - [Card Service](https://developers.google.com/apps-script/reference/card-service) Used to build the UI for the add-on
+- [Python](https://www.python.org/) Used to build the script files
+- [Flask](https://flask.palletsprojects.com/en/1.1.x/) Used to create the API
+
+## Other Refrences 
+
+- [Add-ons](https://developers.google.com/gsuite/add-ons/overview) Overview of an add-on with sample add-on
+- [Cloud Logging APIs](https://cloud.google.com/logging/docs)Overview of logging APIs with functionality and usage
+- [Log Entry](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry) Structure of the stackdriver logs with functionality
