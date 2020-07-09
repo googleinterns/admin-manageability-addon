@@ -1,4 +1,12 @@
 /**
+ * This file has three functions
+ * generateReportForMostExecutedScript to generate report for most executed script
+ * generateReportForMostActiveUsers to generate report for most active users
+ * generateReportForOwnerOfScripts to generate report for owner of apps script
+ */
+
+
+/**
  * Generates the report of most executed script in google sheets
  * @param {Object} mostExecutedScript is the array of projectIds  
  * @param {String} title is the heading for the report sheet
@@ -70,7 +78,7 @@ function generateReportForMostActiveUsers(mostActiveUser, timestampHeader,
  * @return {String} URL of generated report
  */
 function generateReportForOwnerOfScripts(emailOfOwnerOfScript,
-timestampHeader) {
+  timestampHeader) {
 
   //Create a new date
   var timeStamp = new Date();
