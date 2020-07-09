@@ -43,3 +43,29 @@ def get_first_page_of_logs(cloud_project_id, token, filter_value):
         if result_data.get("entries"):
             break
     return {'next_page_token': page_token, 'result_data': result_data}
+
+
+def get_system_projects_folder_id(token):
+    """
+    Function to get folder id of all the system projects
+
+    Parameters:
+        token (str):The authorization token for cloud Project
+
+    Returns:
+        int: Folder id of all the system projects
+    """
+    url = "https://cloudresourcemanager.googleapis.com/v2/folders:search"
+    header = {
+        "Authorization": token
+    }
+    body = {
+        "query": "displayName=apps-script"
+    }
+    response = requests.post(url, headers=header, params=body)
+    result_data = response.text
+    folder_details = json.loads(result_data)
+    folder_details = folder_details['folders'][0]
+    folder_name = folder_details['name']
+    folder_id = folder_name[8:]
+    return folder_id
