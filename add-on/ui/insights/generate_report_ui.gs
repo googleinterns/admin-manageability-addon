@@ -34,7 +34,7 @@ function createUI(e, reportUrlVal) {
   tabSection.addWidget(imageKeyValue);
   card.addSection(tabSection);
 
-  if (e.formInput && e.formInput.reportType != 'ownerOfScripts') {
+  if (!e.formInput || e.formInput.reportType != 'ownerOfScripts') {
     // Add the time Filter.
     var timeFilterSection =
         CardService.newCardSection().setCollapsible(true).setHeader(
