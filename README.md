@@ -39,37 +39,51 @@ Actions allowed to admin are
 
 ## Installation
 
-```Open the link https://script.google.com/d/14FNZZH4F__s3n3DkRcm-ym6_3QAuWJaD33bGdBcXbqDf3DASTkXXyKLb/edit?usp=sharing```
+```
+Open the link https://script.google.com/d/14FNZZH4F__s3n3DkRcm-ym6_3QAuWJaD33bGdBcXbqDf3DASTkXXyKLb/edit?usp=sharing
+```
 
 ![Installing](./images/add-on.png)
 
 
-```Select Publish```
+```
+Select Publish
+```
 
 ![Installing](./images/select_publish.png)
 
 
-```Select Deploy from Manifest```
+```
+Select Deploy from Manifest
+```
 
 ![Installing](./images/select_manifest.png)
 
 
-```A dialog box appears and select install add-on```
+```
+A dialog box appears and select install add-on
+```
 
 ![Installing](./images/install_add-on.png)
 
 
-```Click Close Button```
+```
+Click Close Button
+```
 
 ![Installing](./images/close_button.png)
 
 
-```Open the drive and click the chart icon```
+```
+Open the drive and click the chart icon
+```
 
 ![Installing](./images/add-on_icon.png)
 
 
-```UI of the add-on```
+```
+UI of the add-on
+```
 
 ![Installing](./images/add-on_ui.png)
 
