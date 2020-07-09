@@ -140,16 +140,16 @@ function getMostExecutedScriptFromAllCloudProjects(
     var allProjects = listAllCloudProjects();
     var i;
     var max = 0;
+    var folderId = getSystemProjectsFolderId();
 
     // loop for all thr projects and get most executed scripts of each project
     for (i = 0; i < allProjects.length; i++) {
       if (allProjects[i].lifecycleState != 'ACTIVE') {
         continue;
       }
-      var folderId = getSystemProjectsFolderId();
-      
+      var parentId = allProjects[i].parent.id;
       // This is to check whether the project is the system project or not
-      if (allProjects[i].projectId == folderId) {
+      if (parentId == folderId) {
         if (projectType == "CUSTOM_PROJECT") continue;
       } else {
         if (projectType == "SYSTEM_PROJECT") continue;
