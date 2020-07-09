@@ -69,4 +69,4 @@ Open the drive and click the chart icon
 # Built With
 
 - [Apps Script](https://developers.google.com/apps-script) Used for creating the shole back end
-- [Card Service]("https://developers.google.com/apps-script/reference/card-service") Used to build the UI for the add-on
+- [Card Service](https://developers.google.com/apps-script/reference/card-service) Used to build the UI for the add-on
