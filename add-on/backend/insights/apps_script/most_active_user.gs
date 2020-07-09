@@ -130,13 +130,13 @@ function getMostActiveUser(fromTime, projectType, cloudProjectId) {
   } else {
     var allProjects = listAllCloudProjects();
     var i;
+    var folderId = getSystemProjectsFolderId();
     for (i = 0; i < allProjects.length; i++) {
       if (allProjects[i].lifecycleState != 'ACTIVE') {
         continue;
       }
-      var folderId = getSystemProjectsFolderId();
-      // go through all the processIds and count the different projectIds
-      if (allProjects[i].projectId == folderId) {
+      var parentId = allProjects[i].parent.id;
+      if (parentId == folderId) {
         if (projectType == "CUSTOM_PROJECT") continue;
       } else {
         if (projectType == "SYSTEM_PROJECT") continue;
