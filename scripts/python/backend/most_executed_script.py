@@ -114,14 +114,15 @@ def get_most_executed_script_from_cloud_projects(from_time, project_type, token,
                 most_executed_script.append({'key' : j, 'value' : result[j], 'GCPId' : project_id})
     else:
         all_project = cloud_project(token)
-
+        folder_id = get_system_projects_folder_id(token)
+        
         #loop for all the projects and get most executed scripts of each project
         for project in all_project:
             if project["lifecycleState"] != 'ACTIVE':
                 continue
             project_id = project["projectId"]
-            folder_id = get_system_projects_folder_id(token)
-            if project_id == folder_id:
+            parent_id = project["parent"]["id"]
+            if parent_id == folder_id:
                 if project_type == "CUSTOM_PROJECT":
                     continue
             else:
