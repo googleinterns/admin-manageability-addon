@@ -4,7 +4,7 @@ This module returns the email of owner of Apps Script
 from all_cloud_projects import cloud_project
 from enable_logging_api import enable_loggin_apis_pvt
 from project_details import get_project_details
-from helper import get_first_page_of_logs
+from helper import get_first_page_of_logs, get_system_projects_folder_id
 
 def get_name_and_owner_of_script(cloud_project_id, project_name, token):
     """
@@ -46,13 +46,25 @@ def get_owners_of_all_scripts(project_type, token, cloud_project_id, que):
         if api_enabled:
             owner = get_name_and_owner_of_script(cloud_project_id, proj_details["name"], token)
             email_of_owner_of_scripts.append(owner)
+    elif project_type == "ALL_PROJECT":
+        all_project = cloud_project(token)
+        for project in all_project:
+            if project["lifecycleState"] != 'ACTIVE':
+                continue
+            project_id = project["projectId"]
+            api_enabled = enable_loggin_apis_pvt(project["projectNumber"], token)
+            if not api_enabled:
+                continue
+            owner = get_name_and_owner_of_script(project_id, project["name"], token)
+            email_of_owner_of_scripts.append(owner)
     else:
         all_project = cloud_project(token)
         for project in all_project:
             if project["lifecycleState"] != 'ACTIVE':
                 continue
             project_id = project["projectId"]
-            if project_id.startswith("sys"):
+            folder_id = get_system_projects_folder_id(token)
+            if project_id == folder_id:
                 if project_type == "CUSTOM_PROJECT":
                     continue
             else:
