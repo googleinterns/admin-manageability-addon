@@ -34,13 +34,15 @@ function createUI(e, reportUrlVal) {
   tabSection.addWidget(imageKeyValue);
   card.addSection(tabSection);
 
-  // Add the time Filter.
-  var timeFilterSection =
-      CardService.newCardSection().setCollapsible(true).setHeader(
-          '<b>TIME FILTER</b>');
-  var timeFilter = getTimeFilter(e);
-  timeFilterSection.addWidget(timeFilter);
-  card.addSection(timeFilterSection);
+  if (e.formInput && e.formInput.reportType != 'ownerOfScripts') {
+    // Add the time Filter.
+    var timeFilterSection =
+        CardService.newCardSection().setCollapsible(true).setHeader(
+            '<b>TIME FILTER</b>');
+    var timeFilter = getTimeFilter(e);
+    timeFilterSection.addWidget(timeFilter);
+    card.addSection(timeFilterSection);
+  }
 
   // Add the project Filter.
   var projectFiltersection = CardService.newCardSection()
