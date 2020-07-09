@@ -59,12 +59,13 @@ def get_owners_of_all_scripts(project_type, token, cloud_project_id, que):
             email_of_owner_of_scripts.append(owner)
     else:
         all_project = cloud_project(token)
+        folder_id = get_system_projects_folder_id(token)
         for project in all_project:
             if project["lifecycleState"] != 'ACTIVE':
                 continue
             project_id = project["projectId"]
-            folder_id = get_system_projects_folder_id(token)
-            if project_id == folder_id:
+            parent_id = project["parent"]['id']
+            if parent_id == folder_id:
                 if project_type == "CUSTOM_PROJECT":
                     continue
             else:
