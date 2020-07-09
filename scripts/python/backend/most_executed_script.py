@@ -6,7 +6,7 @@ import requests
 from all_cloud_projects import cloud_project
 from enable_logging_api import enable_loggin_apis_pvt
 from project_details import get_project_details
-from helper import get_first_page_of_logs
+from helper import get_first_page_of_logs, get_system_projects_folder_id
 
 def get_number_of_execution_of_script(cloud_project_id, from_time, token):
     """
@@ -98,6 +98,20 @@ def get_most_executed_script_from_cloud_projects(from_time, project_type, token,
                         'GCPId': cloud_project_id
                     }
                 )
+    elif project_type == "ALL_PROJECT":
+        all_project = cloud_project(token)
+
+        #loop for all the projects and get most executed scripts of each project
+        for project in all_project:
+            if project["lifecycleState"] != 'ACTIVE':
+                continue
+            project_id = project["projectId"]
+            api_enabled = enable_loggin_apis_pvt(project["projectNumber"], token)
+            if not api_enabled:
+                continue
+            result = get_number_of_execution_of_script(project_id, from_time, token)
+            for j in result:
+                most_executed_script.append({'key' : j, 'value' : result[j], 'GCPId' : project_id})
     else:
         all_project = cloud_project(token)
 
@@ -106,7 +120,8 @@ def get_most_executed_script_from_cloud_projects(from_time, project_type, token,
             if project["lifecycleState"] != 'ACTIVE':
                 continue
             project_id = project["projectId"]
-            if project_id.startswith("sys"):
+            folder_id = get_system_projects_folder_id(token)
+            if project_id == folder_id:
                 if project_type == "CUSTOM_PROJECT":
                     continue
             else:
